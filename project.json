@@ -1,0 +1,10 @@
+{
+    "name": "薅羊毛",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.haoyangmao.egale",
+    "versionName": "1.0.0",
+    "versionCode": 1
+}
