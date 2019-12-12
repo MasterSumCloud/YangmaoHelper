@@ -5,12 +5,14 @@ let deviceHeight = device.height;
 function startTaobao() {
     console.log("去淘宝");
 
-    launch("com.taobao.taobao");
+    // launch("com.taobao.taobao");
     sleep(3000)
     //launch app
-    click(device.width - 100, device.height - 100);
-    sleep(200)
-    swipe(device.width / 2, device.height * 0.9, device.width / 2, 0, 1000);
+    cdescContains("我的淘宝").findOnce().click();
+    sleep(1000)
+    swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, 0, 1000);
+
+    click(deviceWidth * 0.75, deviceHeight * 0.7);
     openGoldGarden()
 }
 
@@ -18,16 +20,15 @@ function startTaobao() {
  * 淘宝金币庄园 游戏
  */
 function openGoldGarden() {
-
-    click(device.width * 0.75, device.height * 0.7);
     sleep(3000);
-
-
+    goWaterDrop();
     //金币庄园
-    toDaygoldTask();
     sleep(1000);
     //掘金团队
-
+    goNuggetsAndBack();
+    sleep(1000);
+    //领金币
+    toDaygoldTask();
 }
 
 function goWaterDrop() {
@@ -35,10 +36,13 @@ function goWaterDrop() {
     click(973, 1113);
     sleep(2000);
     //第一个签到
-    textContains("打卡").findOnce().click();
+    let sign = textContains("打卡").findOnce();
+    if (sign != null) {
+        sign.click();
+    }
     sleep(100);
     //浏览任务
-    let pageDelay = 16 * 1000;
+    let pageDelay = 13 * 1000;
     for (let i = 0; i < 4; i++) {
         sleep(1000);
         let qoGg = textContains("去逛逛").findOnce();
@@ -46,6 +50,7 @@ function goWaterDrop() {
             qoGg.click();
             sleep(pageDelay);
             back();
+            sleep(1000)
         } else {
             break;
         }
@@ -110,12 +115,12 @@ function clickInvestMulti() {
         if (yaoqingBtn != null) {
             yaoqingBtn.click();
             sleep(500);
-        }else{
+        } else {
             break;
         }
     }
     //换一批
-    ctextContains("换一批推荐好友").findOnce().click();
+    textContains("换一批推荐好友").findOnce().click();
     sleep(2000);
 }
 
@@ -124,6 +129,7 @@ function clickInvestMulti() {
  */
 function toDaygoldTask() {
     click(113, 1149);
+    sleep(3000);
     swipe(device.width / 2, device.height * 0.9, device.width / 2, 0, 1000);
     sleep(100);
     swipe(device.width / 2, device.height * 0.9, device.width / 2, device.height * 0.9 - 540, 500);
@@ -153,5 +159,5 @@ function goGet5GoldAndBack(x, y, i) {
     sleep(1000);
 }
 
-//startTaobao();
-goWaterDrop();
+// startTaobao();
+openGoldGarden();

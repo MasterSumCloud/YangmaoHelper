@@ -1,9 +1,10 @@
-let keDrop = textContains("可浇水").findOnce();
-console.log("开始了哦")
+console.log("开始")
 
-let yaoqing = textMatches(/^邀请$/).find();
-
-console.log(yaoqing.length)
+id("my_rv").findOne().children().forEach(child => {
+    var target = child.findOne(id("my_coupons_ll"));
+    target.click();
+});
+// text[1].click();
 // for (let i = 0; i < yaoqing.length; i++) {
 //     textMatches(/^邀请$/).findOnce().click();
 //     sleep(500);
