@@ -42,16 +42,16 @@ function goWaterDrop() {
     for (let i = 0; i < 4; i++) {
         sleep(1000);
         let qoGg = textContains("去逛逛").findOnce();
-        if(qoGg!=null){
+        if (qoGg != null) {
             qoGg.click();
             sleep(pageDelay);
             back();
-        }else{
+        } else {
             break;
         }
-        
+
     }
-    
+
     //陶人生 先不做 TODO
 
     //浇水
@@ -61,26 +61,27 @@ function goWaterDrop() {
 
     let dropWaterTimes = 0;
     let openBtmTimes = 0;
-    while(dropWaterTimes<5){
+    while (dropWaterTimes < 5) {
         let keDrop = textContains("可浇水").findOnce();
-        if(keDrop!=null){
+        if (keDrop != null) {
             keDrop.click();
             sleep(2000);
-            click(1000,900);
+            click(1000, 900);
             sleep(1000);
             back();
             dropWaterTimes++;
-        }else{
-            if(openBtmTimes>=5){
+            sleep(1000);
+        } else {
+            if (openBtmTimes >= 5) {
                 dropWaterTimes = 5;
                 break;
             }
             textContains("好友可偷金币").findOnce().click();
             openBtmTimes++;
-            swipe(deviceWidth/2,deviceHeight*0.8,deviceWidth/2,deviceHeight*0.3,2000);
+            swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.3, 2000);
         }
     }
-    
+
 
     //关闭水滴领取框
     click(device.width / 2, 235);
@@ -89,12 +90,11 @@ function goWaterDrop() {
 
 
 function goNuggetsAndBack() {
-    click(600,1170);
+    click(600, 1170);
     sleep(3000);
     swipe(device.width / 2, device.height * 0.9, device.width / 2, 0, 1000);
     sleep(100);
 
-    clickInvestMulti();
     clickInvestMulti();
     clickInvestMulti();
     back();
@@ -103,32 +103,20 @@ function goNuggetsAndBack() {
 /**
  * 金币庄园  邀请
  */
-function clickInvestMulti(){
-    let firstInvestX = 192;
-    let firstInvestY = 522;
-    let xDistence = 350;
-    let yDistence = 525;
-    //中间不点 挡住了 直接换一拨
-    clickInvestButton(firstInvestX, firstInvestY);
-    clickInvestButton(firstInvestX + xDistence, firstInvestY);
-    clickInvestButton(firstInvestX + 2 * xDistence, firstInvestY);
-
-    clickInvestButton(firstInvestX, firstInvestY + yDistence);
-    clickInvestButton(firstInvestX + 2 * xDistence, firstInvestY + yDistence);
-
-    clickInvestButton(firstInvestX, firstInvestY + 2 * yDistence);
-    clickInvestButton(firstInvestX + xDistence, firstInvestY + 2 * yDistence);
-    clickInvestButton(firstInvestX + 2 * xDistence, firstInvestY + 2 * yDistence);
-
-        //换一批
-    click(device.width / 2, 1720);
+function clickInvestMulti() {
+    let investList = textMatches(/^邀请$/).find();
+    for (let i = 0; i < investList.length; i++) {
+        let yaoqingBtn = textMatches(/^邀请$/).findOnce();
+        if (yaoqingBtn != null) {
+            yaoqingBtn.click();
+            sleep(500);
+        }else{
+            break;
+        }
+    }
+    //换一批
+    ctextContains("换一批推荐好友").findOnce().click();
     sleep(2000);
-}
-
-
-function clickInvestButton(x, y) {
-    click(x, y);
-    sleep(500);
 }
 
 /**
