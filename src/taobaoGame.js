@@ -20,13 +20,21 @@ function startTaobao() {
  * 淘宝金币庄园 游戏
  */
 function openGoldGarden() {
+    let jinbiVist = textContains("立即签到").findOnce();
+    //判断有没有金币签到 
+    if (jinbiVist != null) {
+        jinbiVist.click();
+        sleep(1000);
+        className("android.widget.Image").text("TB1mJFIgET1gK0jSZFrXXcNCXXa-72-72").findOne().click()
+    }
+
     sleep(3000);
     goWaterDrop();
     //金币庄园
-    sleep(1000);
+    sleep(2000);
     //掘金团队
     goNuggetsAndBack();
-    sleep(1000);
+    sleep(2000);
     //领金币
     toDaygoldTask();
 }
@@ -43,7 +51,7 @@ function goWaterDrop() {
     sleep(100);
     //浏览任务
     let pageDelay = 13 * 1000;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 3; i++) {
         sleep(1000);
         let qoGg = textContains("去逛逛").findOnce();
         if (qoGg != null) {
@@ -57,8 +65,19 @@ function goWaterDrop() {
 
     }
 
-    //陶人生 先不做 TODO
-
+    //陶人生
+    let qoTaoLife = textContains("去逛逛").findOnce();
+    if (qoTaoLife != null) {
+        qoTaoLife.click();
+        sleep(10000);
+        click(deviceWidth / 2, 1460);
+        sleep(1000);
+        click(deviceWidth / 2, 1460);
+        sleep(1000);
+        back();
+        click(deviceWidth / 2, 1460);
+        sleep(1000);
+    }
     //浇水
     sleep(1000);
     textContains("去浇水").findOnce().click();
@@ -128,7 +147,7 @@ function clickInvestMulti() {
  * 每日金币领取
  */
 function toDaygoldTask() {
-    click(113, 1149);
+    click(110, 1146);
     sleep(3000);
     swipe(device.width / 2, device.height * 0.9, device.width / 2, 0, 1000);
     sleep(100);
@@ -145,6 +164,32 @@ function toDaygoldTask() {
     goGet5GoldAndBack(itemButtonX, firstButtonY);
     //回去
     back();
+    sleep(2000);
+    //重新进来
+    click(110, 1146);
+    sleep(3000);
+    //进群打卡领金币
+    click(900, 950);
+    sleep(3000);
+    //随便点个群
+    click(500, 485);
+    sleep(8000);
+    //点击打卡
+    click(700, 700);
+    sleep(3000);
+    //判断时候有任务
+    let lingqu = id("action_button").findOnce();
+    if (lingqu != null) {
+        lingqu.click();
+        sleep(3000);
+        descContains("领取奖励").findOnce().click();
+        back();
+        sleep(1000);
+        back();
+        sleep(1000);
+        back();
+        sleep(1000);
+    }
 }
 
 /**

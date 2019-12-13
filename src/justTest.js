@@ -1,14 +1,25 @@
 console.log("开始")
+//进群打卡领金币
+click(900, 950);
+sleep(3000);
+//随便点个群
+click(500, 485);
+sleep(8000);
+//点击打卡
+click(700,700);
+sleep(3000);
+//判断时候有任务
+let lingqu = id("action_button").findOnce();
+if(lingqu!=null){
+    lingqu.click();
+    sleep(3000);
+    descContains("领取奖励").findOnce().click();
+    back();
+    sleep(1000);
+    back();
+    sleep(1000);
+    back();
+    sleep(1000);
+}
 
-id("my_rv").findOne().children().forEach(child => {
-    var target = child.findOne(id("my_coupons_ll"));
-    target.click();
-});
-// text[1].click();
-// for (let i = 0; i < yaoqing.length; i++) {
-//     textMatches(/^邀请$/).findOnce().click();
-//     sleep(500);
-// }
-
-//textContains("立即签到").findOnce().click();
 console.log("结束")
