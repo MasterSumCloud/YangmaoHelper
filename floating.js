@@ -75,29 +75,7 @@ window.exit.setOnTouchListener(function (view, event) {
 
 let th = null;
 window.start.click(() => {
-    let oldScript = "./script.js";
-    let newScript = "/sdcard/脚本/淘宝喵币/script.js";
-    let ss = oldScript;
-    if (files.exists(newScript)) {
-        ss = newScript;
-        console.log("加载本地脚本");
-    }
-
-    if (th == null) {
-        th = threads.start(function () {
-            let runChoose = require(ss);
-            runChoose(waysOfShopping);
-        });
-    } else {
-        if (th.isAlive()) {
-            toastLog("你是不是傻，脚本都在运行了你还点！？");
-        } else {
-            th = threads.start(function () {
-                let runChoose = require(ss);
-                runChoose(waysOfShopping);
-            });
-        }
-    }
+    
 });
 
 window.stop.click(() => {
