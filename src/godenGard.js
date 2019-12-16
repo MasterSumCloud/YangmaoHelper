@@ -1,27 +1,52 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 
-let gameDiv = className("android.webkit.WebView").textContains("金币庄园").findOnce();
-let stateBarHeigh = gameDiv.bounds().top;
-let gameHigh = gameDiv.bounds().bottom - gameDiv.bounds().top;
+let gameDiv = null;
+let stateBarHeigh = -1;
+let gameHigh = 0;
 function startTaobao() {
     console.log("去淘宝");
+    launch("com.taobao.taobao");
 
-    // // launch("com.taobao.taobao");
-    // sleep(3000)
+    sleep(3000);
     // //launch app
-    // cdescContains("我的淘宝").findOnce().click();
-    // sleep(1000)
-    // swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, 0, 1000);
+    let mineTab = juadgeIsTaobaoHome();
+    let goldHomeDiv = juadgeIsGoldHome();
 
-    // click(deviceWidth * 0.75, deviceHeight * 0.7);
-    openGoldGarden()
+    if (goldHomeDiv != null) {
+        goldHomeDiv.click();
+        sleep(1000);
+        openGoldGarden();
+    } else if (mineTab != null) {
+        mineTab.click();
+        sleep(1000);
+        //滑动半屏
+        swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.2, 1000);
+        let goldChannel = className("android.widget.TextView").textContains("金币庄园").findOnce();
+        if (goldChannel != null) {
+            click(goldChannel.bounds().centerX(), goldChannel.bounds().centerY());
+            sleep(5000);
+            openGoldGarden();
+        }
+
+    } else {
+        toast("不在淘宝首页 也不再 金币庄园首页");
+    }
+
 }
 
 /**
  * 淘宝金币庄园 游戏
  */
 function openGoldGarden() {
+    gameDiv = className("android.webkit.WebView").textContains("金币庄园").findOnce();
+    stateBarHeigh = gameDiv.bounds().top;
+    gameHigh = gameDiv.bounds().bottom - gameDiv.bounds().top;
+
+    //有售后进入后滑动到了底部
+    //返回到顶部
+    swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
+
     let jinbiVist = textContains("立即签到").findOnce();
     //判断有没有金币签到 
     if (jinbiVist != null) {
@@ -181,37 +206,42 @@ function toDaygoldTask() {
     //         log("孩子们", child.bounds());
     //     });
 
-    //回去
-    back();
-    sleep(2000);
-    //重新进来
-    click(Math.round(deviceWidth * 0.102), Math.round(gameHigh * 0.667 + stateBarHeigh));
-    sleep(3000);
-    //进群打卡领金币
-    click(900, 950);
-    sleep(3000);
-    //随便点个群
-    click(500, 485);
-    sleep(10000);
-    //点击打卡
-    click(700, 700);
-    sleep(8000);
-    //判断时候有任务
-    let lingqu = id("action_button").findOnce();
-    if (lingqu != null) {
-        lingqu.click();
-        sleep(3000);
-        descContains("领取奖励").findOnce().click();
-        back();
+    let goTop = className("android.view.View").descContains("顶部").findOnce();
+    let needBackPage = 1;
+    if (goTop != null) {
+        click(goTop.bounds().centerX(), goTop.bounds().centerY());
         sleep(1000);
-        back();
-        sleep(1000);
-        back();
-        sleep(1000);
-        back();
-        sleep(1000);
-        back();
-        sleep(1000);
+        //进群打卡领金币
+        let goGroupdaka = className("android.view.View").descContains("进群打卡领金币").findOnce();
+        if (goGroupdaka != null) {
+            click(Math.round(deviceWidth * 0.833), goGroupdaka.bounds().bottom);
+            sleep(3000);
+            needBackPage++;
+            //随便点个群
+            let goGroup = className("android.view.View").descMatches(/^进群打卡$/).findOnce();
+            if (goGroup != null) {
+                click(goGroup.bounds().centerX(), goGroup.bounds().centerY());
+                sleep(10000);
+                needBackPage++;
+                //点击打卡
+                let vDaka = className("android.view.View").descContains("立即打卡").findOnce();
+                if (vDaka != null) {
+                    click(vDaka.bounds().centerX(), vDaka.bounds().centerY());
+                    sleep(8000);
+                    needBackPage++;
+                    //判断时候有任务
+                    let lingqu = id("action_button").findOnce();
+                    if (lingqu != null) {
+                        lingqu.click();
+                        needBackPage++;
+                        sleep(3000);
+                        descContains("领取奖励").findOnce().click();
+                    }
+                }
+            }
+        }
+    }
+    for (let i = 0; i < needBackPage; i++) {
         back();
         sleep(1000);
     }
@@ -272,46 +302,8 @@ function getWaterDrop() {
             if (qgg != null) {
                 qgg.click();
                 sleep(10000);
-                let imidShou = textContains("立即去收").findOnce();
-                //每日第一次进去提示
-                if (imidShou != null) {
-                    imidShou.click();
-                }
-                //9个田地 都点点
-
-                //计算1-9的对应横坐标
-                //获取游戏显示区域
-                let gameDiv = id("GameDiv").findOnce();
-                if (gameDiv != null) {
-                    //计算左 中 右 的坐标
-                    let x1 = deviceWidth * 0.285;
-                    let x2 = deviceWidth / 2;
-                    let x3 = deviceWidth * 0.722;
-                    console.log("游戏布局高" + gameHigh);
-                    //领取乱七八糟的阳光
-                    getMutiSuns();
-                    //先点一遍
-                    whileClickFarm(x1, x2, x3, gameHigh, stateBarHeigh);
-                    //如果有升级点一下
-                    click(deviceWidth / 2, Math.round(gameHigh * 0.846 + stateBarHeigh));
-                    sleep(100);
-                    tudiClick();
-                    //再点一次 防止升级挡住没点全 一般情况下后期1天也就升级1级
-                    whileClickFarm(x1, x2, x3, gameHigh, stateBarHeigh);
-
-                    //领阳光
-                    click(Math.round(deviceWidth * 0.909), Math.round(gameHigh * 0.876 + stateBarHeigh))
-                    sleep(2000);
-                    let liulTask = textContains("去浏览").findOnce();
-                    openAndBack(liulTask, 18000, true);
-                    back();
-                    sleep(1000);
-                }
-                //领取乱七八糟的阳光
-                getMutiSuns();
-                sleep(1000);
-                back();
-
+                startFarm();
+                swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
             }
         } else if (singleTask === "淘宝吃货") {
             let qgg = getEquQggUi(singleTask);
@@ -319,7 +311,53 @@ function getWaterDrop() {
         }
     }
 
-    function getMutiSuns() {
+    function startFarm() {
+        let imidShou = textContains("立即去收").findOnce();
+        //每日第一次进去提示
+        if (imidShou != null) {
+            imidShou.click();
+            sleep(500);
+        }
+        let farmDive = juadgeIsFramHome();
+        if (farmDive != null) {
+            let farmHeight = farmDive.bounds().bottom - farmDive.bounds().top;
+            //9个田地 都点点
+            //计算1-9的对应横坐标
+            //获取游戏显示区域
+            let gameDiv = id("GameDiv").findOnce();
+            if (gameDiv != null) {
+                //计算左 中 右 的坐标
+                let x1 = deviceWidth * 0.285;
+                let x2 = deviceWidth / 2;
+                let x3 = deviceWidth * 0.722;
+                console.log("游戏布局高" + farmHeight);
+                //领取乱七八糟的阳光
+                getMutiSuns(farmHeight);
+                //如果有升级点一下
+                click(deviceWidth / 2, Math.round(farmHeight * 0.876 + stateBarHeigh));
+                //先点一遍
+                whileClickFarm(x1, x2, x3, farmHeight, stateBarHeigh);
+                //如果有升级点一下
+                click(deviceWidth / 2, Math.round(farmHeight * 0.876 + stateBarHeigh));
+                sleep(100);
+                tudiClick();
+                //再点一次 防止升级挡住没点全 一般情况下后期1天也就升级1级
+                whileClickFarm(x1, x2, x3, farmHeight, stateBarHeigh);
+                //领取乱七八糟的阳光
+                getMutiSuns(farmHeight);
+                //领阳光
+                click(Math.round(deviceWidth * 0.909), Math.round(farmHeight * 0.876 + stateBarHeigh))
+                sleep(2000);
+                let liulTask = textContains("去浏览").findOnce();
+                openAndBack(liulTask, 18000, true);
+                sleep(1000);
+            }
+            //领取乱七八糟的阳光
+            back();
+        }
+    }
+
+    function getMutiSuns(farmH) {
         let singlePartWidth = deviceWidth / 10;
 
         for (let i = 0; i < 10; i++) {
@@ -329,20 +367,24 @@ function getWaterDrop() {
             for (let k = 0; k < 4; k++) {
                 switch (k) {
                     case 0:
-                        click(singlePartWidth * i, Math.round(gameHigh * 0.292 + stateBarHeigh));
+                        click(singlePartWidth * i, Math.round(farmH * 0.292));
                         sleep(100);
                         break;
                     case 1:
-                        click(singlePartWidth * i, Math.round(gameHigh * 0.354 + stateBarHeigh));
+                        click(singlePartWidth * i, Math.round(farmH * 0.364));
                         sleep(100);
                         break;
                     case 2:
-                        click(singlePartWidth * i, Math.round(gameHigh * 0.398 + stateBarHeigh));
-                        sleep(100);
+                        if (i != 9) {
+                            click(singlePartWidth * i, Math.round(farmH * 0.398));
+                            sleep(100);
+                        }
                         break;
                     case 3:
-                        click(singlePartWidth * i, Math.round(gameHigh * 0.447 + stateBarHeigh));
-                        sleep(100);
+                        if (i != 9) {
+                            click(singlePartWidth * i, Math.round(farmH * 0.457));
+                            sleep(100);
+                        }
                         break;
                 }
             }
@@ -407,8 +449,6 @@ function getWaterDrop() {
                     break;
             }
         }
-
-
     }
 
 
@@ -448,6 +488,21 @@ function getWaterDrop() {
     }
 
 }
-// startTaobao();
-openGoldGarden();
-// toDaygoldTask();
+
+function juadgeIsTaobaoHome() {
+    let homeMine = className("android.widget.FrameLayout").descContains("我的淘宝").findOnce();
+    return homeMine;
+}
+
+function juadgeIsGoldHome() {
+    let homeGold = className("android.webkit.WebView").textContains("金币庄园").findOnce();
+    return homeGold;
+}
+
+function juadgeIsFramHome() {
+    let farmGold = id("GameDiv").findOnce();
+    return farmGold;
+}
+
+
+startTaobao();

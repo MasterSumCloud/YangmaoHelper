@@ -21,6 +21,7 @@ ui.layout(
             <Switch w="auto" h="auto" id="autoService" checked="{{auto.service != null}}"></Switch>
         </horizontal>
 
+        <text>现在只支持单独运行，悬浮窗口没啥用，功能努力中</text>
 
         <horizontal w="auto" h="auto">
             <Switch w="auto" h="auto" checked={isOpenDingdong}></Switch>
@@ -28,7 +29,7 @@ ui.layout(
             <button id={"exeDingDondSign"}>单独执行</button>
         </horizontal>
 
-        <text>备注：因为Pro8,对淘宝有保护，不能进行直接运行,所以请打开淘宝后运行</text>
+        
         <horizontal w="auto" h="auto">
             <Switch w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
             <text marginLeft="15sp" marginRight="15sp">淘宝金币庄园</text>
