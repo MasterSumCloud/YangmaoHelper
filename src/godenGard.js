@@ -4,8 +4,13 @@ let deviceHeight = device.height;
 let gameDiv = null;
 let stateBarHeigh = -1;
 let gameHigh = 0;
-function startTaobao() {
+
+let doTaolife = false;
+let doFarm = false;
+function startTaobao(isDoTaoLife, isDoFarm) {
     console.log("去淘宝");
+    doTaolife = isDoTaoLife;
+    doFarm = isDoFarm;
     launch("com.taobao.taobao");
 
     sleep(3000);
@@ -14,10 +19,12 @@ function startTaobao() {
     let goldHomeDiv = juadgeIsGoldHome();
 
     if (goldHomeDiv != null) {
+        console.log("在金币庄园");
         goldHomeDiv.click();
         sleep(1000);
         openGoldGarden();
     } else if (mineTab != null) {
+        console.log("在淘宝首页");
         mineTab.click();
         sleep(1000);
         //滑动半屏
@@ -223,6 +230,7 @@ function toDaygoldTask() {
                 click(goGroup.bounds().centerX(), goGroup.bounds().centerY());
                 sleep(10000);
                 needBackPage++;
+                needBackPage++;
                 //点击打卡
                 let vDaka = className("android.view.View").descContains("立即打卡").findOnce();
                 if (vDaka != null) {
@@ -235,7 +243,9 @@ function toDaygoldTask() {
                         lingqu.click();
                         needBackPage++;
                         sleep(3000);
-                        descContains("领取奖励").findOnce().click();
+                        let jiangli = className("android.view.View").descContains("领取奖励").findOnce();
+                        click(jiangli.bounds().centerX(), jiangli.bounds().centerY());
+                        sleep(1000);
                     }
                 }
             }
@@ -267,6 +277,7 @@ function getWaterDrop() {
     for (let i = 0; i < arrTask.length; i++) {
         sleep(2000)
         let singleTask = arrTask[i];
+        toast("开始" + singleTask);
         if (singleTask === "每日免费领水滴") {
             const daka = textContains("打卡").findOnce();
             openAndBack(daka, 0, false);
@@ -279,35 +290,61 @@ function getWaterDrop() {
         } else if (singleTask === "逛高抵扣商品赚果实") {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 13000, true);
+            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
         } else if (singleTask === "逛逛你的淘宝人生") {
-            // let qgg = getEquQggUi("逛逛你的淘宝人生");
-            // let taorens = className("android.webkit.WebView").textContains("第二人生").findOnce();
-            // if (taorens != null) {
-            //     let taoDivHeight = taorens.bounds().bottom - taorens.bounds().top;
-            //     let taobarHeight = taorens.bounds().top;
-            //     for (let i = 0; i < 5; i++) {
-            //         click(Math.round(deviceWidth * 0.548), Math.round(taoDivHeight * 0.546) + taobarHeight);
-            //         sleep(100);
-            //         click(Math.round(deviceWidth * 0.781), Math.round(taoDivHeight * 0.546) + taobarHeight);
-            //         sleep(100);
-            //         click(Math.round(deviceWidth * 0.958), Math.round(taoDivHeight * 0.457) + taobarHeight);
-            //         sleep(100);
-            //     }
-            // }
-            // //返回的按钮
-            //click(deviceWidth/2, Math.round(taoDivHeight * 0.641) + taobarHeight);
-            toast("淘人生 还在努力中");
+            if (doTaolife) {
+                let qgg = getEquQggUi("逛逛你的淘宝人生");
+                if (qgg != null) {
+                    sleep(10000);
+                    startTaoLife();
+                }
+            } else {
+                toast("不执行淘人生");
+            }
+
         } else if (singleTask === "逛逛天猫农场") {
-            let qgg = getEquQggUi(singleTask);
-            if (qgg != null) {
-                qgg.click();
-                sleep(10000);
-                startFarm();
-                swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
+            if (doFarm) {
+                let qgg = getEquQggUi(singleTask);
+                if (qgg != null) {
+                    qgg.click();
+                    sleep(10000);
+                    startFarm();
+                }
+            } else {
+                toast("不执行天猫农场");
             }
         } else if (singleTask === "淘宝吃货") {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 16000, true);
+        }
+    }
+
+    /**
+     * 淘人生函数
+     */
+    function startTaoLife() {
+        let taorens = className("android.webkit.WebView").textContains("第二人生").findOnce();
+        //如果有人送卡
+        if (taorens != null) {
+            let taoDivHeight = taorens.bounds().bottom - taorens.bounds().top;
+            let taobarHeight = taorens.bounds().top;
+            for (let i = 0; i < 5; i++) {
+                click(Math.round(deviceWidth * 0.548), Math.round(taoDivHeight * 0.546) + taobarHeight);
+                sleep(300);
+                click(Math.round(deviceWidth * 0.781), Math.round(taoDivHeight * 0.546) + taobarHeight);
+                sleep(300);
+                click(Math.round(deviceWidth * 0.958), Math.round(taoDivHeight * 0.457) + taobarHeight);
+                sleep(400);
+            }
+            //点击可能存在的任务等
+            for (let i = 0; i < 5; i++) {
+                click(deviceWidth / 2, Math.round(taoDivHeight * 0.715 + taobarHeight));
+                sleep(1000);
+            }
+            back();
+            sleep(1000);
+            //返回的按钮
+            click(deviceWidth / 2, Math.round(taoDivHeight * 0.645) + taobarHeight);
         }
     }
 
@@ -504,5 +541,4 @@ function juadgeIsFramHome() {
     return farmGold;
 }
 
-
-startTaobao();
+module.exports = startTaobao;

@@ -13,7 +13,7 @@
       "displaySplash": true,
       "hideLogs": false,
       "splashIcon": "res/splashIcon.png",
-      "splashText": "Powered by Auto.js Pro",
+      "splashText": "Powered by Eagle",
       "stableMode": false
     },
     "main": "main.js",

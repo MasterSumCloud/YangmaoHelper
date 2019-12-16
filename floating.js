@@ -75,7 +75,7 @@ window.exit.setOnTouchListener(function (view, event) {
 
 let th = null;
 window.start.click(() => {
-    
+    toast("暂时没啥用");
 });
 
 window.stop.click(() => {

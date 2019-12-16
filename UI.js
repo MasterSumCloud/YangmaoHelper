@@ -1,4 +1,7 @@
 "ui";
+
+let goldGame = require("./src/godenGard.js");
+
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 
@@ -11,6 +14,9 @@ let installService = false;
 let isOpenDingdong = false;
 //是否连续执行 淘金币
 let isOpenTaobaoGold = false;
+
+let isOpenTaolife = false;
+let isOpenTmFarm = false;
 
 ui.layout(
     <vertical margin={30 + "sp"}>
@@ -29,13 +35,25 @@ ui.layout(
             <button id={"exeDingDondSign"}>单独执行</button>
         </horizontal>
 
-        
-        <horizontal w="auto" h="auto">
-            <Switch w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
-            <text marginLeft="15sp" marginRight="15sp">淘宝金币庄园</text>
+        <vertical>
+            <horizontal w="auto" h="auto">
+                <Switch w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
+                <text marginLeft="15sp" marginRight="15sp">淘宝金币庄园</text>
+            </horizontal>
+            <horizontal>
+                <CheckBox id="cbTaolife" checked={isOpenTaolife} />
+                <text>淘金币庄园是否 执行淘人生</text>
+                <button id="btnTaoTips">提示</button>
+            </horizontal>
+            <horizontal>
+                <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
+                <text>淘金币庄园是否 执行天猫农场</text>
+                <button id="btnFarmTips">提示</button>
+            </horizontal>
             <button id={"exeGoldManor"}>单独执行</button>
-        </horizontal>
-        
+        </vertical>
+
+
     </vertical>
 );
 
@@ -61,5 +79,24 @@ ui.exeDingDondSign.click(() => {
 });
 
 ui.exeGoldManor.click(() => {
-    engines.execScriptFile("./src/godenGard.js");
+    // engines.execScriptFile("./src/godenGard.js");
+    var thread = threads.start(function () {
+        goldGame(isOpenTaolife, isOpenTmFarm);
+    });
+});
+
+ui.cbTaolife.on("check", function (checked) {
+    isOpenTaolife = checked;
+});
+
+ui.cbTmFarm.on("check", function (checked) {
+    isOpenTmFarm = checked;
+});
+
+ui.btnTaoTips.click(() => {
+    toast("因为淘人生适配不好(是一个网页小游戏)，无法捕捉细节UI，经常玩的玩家可以开，否则建议关闭")
+});
+
+ui.btnFarmTips.click(() => {
+    toast("因为天猫农场适配不好(是一个网页小游戏)，无法捕捉细节UI，经常玩的玩家可以开，否则建议关闭")
 });
