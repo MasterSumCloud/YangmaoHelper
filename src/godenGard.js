@@ -295,6 +295,7 @@ function getWaterDrop() {
             if (doTaolife) {
                 let qgg = getEquQggUi("逛逛你的淘宝人生");
                 if (qgg != null) {
+                    qgg.click();
                     sleep(10000);
                     startTaoLife();
                 }
