@@ -1,34 +1,34 @@
 {
-    "assets": [],
-    "build": {
-      "build_id": "45BF5927-1",
-      "build_number": 1,
-      "build_time": 1576475453635,
-      "release": false
-    },
-    "encryptLevel": 0,
-    "useFeatures": [],
-    "icon": "res/icon.png",
-    "launchConfig": {
-      "displaySplash": true,
-      "hideLogs": false,
-      "splashIcon": "res/splashIcon.png",
-      "splashText": "Powered by Eagle",
-      "stableMode": false
-    },
-    "main": "main.js",
-    "name": "薅羊毛",
-    "optimization": {
-      "removeOpenCv": false,
-      "unusedResources": false
-    },
-    "packageName": "com.haoyangmao.egale",
-    "scripts": {},
-    "signingConfig": {
-      "alias": "ohsheet",
-      "keystore": "/storage/emulated/0/Scripts/.keystore/薅羊毛.jks",
-      "uuid": "68e5320a-4278-4cb0-bcc3-7e9474d34af6"
-    },
-    "versionCode": 1,
-    "versionName": "1.0.0"
-  }
+  "assets": [],
+  "build": {
+    "build_id": "FBB14A6A-3",
+    "build_number": 3,
+    "build_time": 1576596344813,
+    "release": false
+  },
+  "encryptLevel": 0,
+  "useFeatures": [],
+  "icon": "res/icon.png",
+  "launchConfig": {
+    "displaySplash": true,
+    "hideLogs": false,
+    "splashIcon": "res/splashIcon.png",
+    "splashText": "Powered by Eagle",
+    "stableMode": false
+  },
+  "main": "main.js",
+  "name": "薅羊毛",
+  "optimization": {
+    "removeOpenCv": false,
+    "unusedResources": false
+  },
+  "packageName": "com.haoyangmao.egale",
+  "scripts": {},
+  "signingConfig": {
+    "alias": "ohsheet",
+    "keystore": "/storage/emulated/0/Scripts/.keystore/薅羊毛.jks",
+    "uuid": "68e5320a-4278-4cb0-bcc3-7e9474d34af6"
+  },
+  "versionCode": 2,
+  "versionName": "1.1.1"
+}

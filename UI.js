@@ -12,6 +12,9 @@ const buttonWidth = parseInt(deviceWidth * 0.30);
 let installService = false;
 //是否连续执行 买菜签到
 let isOpenDingdong = false;
+//蚂蚁深林
+let isOpenAntForest = false;
+
 //是否连续执行 淘金币
 let isOpenTaobaoGold = false;
 
@@ -32,7 +35,7 @@ ui.layout(
         <horizontal w="auto" h="auto">
             <Switch w="auto" h="auto" checked={isOpenDingdong}></Switch>
             <text marginLeft="15sp" marginRight="15sp">咚买菜签到</text>
-            <button id={"exeDingDondSign"}>单独执行</button>
+            <button id={"exeDingDondSign"}>单独执行 叮咚</button>
         </horizontal>
 
         <vertical>
@@ -50,9 +53,14 @@ ui.layout(
                 <text>淘金币庄园是否 执行天猫农场</text>
                 <button id="btnFarmTips">提示</button>
             </horizontal>
-            <button id={"exeGoldManor"}>单独执行</button>
+            <button id={"exeGoldManor"}>单独执行 淘金币</button>
         </vertical>
 
+        <horizontal w="auto" h="auto">
+            <Switch w="auto" h="auto" checked={isOpenAntForest}></Switch>
+            <text marginLeft="15sp" marginRight="15sp">蚂蚁深林</text>
+            <button id={"exeAntForest"}>单独执行 蚂蚁深林</button>
+        </horizontal>
 
     </vertical>
 );
@@ -76,6 +84,10 @@ ui.showFloating.click(() => {
 
 ui.exeDingDondSign.click(() => {
     engines.execScriptFile("./src/dingdong.js");
+});
+
+ui.exeAntForest.click(()=>{
+    engines.execScriptFile("./src/antForest.js");
 });
 
 ui.exeGoldManor.click(() => {
