@@ -291,7 +291,7 @@ function getWaterDrop() {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 13000, true);
             swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
-        } else if (singleTask === "逛逛你的淘宝人生") {
+        } else if (singleTask === "逛逛你的淘宝人生") { 
             if (doTaolife) {
                 let qgg = getEquQggUi("逛逛你的淘宝人生");
                 if (qgg != null) {
