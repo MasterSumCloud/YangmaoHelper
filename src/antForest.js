@@ -4,7 +4,8 @@ let deviceHeight = device.height;
 function startAntForest() {
     //进入支付宝
     launch("com.eg.android.AlipayGphone");
-    sleep(5000);
+    sleep(1000);
+    requestScreenCapture();
     //判断是否已经在游戏界面
     let gamePartHome = id("J_af_home").findOnce();
     //在首页寻找 蚂蚁深林和蚂蚁庄园的入口
@@ -34,19 +35,23 @@ function startAntForest() {
         if (seekMore != null) {
             seekMore.click();
             sleep(3000);
-            let hasMmore = className("android.view.View").textContains("没有更多了").findOnce() == null;
+            // let hasMorePoint = images.findMultiColors(img, "#f5f5f5", [[0, 10, "#f5f5f5"], [10, 20, "#f5f5f5"]], {
+            //     region: [deviceWidth / 2, deviceHeight * 0.8, 1, 30]
+            // });
             let maxSearchTime = 20;
-            while (hasMmore && maxSearchTime > 0) {
-                toastLog("下拉填满数据");
-                if (hasMmore) {
-                    swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.1, 1000);
-                    sleep(500);
-                    hasMmore = className("android.view.View").textContains("没有更多了").findOnce() == null;
+            while (maxSearchTime > 0) {
+                let finded = getCanStealfriend();
+                if (finded != null && finded.length > 0) {
+                    finded.forEach(item => {
+                        console.log("找到的点", item);
+                        stealAndBack(item);
+                    });
                 }
+                swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.1, 1000);
                 maxSearchTime--;
             }
             toastLog("开始逐个寻找");
-            seekToSteal(false);
+            // seekToSteal(false);
         }
 
     } else {
@@ -70,28 +75,27 @@ function seekToSteal(simple) {
             }
         }
     } else {
-        oneByOneClick();
+        let finded = getCanStealfriend();
+        if (finded != null && finded.length > 0) {
+            finded.forEach(item => {
+                stealAndBack(item);
+            });
+        }
     }
 }
 
-function oneByOneClick() {
-    
-}
 
 
-function stealAndBack(ui) {
-    if (ui != null) {
-        ui.click();
-        sleep(3000);
-        //判断进入了游戏布局 否则不返回
-        let gameV = id("J_app_outter").findOnce();
-        if (gameV != null) {
-            //开始偷
-            collectEnergy();
-            back();
-            sleep(1000);
-        }
-
+function stealAndBack(item) {
+    click(deviceWidth / 2, item.point.y);
+    sleep(3000);
+    //判断进入了游戏布局 否则不返回
+    let gameV = id("J_app_outter").findOnce();
+    if (gameV != null) {
+        //开始偷
+        collectEnergy();
+        back();
+        sleep(1000);
     }
 }
 
@@ -115,18 +119,20 @@ function collectEnergy() {
  * 从排行榜 找到可以收取能量的
  */
 function getCanStealfriend() {
-    let img = getCaptureImg();
+    let img = getScreenImg();
     let handImg = images.read("./res/ghand.png");
-    let pList = images.matchTemplate(img, handImg, { threshold: 0.8, region: [deviceWidth * 0.9, deviceHeight * 0.16], max: 9 })
-    console.log("找到的做标记",pList.matches);
-    return pList.matches;
+    let pList = images.matchTemplate(img, handImg, { threshold: 0.8, region: [deviceWidth * 0.9, deviceHeight * 0.16], max: 9 });
+    if (pList != null) {
+        console.log("找到的做标记", pList.matches);
+        return pList.matches;
+    }
 }
 
 /**
  * 获取屏幕图片
  */
 function getScreenImg() {
-    requestScreenCapture();
+    
     let screenPic = captureScreen();
     console.log(screenPic);
     sleep(100);
@@ -139,5 +145,5 @@ function getScreenImg() {
 }
 
 
-collectEnergy();
-// startAntForest();
+// collectEnergy();
+startAntForest();
