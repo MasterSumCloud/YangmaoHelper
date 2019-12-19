@@ -84,7 +84,7 @@ ui.layout(
                     <button id={"exeAntFarm"} marginLeft="15sp" marginRight="15sp">单独执行 蚂蚁庄园</button>
                 </vertical>
 
-
+                <button id={"exeTest"} marginLeft="15sp" marginRight="15sp">仅测试</button>
             </vertical>
         </ScrollView>
     </vertical>
@@ -115,6 +115,10 @@ ui.exeDingDondSign.click(() => {
 
 ui.exeAntForest.click(() => {
     engines.execScriptFile("./src/antForest.js");
+});
+
+ui.exeTest.click(()=>{
+    engines.execScriptFile("./src/justTest.js");
 });
 
 ui.exeGoldManor.click(() => {

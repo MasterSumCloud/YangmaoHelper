@@ -35,19 +35,21 @@ function startAntForest() {
             seekMore.click();
             sleep(3000);
             let hasMmore = className("android.view.View").textContains("没有更多了").findOnce() == null;
-            while (hasMmore) {
+            let maxSearchTime = 20;
+            while (hasMmore && maxSearchTime > 0) {
                 toastLog("下拉填满数据");
                 if (hasMmore) {
                     swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.1, 1000);
                     sleep(500);
                     hasMmore = className("android.view.View").textContains("没有更多了").findOnce() == null;
                 }
+                maxSearchTime--;
             }
             toastLog("开始逐个寻找");
             seekToSteal(false);
         }
 
-    }else{
+    } else {
         toastLog("不在游戏界面，也不再主界面，结束");
     }
 
@@ -73,28 +75,7 @@ function seekToSteal(simple) {
 }
 
 function oneByOneClick() {
-    //前4个是没有的 5开始
-    // let indexItem = className("android.view.View").text(5).findOne();
-    let topTitle = className("android.view.View").text("周排行榜").findOnce();
-    if (topTitle != null) {
-        //找到最上级的老爹
-        //还需要周到自己 编辑ID 一遍跳过 否则会出错
-        let item0Position = topTitle.parent().parent().parent().child(0).child(0).child(0).child(0).text();
-        toastLog("当前自己所在排名" + item0Position);
-        sleep(1000);
-        let itemList = topTitle.parent().parent().parent().child(1);
-        toastLog("集合整体数量" + itemList.childCount());
-        for (let i = 0; i < itemList.childCount(); i++) {
-            if (i == item0Position) {
-                toastLog("自己跳过");
-                sleep(1000);
-                continue;
-            }
-            toastLog("去" + i + "瞅瞅");
-            let singleItem = itemList.child(i);
-            stealAndBack(singleItem);
-        }
-    }
+    
 }
 
 
@@ -130,5 +111,33 @@ function collectEnergy() {
     }
 }
 
-// oneByOneClick();
-startAntForest();
+/**
+ * 从排行榜 找到可以收取能量的
+ */
+function getCanStealfriend() {
+    let img = getCaptureImg();
+    let handImg = images.read("./res/ghand.png");
+    let pList = images.matchTemplate(img, handImg, { threshold: 0.8, region: [deviceWidth * 0.9, deviceHeight * 0.16], max: 9 })
+    console.log("找到的做标记",pList.matches);
+    return pList.matches;
+}
+
+/**
+ * 获取屏幕图片
+ */
+function getScreenImg() {
+    requestScreenCapture();
+    let screenPic = captureScreen();
+    console.log(screenPic);
+    sleep(100);
+    if (screenPic == null || typeof (screenPic) == "undifined") {
+        toastLog("截图失败,退出脚本");
+        exit();
+    } else {
+        return screenPic;
+    }
+}
+
+
+collectEnergy();
+// startAntForest();

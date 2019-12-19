@@ -9,6 +9,7 @@ let window = floaty.window(
             <button id="stop" text="停止" w="30" h="35" bg="#77ffffff" textSize="10sp" />
             <button id="move" text="移动" w="30" h="35" bg="#77ffffff" textSize="10sp" />
         </horizontal>
+        <button id="exeTest" text="测试用的" w="90" h="35" bg="#77ffffff" textSize="10sp" />
         <button id="exit" text="退出悬浮窗" w="90" h="35" bg="#77ffffff" textSize="10sp" />
     </vertical>
 );
@@ -89,4 +90,8 @@ window.stop.click(() => {
             toastLog("没有进行中的脚本");
         }
     }
+});
+
+window.exeTest.click(()=>{
+    engines.execScriptFile("./src/justTest.js");
 });
