@@ -12,57 +12,84 @@ const buttonWidth = parseInt(deviceWidth * 0.30);
 let installService = false;
 //是否连续执行 买菜签到
 let isOpenDingdong = false;
-//蚂蚁深林
-let isOpenAntForest = false;
-
 //是否连续执行 淘金币
 let isOpenTaobaoGold = false;
+let isOpenTaolife = false;//是否执行陶人生
+let isOpenTmFarm = false;//是否执行天猫农场
+//蚂蚁森林
+let isOpenAntForest = false;
+let isOpenAntFarmElse = false;//是否连带执行蚂蚁庄园
+//蚂蚁庄园
+let isOpenAntFarm = false;
 
-let isOpenTaolife = false;
-let isOpenTmFarm = false;
+
+
 
 ui.layout(
-    <vertical margin={30 + "sp"}>
-
-        <horizontal w="auto" h="auto">
+    <vertical>
+        <text marginLeft="15sp" marginTop="10sp">现在只支持单独运行，悬浮窗口没啥用，功能努力中!</text>
+        <horizontal w="auto" h="auto" marginLeft="15sp">
             <button id={"showFloating"} text={"加载悬浮窗"} width={buttonWidth + "px"} />
             <text marginLeft="30sp">无障碍权限状态==》</text>
             <Switch w="auto" h="auto" id="autoService" checked="{{auto.service != null}}"></Switch>
         </horizontal>
+        <ScrollView>
+            <vertical margin={"15sp"}>
+                <vertical>
+                    <text textSize="18sp" textStyle="bold">功能1：叮咚买菜签到</text>
+                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                        <Switch w="auto" h="auto" checked={isOpenDingdong}></Switch>
+                        <text marginLeft="15sp" marginRight="15sp">咚买菜签到(是否批量执行)</text>
+                    </horizontal>
+                    <button id={"exeDingDondSign"} marginLeft="15sp" marginRight="15sp">单独执行 叮咚</button>
+                </vertical>
+                <vertical>
+                    <text textSize="18sp" textStyle="bold">功能2：淘宝-金币庄园</text>
+                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                        <Switch w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
+                        <text marginLeft="15sp" marginRight="15sp">金币庄园(是否批量执行)</text>
+                    </horizontal>
+                    <horizontal marginLeft="30sp">
+                        <CheckBox id="cbTaolife" checked={isOpenTaolife} />
+                        <text>淘金币庄园是否 执行淘人生</text>
+                        <button id="btnTaoTips">提示</button>
+                    </horizontal>
+                    <horizontal marginLeft="30sp">
+                        <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
+                        <text>淘金币庄园是否 执行天猫农场</text>
+                        <button id="btnFarmTips">提示</button>
+                    </horizontal>
+                    <button id={"exeGoldManor"} marginLeft="15sp" marginRight="15sp">单独执行 金币庄园</button>
+                </vertical>
 
-        <text>现在只支持单独运行，悬浮窗口没啥用，功能努力中</text>
+                <vertical>
+                    <text textSize="18sp" textStyle="bold">功能3：支付宝-蚂蚁森林</text>
+                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                        <Switch w="auto" h="auto" checked={isOpenAntForest}></Switch>
+                        <text marginLeft="15sp" marginRight="15sp">蚂蚁森林(是否批量执行)</text>
+                    </horizontal>
+                    <horizontal marginLeft="30sp">
+                        <CheckBox id="cbAntFarm" checked={isOpenAntFarmElse} />
+                        <text>在蚂蚁森林完毕后 是否执行蚂蚁庄园</text>
+                    </horizontal>
+                    <button id={"exeAntForest"} marginLeft="15sp" marginRight="15sp">单独执行 蚂蚁森林</button>
+                </vertical>
 
-        <horizontal w="auto" h="auto">
-            <Switch w="auto" h="auto" checked={isOpenDingdong}></Switch>
-            <text marginLeft="15sp" marginRight="15sp">咚买菜签到</text>
-            <button id={"exeDingDondSign"}>单独执行 叮咚</button>
-        </horizontal>
+                <vertical>
+                    <text textSize="18sp" textStyle="bold">功能4：支付宝-蚂蚁庄园</text>
+                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                        <Switch w="auto" h="auto" checked={isOpenAntFarm}></Switch>
+                        <text marginLeft="15sp" marginRight="15sp">蚂蚁庄园(是否批量执行)</text>
+                    </horizontal>
+                    <button id={"exeAntFarm"} marginLeft="15sp" marginRight="15sp">单独执行 蚂蚁庄园</button>
+                </vertical>
 
-        <vertical>
-            <horizontal w="auto" h="auto">
-                <Switch w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
-                <text marginLeft="15sp" marginRight="15sp">淘宝金币庄园</text>
-            </horizontal>
-            <horizontal>
-                <CheckBox id="cbTaolife" checked={isOpenTaolife} />
-                <text>淘金币庄园是否 执行淘人生</text>
-                <button id="btnTaoTips">提示</button>
-            </horizontal>
-            <horizontal>
-                <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
-                <text>淘金币庄园是否 执行天猫农场</text>
-                <button id="btnFarmTips">提示</button>
-            </horizontal>
-            <button id={"exeGoldManor"}>单独执行 淘金币</button>
-        </vertical>
 
-        <horizontal w="auto" h="auto">
-            <Switch w="auto" h="auto" checked={isOpenAntForest}></Switch>
-            <text marginLeft="15sp" marginRight="15sp">蚂蚁深林</text>
-            <button id={"exeAntForest"}>单独执行 蚂蚁深林</button>
-        </horizontal>
-
+            </vertical>
+        </ScrollView>
     </vertical>
+
+
 );
 
 ui.autoService.on("check", function (checked) {
@@ -86,7 +113,7 @@ ui.exeDingDondSign.click(() => {
     engines.execScriptFile("./src/dingdong.js");
 });
 
-ui.exeAntForest.click(()=>{
+ui.exeAntForest.click(() => {
     engines.execScriptFile("./src/antForest.js");
 });
 
