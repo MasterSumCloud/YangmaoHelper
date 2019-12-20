@@ -1,7 +1,8 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
+let antFramGame = require("./antFarm.js")
 
-function startAntForest() {
+function startAntForest(playFarm, getAliScore) {
     //进入支付宝
     launch("com.eg.android.AlipayGphone");
     sleep(1000);
@@ -15,6 +16,8 @@ function startAntForest() {
             witeInHome = -10;
         }
     }
+    //是否需要领取积分
+    getNeedGetAliScore(getAliScore);
     //判断是否已经在游戏界面
     let gamePartHome = id("J_af_home").findOnce();
 
@@ -78,6 +81,20 @@ function startAntForest() {
                     break;
                 }
                 maxSearchTime--;
+            }
+        }
+        if (playFarm) {
+            //返回一级
+            back();
+            sleep(1000);
+            //滑动到顶部
+            swipe(deviceWidth / 2, deviceHeight * 0.1, deviceWidth / 2, deviceHeight * 0.8, 1000);
+            swipe(deviceWidth / 2, deviceHeight * 0.1, deviceWidth / 2, deviceHeight * 0.8, 1000);
+            let antFf = id("J_antfarm_container").text("蚂蚁庄园").findOnce();
+            if (antFf) {
+                antFf.click();
+                sleep(3000);
+                antFramGame();
             }
         }
         toastLog("完成了");
@@ -168,6 +185,30 @@ function getScreenImg() {
         exit();
     } else {
         return screenPic;
+    }
+}
+
+function getNeedGetAliScore(need) {
+    //如果需要领取积分
+    if (need) {
+        let inMine = id("tab_description").text("我的").findOnce();
+        click(inMine.bounds().centerX(), inMine.bounds().centerY());
+        sleep(500);
+        let memeberAli = id("item_left_text").text("支付宝会员").findOnce();
+        click(memeberAli.bounds().centerX(), memeberAli.bounds().centerY());
+        sleep(1000);
+        let getScoreV = className("android.view.View").text("领积分").findOnce();
+        click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
+        sleep(1000);
+        let clickGetScore = className("android.view.View").text("点击领取").findOnce();
+        click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
+        back();
+        sleep(500);
+        back();
+        sleep(500);
+        let inHome = id("tab_description").text("首页").findOnce();
+        click(inHome.bounds().centerX(), inHome.bounds().centerY());
+        sleep(500);
     }
 }
 

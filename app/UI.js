@@ -1,7 +1,7 @@
 "ui";
 
 let goldGame = require("./src/godenGard.js");
-let antGame = require("./src/antForest.js");
+let antForestGame = require("./src/antForest.js");
 
 let deviceWidth = device.width;
 let deviceHeight = device.height;
@@ -20,8 +20,8 @@ let isOpenTmFarm = false;//是否执行天猫农场
 //蚂蚁森林
 let isOpenAntForest = false;
 let isOpenAntFarmElse = false;//是否连带执行蚂蚁庄园
-//蚂蚁庄园
-let isOpenAntFarm = false;
+//支付宝积分
+let isNeedGoAlipayScore = true;
 
 let currentExeTask = null;
 
@@ -65,26 +65,30 @@ ui.layout(
                 </vertical>
 
                 <vertical>
-                    <text textSize="18sp" textStyle="bold">功能3：支付宝-蚂蚁森林</text>
+                    <text textSize="18sp" textStyle="bold">功能3：支付宝-蚂蚁森林-蚂蚁庄园</text>
                     <horizontal w="auto" h="auto" marginLeft="15sp">
                         <Switch w="auto" h="auto" checked={isOpenAntForest}></Switch>
                         <text marginLeft="15sp" marginRight="15sp">蚂蚁森林(是否批量执行)</text>
                     </horizontal>
+                    <horizontal w="auto" h="auto" marginLeft="30sp">
+                        <CheckBox id="sAliScore" w="auto" h="auto" checked={isNeedGoAlipayScore}></CheckBox>
+                        <text marginLeft="15sp" marginRight="15sp">是否领取支付宝积分</text>
+                    </horizontal>
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbAntFarm" checked={isOpenAntFarmElse} />
-                        <text>在蚂蚁森林完毕后 是否执行蚂蚁庄园</text>
+                        <text marginLeft="15sp">在蚂蚁森林完毕后 是否执行蚂蚁庄园</text>
                     </horizontal>
                     <button id={"exeAntForest"} marginLeft="15sp" marginRight="15sp">单独执行 蚂蚁森林</button>
                 </vertical>
 
-                <vertical>
+                {/* <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：支付宝-蚂蚁庄园</text>
                     <horizontal w="auto" h="auto" marginLeft="15sp">
                         <Switch w="auto" h="auto" checked={isOpenAntFarm}></Switch>
                         <text marginLeft="15sp" marginRight="15sp">蚂蚁庄园(是否批量执行)</text>
                     </horizontal>
                     <button id={"exeAntFarm"} marginLeft="15sp" marginRight="15sp">单独执行 蚂蚁庄园</button>
-                </vertical>
+                </vertical> */}
             </vertical>
         </ScrollView>
     </vertical>
@@ -126,7 +130,7 @@ ui.exeAntForest.click(() => {
             toast("请给截图权限");
             stopTask();
         } else {
-            antGame();
+            antForestGame(isOpenAntFarmElse,isNeedGoAlipayScore);
         }
     });
 });
@@ -140,10 +144,22 @@ ui.exeGoldManor.click(() => {
 
 ui.cbTaolife.on("check", function (checked) {
     isOpenTaolife = checked;
+    console.log("isOpenTaolife=" + isOpenTaolife);
 });
 
 ui.cbTmFarm.on("check", function (checked) {
     isOpenTmFarm = checked;
+    console.log("isOpenTmFarm=" + isOpenTmFarm);
+});
+
+ui.sAliScore.on("check", function (checked) {
+    isNeedGoAlipayScore = checked;
+    console.log("isNeedGoAlipayScore=" + isNeedGoAlipayScore);
+});
+
+ui.cbAntFarm.on("check", function (checked) {
+    isOpenAntFarmElse = checked;
+    console.log("isOpenAntFarmElse=" + isOpenAntFarmElse);
 });
 
 ui.btnTaoTips.click(() => {
