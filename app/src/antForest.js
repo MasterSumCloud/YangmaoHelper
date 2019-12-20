@@ -211,7 +211,11 @@ function getNeedGetAliScore(need) {
             click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
             sleep(1000);
             let clickGetScore = className("android.view.View").text("点击领取").findOnce();
-            click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
+            while (clickGetScore != null) {
+                click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
+                sleep(300);
+                clickGetScore = className("android.view.View").text("点击领取").findOnce();
+            }
             back();
             sleep(500);
             back();
