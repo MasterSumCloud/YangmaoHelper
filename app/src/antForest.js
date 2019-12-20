@@ -54,14 +54,13 @@ function startAntForest(playFarm, getAliScore) {
             sleep(3000);
             //判断是否还有更多
             let screen = getScreenImg();
-            let hasMore = images.findColor(screen, "#2fbf6c", {
-                region: [Math.round(deviceWidth * 0.773), Math.round(deviceHeight * 0.158), 200, Math.round(deviceHeight * 0.76)],
-                threshold: 0
-            }) == null;
-            console.log("完成底部的找点", hasMore);
+            let noMore = images.read("./res/no_more.png");
+            let hasMore = images.matchTemplate(screen, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
+            console.log("是否有更多", hasMore);
             let maxSearchTime = 32;//最大限制次数
+            let handImg = images.read("./res/ghand.png");
             while (hasMore && maxSearchTime > 0) {
-                let finded = getCanStealfriend();
+                let finded = getCanStealfriend(handImg);
                 if (finded != null && finded.length > 0) {
                     finded.forEach(item => {
                         console.log("找到的点", item);
@@ -71,18 +70,21 @@ function startAntForest(playFarm, getAliScore) {
 
                 sleep(1000);
                 swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.1, 1000);
-                let screen2 = getScreenImg();
-                hasMore = images.findColor(screen2, "#2fbf6c", {
-                    region: [Math.round(deviceWidth * 0.773), Math.round(deviceHeight * 0.158), 200, Math.round(deviceHeight * 0.76)],
-                    threshold: 0
-                }) == null;
-                if (!hasMore) {
-                    toastLog("已经没有更多了")
-                    break;
+                if (maxSearchTime < 27) {//前5次不判断是否到底部
+                    let screen2 = getScreenImg();
+                    hasMore = images.matchTemplate(screen2, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
+                    if (!hasMore) {
+                        toastLog("已经没有更多了")
+                        break;
+                    }
                 }
                 maxSearchTime--;
             }
+            //回收资源
+            handImg.recycle();
+            noMore.recycle();
         }
+
         if (playFarm) {
             //返回一级
             back();
@@ -97,6 +99,12 @@ function startAntForest(playFarm, getAliScore) {
                 antFramGame();
             }
         }
+        back();
+        sleep(500);
+        back();
+        sleep(500);
+        back();
+        sleep(500);
         toastLog("完成了");
     } else {
         toastLog("不在游戏界面，也不再主界面，结束");
@@ -163,9 +171,8 @@ function collectEnergy() {
 /**
  * 从排行榜 找到可以收取能量的
  */
-function getCanStealfriend() {
+function getCanStealfriend(handImg) {
     let img = getScreenImg();
-    let handImg = images.read("./res/ghand.png");
     let pList = images.matchTemplate(img, handImg, { threshold: 0.8, region: [deviceWidth * 0.9, deviceHeight * 0.16], max: 9 });
     if (pList != null) {
         console.log("找到的做标记", pList.matches);
@@ -194,18 +201,24 @@ function getNeedGetAliScore(need) {
         let inMine = id("tab_description").text("我的").findOnce();
         click(inMine.bounds().centerX(), inMine.bounds().centerY());
         sleep(500);
-        let memeberAli = id("item_left_text").text("支付宝会员").findOnce();
-        click(memeberAli.bounds().centerX(), memeberAli.bounds().centerY());
-        sleep(1000);
-        let getScoreV = className("android.view.View").text("领积分").findOnce();
-        click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
-        sleep(1000);
-        let clickGetScore = className("android.view.View").text("点击领取").findOnce();
-        click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
-        back();
-        sleep(500);
-        back();
-        sleep(500);
+        //判断当前有没有积分可以领取
+        let hasScore = textContains("个积分待领取").findOnce();
+        if (hasScore != null) {
+            let memeberAli = id("item_left_text").text("支付宝会员").findOnce();
+            click(memeberAli.bounds().centerX(), memeberAli.bounds().centerY());
+            sleep(1000);
+            let getScoreV = className("android.view.View").text("领积分").findOnce();
+            click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
+            sleep(1000);
+            let clickGetScore = className("android.view.View").text("点击领取").findOnce();
+            click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
+            back();
+            sleep(500);
+            back();
+            sleep(500);
+        } else {
+            toastLog("没有积分可领取")
+        }
         let inHome = id("tab_description").text("首页").findOnce();
         click(inHome.bounds().centerX(), inHome.bounds().centerY());
         sleep(500);

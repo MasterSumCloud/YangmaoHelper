@@ -4,8 +4,8 @@ let deviceHeight = device.height;
 
 console.log("开始")
 
-let memeberAli = id("item_left_text").text("支付宝会员").findOnce();
-// click(inHome.bounds().centerX(), inHome.bounds().centerY());
-memeberAli.click();
+let getScoreV = className("android.view.View").text("领积分").findOnce();
+click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
+
 
 console.log("结束")
