@@ -204,22 +204,30 @@ function getNeedGetAliScore(need) {
         //判断当前有没有积分可以领取
         let hasScore = textContains("个积分待领取").findOnce();
         if (hasScore != null) {
+            let backCount = 0;
             let memeberAli = id("item_left_text").text("支付宝会员").findOnce();
-            click(memeberAli.bounds().centerX(), memeberAli.bounds().centerY());
-            sleep(1000);
-            let getScoreV = className("android.view.View").text("领积分").findOnce();
-            click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
-            sleep(1000);
-            let clickGetScore = className("android.view.View").text("点击领取").findOnce();
-            while (clickGetScore != null) {
-                click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
-                sleep(300);
-                clickGetScore = className("android.view.View").text("点击领取").findOnce();
+            if (memeberAli != null) {
+                click(memeberAli.bounds().centerX(), memeberAli.bounds().centerY());
+                backCount++;
+                sleep(2000);
+                let getScoreV = className("android.view.View").text("领积分").findOnce();
+                if (getScoreV != null) {
+                    click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
+                    sleep(2000);
+                    backCount++;
+                    let clickGetScore = className("android.view.View").text("点击领取").findOnce();
+                    while (clickGetScore != null) {
+                        click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
+                        sleep(300);
+                        clickGetScore = className("android.view.View").text("点击领取").findOnce();
+                    }
+                }
             }
-            back();
-            sleep(500);
-            back();
-            sleep(500);
+
+            for (let i = 0; i < backCount; i++) {
+                back();
+                sleep(500);
+            }
         } else {
             toastLog("没有积分可领取")
         }

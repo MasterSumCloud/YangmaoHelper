@@ -16,6 +16,9 @@
 ## 联系
 ### QQ群：567679111
 
+## 下载地址
+### 百度云下载地址 链接:[https://pan.baidu.com/s/1jradOvFF9-z53ycNaUd8MQ](https://pan.baidu.com/s/1jradOvFF9-z53ycNaUd8MQ)  密码:`r8rh`
+
 ## 更新日志
 ### 1.0.0 12/16 22:30 【第一版 apk 发布】
 ### 1.1.1 12/17 23:00 【第二版 增加蚂蚁深林能量偷取】
