@@ -80,12 +80,13 @@ function juadgeHasZeiji() {
                 let ppPoint = images.matchTemplate(screenFuck, fuckOff, { threshold: 0.8, region: [0, deviceHeight * 0.58], max: 1 }).matches;
                 if (ppPoint != null && ppPoint.length > 0) {
                     toastLog("贼鸡拿命来");
-                    let pointItem = ppPoint.matches[0];
+                    let pointItem = ppPoint[0];
                     click(pointItem.point.x, pointItem.point.y);
-                    sleep(2000);
+                    sleep(1000);
                 }
             });
         }
+        sleep(3000);
     }
 }
 
@@ -103,6 +104,5 @@ function getScreenImg() {
         return screenPic;
     }
 }
-requestScreenCapture();
 startFarm();
 // module.exports = startFarm;

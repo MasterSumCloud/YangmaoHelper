@@ -5,9 +5,15 @@ function openDingdongApp() {
     toast("开始叮咚买菜签到");
     //Open app
     launch("com.yaya.zone");
-
-    sleep(5000)
-
+    let homeRefV = id("refresh_view").findOnce();
+    let maxTime = 5;
+    while (homeRefV == null && maxTime > 0) {
+        sleep(1000);
+        maxTime--;
+        homeRefV = id("refresh_view").findOnce();
+    }
+    sleep(1000);
+    console.log("关闭所有弹窗");
     let ivNeedClose = id("iv_close").findOnce();
     let hasIvClose = ivNeedClose != null;
     while (hasIvClose) {
@@ -21,22 +27,24 @@ function openDingdongApp() {
         }
     }
 
-    //to my fragment
-    // click(device.width - 100, device.height - 100);
-
+    console.log("到我的页面");
     let tabMe = id("tab_rb_me").findOnce();
     click(tabMe.bounds().centerX(), tabMe.bounds().centerY());
-
-    sleep(250);
+    sleep(500);
     //click jifen
     id("myList").findOne().children().forEach(child => {
         var target = child.findOne(id("rl_point"));
         target.click();
     });
 
-    sleep(3000)
-    className("android.view.View").text("立即签到领积分").findOne().click()
-    sleep(1000);
+    sleep(3000);
+    let signMark = className("android.view.View").text("立即签到领积分").findOne();
+    if (signMark != null) {
+        toastLog("签到领积分");
+        signMark.click();
+        sleep(1000);
+    }
+
     //close sign the pop
     let myScore = className("android.view.View").text("我的积分").findOnce();
     if (myScore != null) {
@@ -45,28 +53,26 @@ function openDingdongApp() {
     } else {
         back();
         sleep(500);
-        id("myList").findOne().children().forEach(child => {
-            var target = child.findOne(id("rl_point"));
+        id("myList").findOnce().children().forEach(child => {
+            var target = child.findOnce(id("rl_point"));
             target.click();
         });
         sleep(500);
     }
     swipe(device.width / 2, device.height * 0.87, device.width / 2, device.height / 5, 1000)
-
-    className("android.view.View").text("去逛逛").findOne().click()
-    sleep(33000)
-
+    let qgg30 = className("android.view.View").text("去逛逛").findOnce();
+    if (qgg30 != null) {
+        qgg30.click();
+        sleep(33000)
+    }
     back();
-
     sleep(1000);
     back();
     back();
     back();
-    toast("完成退出");
+    toast("退出叮咚买菜");
 }
 
-openDingdongApp();
-
-
-// module.exports = openDingdongApp;
+// openDingdongApp();
+module.exports = openDingdongApp;
 

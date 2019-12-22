@@ -2,6 +2,7 @@
 
 let goldGame = require("./src/godenGard.js");
 let antForestGame = require("./src/antForest.js");
+let dingdongGame = require("./src/dingdong.js");
 
 let deviceWidth = device.width;
 let deviceHeight = device.height;
@@ -25,28 +26,30 @@ let isNeedGoAlipayScore = true;
 //当前执行的脚本线程
 let currentExeTask = null;
 //当前屏幕截图权限
-let currentCaptureScreenPermission;
+let currentCaptureScreenPermission = false;
+//悬浮窗权限
+let popPermission = false;
 
 
 
 ui.layout(
     <vertical>
-        <text marginLeft="15sp" marginTop="10sp">现在只支持单独运行，悬浮窗口没啥用，功能努力中!</text>
-        <text marginLeft="15sp" marginTop="10sp">下面的无障碍和截图权限必须给，否则无法正常运行</text>
+        <text marginLeft="15sp" marginTop="10sp">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
         <text marginLeft="15sp" marginTop="10sp">本项目代码开元，请放心使用！！！</text>
         <horizontal w="auto" h="auto" marginLeft="15sp">
-            <button id={"showFloating"} text={"加载悬浮窗"} width={buttonWidth + "px"} />
             <text marginLeft="30sp">无障碍</text>
-            <Switch w="auto" h="auto" id="autoService" checked="{{auto.service != null}}"></Switch>
+            <Switch w="auto" h="auto" id="autoService" checked="{{installService}}"></Switch>
             <text marginLeft="30sp">截图</text>
             <Switch w="auto" h="auto" id="captureScreenService" checked="{{currentCaptureScreenPermission}}"></Switch>
+            <text marginLeft="30sp">悬浮窗</text>
+            <Switch w="auto" h="auto" id="popService" checked="{{popPermission}}"></Switch>
         </horizontal>
         <ScrollView>
             <vertical margin={"15sp"}>
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能1：叮咚买菜签到</text>
                     <horizontal w="auto" h="auto" marginLeft="15sp">
-                        <Switch w="auto" h="auto" checked={isOpenDingdong}></Switch>
+                        <Switch id="swDingdongTask" w="auto" h="auto" checked={isOpenDingdong}></Switch>
                         <text marginLeft="15sp" marginRight="15sp">咚买菜签到(是否批量执行)</text>
                     </horizontal>
                     <button id={"exeDingDondSign"} marginLeft="15sp" marginRight="15sp">单独执行 叮咚</button>
@@ -54,7 +57,7 @@ ui.layout(
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能2：淘宝-金币庄园</text>
                     <horizontal w="auto" h="auto" marginLeft="15sp">
-                        <Switch w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
+                        <Switch id="swTaoGoldTask" w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
                         <text marginLeft="15sp" marginRight="15sp">金币庄园(是否批量执行)</text>
                     </horizontal>
                     <horizontal marginLeft="30sp">
@@ -64,7 +67,6 @@ ui.layout(
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
                         <text>淘金币庄园是否 执行天猫农场</text>
-                        <button id="btnFarmTips">提示</button>
                     </horizontal>
                     <button id={"exeGoldManor"} marginLeft="15sp" marginRight="15sp">单独执行 金币庄园</button>
                 </vertical>
@@ -72,7 +74,7 @@ ui.layout(
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能3：支付宝-蚂蚁森林-蚂蚁庄园</text>
                     <horizontal w="auto" h="auto" marginLeft="15sp">
-                        <Switch w="auto" h="auto" checked={isOpenAntForest}></Switch>
+                        <Switch id="swAntForestTask" w="auto" h="auto" checked={isOpenAntForest}></Switch>
                         <text marginLeft="15sp" marginRight="15sp">蚂蚁森林(是否批量执行)</text>
                     </horizontal>
                     <horizontal w="auto" h="auto" marginLeft="30sp">
@@ -96,6 +98,7 @@ ui.layout(
                 </vertical> */}
             </vertical>
         </ScrollView>
+        <button id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" />
     </vertical>
 
 
@@ -133,12 +136,15 @@ ui.captureScreenService.on("check", function () {
     }
 });
 
-ui.showFloating.click(() => {
-    engines.execScriptFile("floating.js");
-});
+// ui.showFloating.click(() => {
+//     engines.execScriptFile("floating.js");
+// });
 
 ui.exeDingDondSign.click(() => {
-    engines.execScriptFile("./src/dingdong.js");
+    currentExeTask = threads.start(function () {
+        dingdongGame();
+    });
+    // engines.execScriptFile("./src/dingdong.js");
 });
 
 ui.exeAntForest.click(() => {
@@ -185,9 +191,46 @@ ui.cbAntFarm.on("check", function (checked) {
     isOpenAntFarmElse = checked;
     console.log("isOpenAntFarmElse=" + isOpenAntFarmElse);
 });
+ui.swDingdongTask.on("check", function (checked) {
+    isOpenDingdong = checked;
+    console.log("isOpenDingdong=" + isOpenDingdong);
+});
+ui.swTaoGoldTask.on("check", function (checked) {
+    isOpenTaobaoGold = checked;
+    console.log("isOpenTaobaoGold=" + isOpenTaobaoGold);
+});
+ui.swAntForestTask.on("check", function (checked) {
+    isOpenAntForest = checked;
+    console.log("isOpenAntForest=" + isOpenAntForest);
+});
+ui.popService.on("check", function (checked) {
+    popPermission = checked;
+    console.log("popPermission=" + popPermission);
+});
 
-ui.btnFarmTips.click(() => {
-    toast("因为天猫农场适配不好(是一个网页小游戏)，无法捕捉细节UI，经常玩的玩家可以开，否则建议关闭")
+ui.doMutilTask.click(() => {
+    if (installService && currentCaptureScreenPermission && popPermission) {
+        if (currentExeTask != null) {
+            currentExeTask.shutDownAll();
+        }
+        currentExeTask = threads.start(function () {
+            if (isOpenDingdong) {
+                toastLog("开始执行叮咚签到");
+                dingdongGame();
+            }
+            if (isOpenTaobaoGold) {
+                toastLog("开始执行淘庄园");
+                goldGame(isOpenTaolife, isOpenTmFarm);
+            }
+            if (isOpenAntForest) {
+                toastLog("开始执行蚂蚁森林");
+                antForestGame(isOpenAntFarmElse, isNeedGoAlipayScore);
+            }
+        });
+    } else {
+        toastLog("请给全部权限");
+    }
+
 });
 
 function stopTask() {
