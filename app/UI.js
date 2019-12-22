@@ -15,15 +15,17 @@ let installService = false;
 let isOpenDingdong = false;
 //是否连续执行 淘金币
 let isOpenTaobaoGold = false;
-let isOpenTaolife = false;//是否执行陶人生
+let isOpenTaolife = true;//是否执行陶人生
 let isOpenTmFarm = false;//是否执行天猫农场
 //蚂蚁森林
 let isOpenAntForest = false;
-let isOpenAntFarmElse = false;//是否连带执行蚂蚁庄园
+let isOpenAntFarmElse = true;//是否连带执行蚂蚁庄园
 //支付宝积分
 let isNeedGoAlipayScore = true;
-
+//当前执行的脚本线程
 let currentExeTask = null;
+//当前屏幕截图权限
+let currentCaptureScreenPermission;
 
 
 
@@ -32,8 +34,10 @@ ui.layout(
         <text marginLeft="15sp" marginTop="10sp">现在只支持单独运行，悬浮窗口没啥用，功能努力中!</text>
         <horizontal w="auto" h="auto" marginLeft="15sp">
             <button id={"showFloating"} text={"加载悬浮窗"} width={buttonWidth + "px"} />
-            <text marginLeft="30sp">无障碍权限状态==》</text>
+            <text marginLeft="30sp">无障碍</text>
             <Switch w="auto" h="auto" id="autoService" checked="{{auto.service != null}}"></Switch>
+            <text marginLeft="30sp">截图</text>
+            <Switch w="auto" h="auto" id="captureScreenService" checked="{{currentCaptureScreenPermission}}"></Switch>
         </horizontal>
         <ScrollView>
             <vertical margin={"15sp"}>
@@ -54,7 +58,6 @@ ui.layout(
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbTaolife" checked={isOpenTaolife} />
                         <text>淘金币庄园是否 执行淘人生</text>
-                        <button id="btnTaoTips">提示</button>
                     </horizontal>
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
@@ -109,6 +112,25 @@ ui.autoService.on("check", function (checked) {
     installService = auto.service != null;
 });
 
+ui.captureScreenService.on("check", function () {
+    if (!currentCaptureScreenPermission) {
+        let screenPermissionTask = threads.start(function () {
+            // engines.execScriptFile("./src/antForest.js");
+            let screenPermission = false;
+            try {
+                screenPermission = requestScreenCapture();
+            } catch (error) {
+                screenPermission = true;
+            }
+            currentCaptureScreenPermission = screenPermission;
+            if (!screenPermission) {
+                toast("请给截图权限");
+                stopTask();
+            }
+        });
+    }
+});
+
 ui.showFloating.click(() => {
     engines.execScriptFile("floating.js");
 });
@@ -130,7 +152,7 @@ ui.exeAntForest.click(() => {
             toast("请给截图权限");
             stopTask();
         } else {
-            antForestGame(isOpenAntFarmElse,isNeedGoAlipayScore);
+            antForestGame(isOpenAntFarmElse, isNeedGoAlipayScore);
         }
     });
 });
@@ -160,10 +182,6 @@ ui.sAliScore.on("check", function (checked) {
 ui.cbAntFarm.on("check", function (checked) {
     isOpenAntFarmElse = checked;
     console.log("isOpenAntFarmElse=" + isOpenAntFarmElse);
-});
-
-ui.btnTaoTips.click(() => {
-    toast("因为淘人生适配不好(是一个网页小游戏)，无法捕捉细节UI，经常玩的玩家可以开，否则建议关闭")
 });
 
 ui.btnFarmTips.click(() => {
