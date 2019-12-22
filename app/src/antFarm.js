@@ -5,6 +5,12 @@ function startFarm() {
     //进入支付宝
     //判断当前是否进入了蚂蚁庄园
     let antFarm = className("android.webkit.WebView").textContains("蚂蚁庄园").findOnce();
+    let witeTimeSec = 10;
+    while (antFarm == null && witeTimeSec > 0) {
+        sleep(1000);
+        witeTimeSec--;
+        antFarm = className("android.webkit.WebView").textContains("蚂蚁庄园").findOnce();
+    }
     if (antFarm != null) {
         //判断自己家的鸡在不在
         juadgeSlefAtHome();
@@ -21,13 +27,17 @@ function startFarm() {
         exit();
     }
     toastLog("完事收工");
-    exit();
+    back();
 }
 
 function juadgeSlefAtHome() {
+    //喂饲料 判断自己家的鸡是否还在
+    click(Math.round(deviceWidth * 0.861), Math.round(deviceHeight * 0.9));
+    sleep(1000);
     let screenChickenO = getScreenImg();
-    let chickenOut = images.read("./res/chicken_out.png");
-    let chickenOPoint = images.matchTemplate(screenChickenO, chickenOut, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight * 0.18], max: 1 }).matches;
+    let chickenOut = images.read("./res/find_my_chicken.png");
+    let chickenOPoint = images.matchTemplate(screenChickenO, chickenOut, { threshold: 0.8, region: [deviceWidth / 2, deviceHeight * 0.4, deviceWidth / 2 - 100, deviceHeight * 0.27], max: 1 }).matches;
+    console.log("自己是否在家", chickenOPoint);
     if (chickenOPoint != null && chickenOPoint.length > 0) {
         let findPoint = chickenOPoint[0];
         click(findPoint.point.x, findPoint.point.y);
@@ -44,9 +54,9 @@ function juadgeSlefAtHome() {
             click(popNote.point.x + 100, popNote.point.y + 50);
             sleep(1000);
             click(deviceWidth * 0.79, deviceHeight * 0.74);
-            sleep(2000);
-        }else{
-            sleep(1000);
+            sleep(5000);
+        } else {
+            sleep(5000);
         }//没有 直接回家了
         toastLog("回家了");
     }
@@ -67,8 +77,8 @@ function juadgeHasZeiji() {
                 sleep(1000);
                 let screenFuck = getScreenImg();
                 let fuckOff = images.read("./res/piss_off.png");
-                let ppPoint = images.matchTemplate(screenFuck, fuckOff, { threshold: 0.8, region: [0, deviceHeight * 0.58], max: 1 });
-                if (ppPoint != null && ppPoint.matches != null) {
+                let ppPoint = images.matchTemplate(screenFuck, fuckOff, { threshold: 0.8, region: [0, deviceHeight * 0.58], max: 1 }).matches;
+                if (ppPoint != null && ppPoint.length > 0) {
                     toastLog("贼鸡拿命来");
                     let pointItem = ppPoint.matches[0];
                     click(pointItem.point.x, pointItem.point.y);
@@ -93,6 +103,6 @@ function getScreenImg() {
         return screenPic;
     }
 }
-// startFarm();
-
-module.exports = startFarm;
+requestScreenCapture();
+startFarm();
+// module.exports = startFarm;

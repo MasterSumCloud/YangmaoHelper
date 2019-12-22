@@ -1,6 +1,5 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let antFramGame = require("./antFarm.js")
 
 function startAntForest(playFarm, getAliScore) {
     //进入支付宝
@@ -95,7 +94,7 @@ function startAntForest(playFarm, getAliScore) {
             let antFf = id("J_antfarm_container").text("蚂蚁庄园").findOnce();
             if (antFf) {
                 antFf.click();
-                sleep(3000);
+                let antFramGame = require("./antFarm.js")
                 antFramGame();
             }
         }
@@ -200,7 +199,7 @@ function getNeedGetAliScore(need) {
     if (need) {
         let inMine = id("tab_description").text("我的").findOnce();
         click(inMine.bounds().centerX(), inMine.bounds().centerY());
-        sleep(500);
+        sleep(1000);
         //判断当前有没有积分可以领取
         let hasScore = textContains("个积分待领取").findOnce();
         if (hasScore != null) {
