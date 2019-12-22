@@ -32,6 +32,8 @@ let currentCaptureScreenPermission;
 ui.layout(
     <vertical>
         <text marginLeft="15sp" marginTop="10sp">现在只支持单独运行，悬浮窗口没啥用，功能努力中!</text>
+        <text marginLeft="15sp" marginTop="10sp">下面的无障碍和截图权限必须给，否则无法正常运行</text>
+        <text marginLeft="15sp" marginTop="10sp">本项目代码开元，请放心使用！！！</text>
         <horizontal w="auto" h="auto" marginLeft="15sp">
             <button id={"showFloating"} text={"加载悬浮窗"} width={buttonWidth + "px"} />
             <text marginLeft="30sp">无障碍</text>
