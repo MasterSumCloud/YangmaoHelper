@@ -16,7 +16,7 @@ let isOpenDingdong = false;
 //是否连续执行 淘金币
 let isOpenTaobaoGold = false;
 let isOpenTaolife = true;//是否执行陶人生
-let isOpenTmFarm = false;//是否执行天猫农场
+let isOpenTmFarm = true;//是否执行天猫农场
 //蚂蚁森林
 let isOpenAntForest = false;
 let isOpenAntFarmElse = true;//是否连带执行蚂蚁庄园

@@ -307,8 +307,8 @@ function getWaterDrop() {
                 let qgg = getEquQggUi(singleTask);
                 if (qgg != null) {
                     qgg.click();
-                    sleep(10000);
-                    startFarm();
+                    let tMaoFarm = require("./tMaoFarm.js");
+                    tMaoFarm(true);
                 }
             } else {
                 toast("不执行天猫农场");
@@ -316,86 +316,6 @@ function getWaterDrop() {
         } else if (singleTask === "淘宝吃货") {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 16000, true);
-        }
-    }
-
-    function startFarm() {
-        let imidShou = textContains("立即去收").findOnce();
-        //每日第一次进去提示
-        if (imidShou != null) {
-            imidShou.click();
-            sleep(500);
-        }
-        let farmDive = juadgeIsFramHome();
-        if (farmDive != null) {
-            let farmHeight = farmDive.bounds().bottom - farmDive.bounds().top;
-            //9个田地 都点点
-            //计算1-9的对应横坐标
-            //获取游戏显示区域
-            let gameDiv = id("GameDiv").findOnce();
-            if (gameDiv != null) {
-                //计算左 中 右 的坐标
-                let x1 = deviceWidth * 0.285;
-                let x2 = deviceWidth / 2;
-                let x3 = deviceWidth * 0.722;
-                console.log("游戏布局高" + farmHeight);
-                //领取乱七八糟的阳光
-                getMutiSuns(farmHeight);
-                //如果有升级点一下
-                click(deviceWidth / 2, Math.round(farmHeight * 0.876 + stateBarHeigh));
-                //先点一遍
-                whileClickFarm(x1, x2, x3, farmHeight, stateBarHeigh);
-                //如果有升级点一下
-                click(deviceWidth / 2, Math.round(farmHeight * 0.876 + stateBarHeigh));
-                sleep(100);
-                tudiClick();
-                //再点一次 防止升级挡住没点全 一般情况下后期1天也就升级1级
-                whileClickFarm(x1, x2, x3, farmHeight, stateBarHeigh);
-                //领取乱七八糟的阳光
-                getMutiSuns(farmHeight);
-                //领阳光
-                click(Math.round(deviceWidth * 0.909), Math.round(farmHeight * 0.876 + stateBarHeigh))
-                sleep(2000);
-                let liulTask = textContains("去浏览").findOnce();
-                openAndBack(liulTask, 18000, true);
-                sleep(1000);
-            }
-            //领取乱七八糟的阳光
-            back();
-        }
-    }
-
-    function getMutiSuns(farmH) {
-        let singlePartWidth = deviceWidth / 10;
-
-        for (let i = 0; i < 10; i++) {
-            if (i % 2 == 0) {//跳过偶数
-                continue;
-            }
-            for (let k = 0; k < 4; k++) {
-                switch (k) {
-                    case 0:
-                        click(singlePartWidth * i, Math.round(farmH * 0.292));
-                        sleep(100);
-                        break;
-                    case 1:
-                        click(singlePartWidth * i, Math.round(farmH * 0.364));
-                        sleep(100);
-                        break;
-                    case 2:
-                        if (i != 9) {
-                            click(singlePartWidth * i, Math.round(farmH * 0.398));
-                            sleep(100);
-                        }
-                        break;
-                    case 3:
-                        if (i != 9) {
-                            click(singlePartWidth * i, Math.round(farmH * 0.457));
-                            sleep(100);
-                        }
-                        break;
-                }
-            }
         }
     }
 
@@ -412,49 +332,6 @@ function getWaterDrop() {
             } else {
                 hasTudi = false;
                 break;
-            }
-        }
-    }
-
-    function clickFarm(x, y) {
-        let confirm = className("android.widget.Button").textContains("确定").findOnce();
-        if (confirm != null) {
-            confirm.click();
-        }
-        click(x, y);
-        sleep(100);
-    }
-
-    function whileClickFarm(x1, x2, x3, gameHigh, stateBarHeigh) {
-        for (let i = 0; i < 9; i++) {
-            switch (i) {
-                case 0:
-                    clickFarm(x2, gameHigh * 0.848 + stateBarHeigh);
-                    break;
-                case 1:
-                    clickFarm(x1, gameHigh * 0.761 + stateBarHeigh);
-                    break;
-                case 2:
-                    clickFarm(x2, gameHigh * 0.685 + stateBarHeigh);
-                    break;
-                case 3:
-                    clickFarm(x1, gameHigh * 0.607 + stateBarHeigh);
-                    break;
-                case 4:
-                    clickFarm(x3, gameHigh * 0.612 + stateBarHeigh);
-                    break;
-                case 5:
-                    clickFarm(x2, gameHigh * 0.532 + stateBarHeigh);
-                    break;
-                case 6:
-                    clickFarm(x1, gameHigh * 0.465 + stateBarHeigh);
-                    break;
-                case 7:
-                    clickFarm(x2, gameHigh * 0.373 + stateBarHeigh);
-                    break;
-                case 8:
-                    clickFarm(x3, gameHigh * 0.453 + stateBarHeigh);
-                    break;
             }
         }
     }
@@ -507,9 +384,5 @@ function juadgeIsGoldHome() {
     return homeGold;
 }
 
-function juadgeIsFramHome() {
-    let farmGold = id("GameDiv").findOnce();
-    return farmGold;
-}
 
 module.exports = startTaobao;
