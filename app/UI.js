@@ -136,9 +136,28 @@ ui.captureScreenService.on("check", function () {
     }
 });
 
-// ui.showFloating.click(() => {
-//     engines.execScriptFile("floating.js");
-// });
+function oncrete() {
+    console.log("生命周期onCreate");
+    installService = auto.service != null;
+    try {
+        screenPermission = requestScreenCapture();
+    } catch (error) {
+        screenPermission = true;
+    }
+    let engins = engines.all();
+    if (engins != null) {
+        engins.forEach(engin => {
+            let soureces = engin.getSource();
+            if (soureces.toString().endsWith("pop_animi.js")) {
+                popPermission = true;
+            }
+        });
+    }
+    //重新设置UI
+    ui.popService.checked = true;
+    
+}
+// engines.execScript("oncrete", "oncrete();\n"+oncrete.toString());
 
 ui.exeDingDondSign.click(() => {
     currentExeTask = threads.start(function () {
@@ -204,6 +223,19 @@ ui.swAntForestTask.on("check", function (checked) {
     console.log("isOpenAntForest=" + isOpenAntForest);
 });
 ui.popService.on("check", function (checked) {
+    if(!checked){
+        let engins = engines.all();
+        if (engins != null) {
+            engins.forEach(engin => {
+                let soureces = engin.getSource();
+                if (soureces.toString().endsWith("pop_animi.js")) {
+                    engin.forceStop();
+                }
+            });
+        }
+    }else{
+        engines.execScriptFile("./pop_animi.js");
+    }
     popPermission = checked;
     console.log("popPermission=" + popPermission);
 });

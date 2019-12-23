@@ -106,7 +106,7 @@ function startAntForest(playFarm, getAliScore) {
         sleep(500);
         toastLog("完成了");
     } else {
-        toastLog("不在游戏界面，也不再主界面，结束");
+        toastLog("没有在首页检测到蚂蚁森林，请去更多里添加");
         exit();
     }
 
