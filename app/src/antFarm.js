@@ -21,7 +21,7 @@ function startFarm() {
         sleep(500);
         //领个蛋 183 1682
         click(Math.round(deviceWidth * 0.17), Math.round(deviceHeight * 0.757));
-
+        sleep(500);
     } else {
         toastLog("不在庄园页面结束");
         exit();

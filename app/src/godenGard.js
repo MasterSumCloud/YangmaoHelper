@@ -25,15 +25,22 @@ function startTaobao(isDoTaoLife, isDoFarm) {
         openGoldGarden();
     } else if (mineTab != null) {
         console.log("在淘宝首页");
-        mineTab.click();
-        sleep(1000);
-        //滑动半屏
-        swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.2, 1000);
-        let goldChannel = className("android.widget.TextView").textContains("金币庄园").findOnce();
-        if (goldChannel != null) {
-            click(goldChannel.bounds().centerX(), goldChannel.bounds().centerY());
+        let taojinEntance = className("android.widget.FrameLayout").descContains("领淘金币").findOnce();
+        if (taojinEntance != null) {
+            click(taojinEntance.bounds().centerX(), taojinEntance.bounds().centerY());
             sleep(5000);
             openGoldGarden();
+        } else {
+            mineTab.click();
+            sleep(1000);
+            //滑动半屏
+            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.2, 1000);
+            let goldChannel = className("android.widget.TextView").textContains("金币庄园").findOnce();
+            if (goldChannel != null) {
+                click(goldChannel.bounds().centerX(), goldChannel.bounds().centerY());
+                sleep(5000);
+                openGoldGarden();
+            }
         }
 
     } else {
