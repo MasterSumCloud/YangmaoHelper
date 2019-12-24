@@ -114,7 +114,7 @@ ui.autoService.on("check", function (checked) {
     if (!checked && auto.service != null) {
         auto.service.disableSelf();
     }
-    installService = auto.service != null;
+    installService = checked;
 });
 
 ui.captureScreenService.on("check", function () {
@@ -155,7 +155,7 @@ function oncrete() {
     }
     //重新设置UI
     ui.popService.checked = true;
-    
+
 }
 // engines.execScript("oncrete", "oncrete();\n"+oncrete.toString());
 
@@ -223,7 +223,7 @@ ui.swAntForestTask.on("check", function (checked) {
     console.log("isOpenAntForest=" + isOpenAntForest);
 });
 ui.popService.on("check", function (checked) {
-    if(!checked){
+    if (!checked) {
         let engins = engines.all();
         if (engins != null) {
             engins.forEach(engin => {
@@ -233,7 +233,7 @@ ui.popService.on("check", function (checked) {
                 }
             });
         }
-    }else{
+    } else {
         engines.execScriptFile("./pop_animi.js");
     }
     popPermission = checked;
@@ -243,8 +243,9 @@ ui.popService.on("check", function (checked) {
 ui.doMutilTask.click(() => {
     if (installService && currentCaptureScreenPermission && popPermission) {
         if (currentExeTask != null) {
-            currentExeTask.shutDownAll();
+            currentExeTask.interrupt();
         }
+        console.log("全部执行");
         currentExeTask = threads.start(function () {
             if (isOpenDingdong) {
                 toastLog("开始执行叮咚签到");
@@ -261,6 +262,7 @@ ui.doMutilTask.click(() => {
         });
     } else {
         toastLog("请给全部权限");
+        console.log("installService=" + installService, "currentCaptureScreenPermission=" + currentCaptureScreenPermission, "popPermission=" + popPermission)
     }
 
 });
