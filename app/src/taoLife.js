@@ -61,6 +61,9 @@ function getCurentHasCartToGet() {
             click(pointGet.point.x + 310, pointGet.point.y - 142);
             sleep(400);
         }
+        //点击关闭
+        click(deviceWidth / 2, pointGet.point.y + 300);
+        sleep(500)
     }
 }
 
