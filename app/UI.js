@@ -34,6 +34,7 @@ ui.layout(
     <vertical>
         <text marginLeft="15dp" marginTop="10sp">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
         <text marginLeft="15dp" marginTop="10sp">本项目代码开元，请放心使用！！！</text>
+        <text marginLeft="15dp" marginTop="10sp">联系作者：QQ群 567679111</text>
         <horizontal w="auto" h="auto" marginLeft="15dp">
             <text marginLeft="30sp">无障碍</text>
             <Switch w="auto" h="auto" id="autoService" checked="{{installService}}"></Switch>

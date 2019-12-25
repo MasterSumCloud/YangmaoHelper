@@ -152,19 +152,31 @@ function goNuggetsAndBack() {
  * 金币庄园  邀请
  */
 function clickInvestMulti() {
-    let investList = textMatches(/^邀请$/).find();
-    for (let i = 0; i < investList.length; i++) {
-        let yaoqingBtn = textMatches(/^邀请$/).findOnce();
-        if (yaoqingBtn != null) {
-            yaoqingBtn.click();
-            sleep(500);
-        } else {
-            break;
+    let myTeam = className("android.view.View").text("我的团队").findOnce();
+    if (myTeam != null) {
+        let currentGroupNum = myTeam.parent().children()[3];
+        if (currentGroupNum != null) {
+            let currentNum = currentGroupNum.text();
+            if (currentNum == 50) {
+                toastLog("当前人数满了不再邀请");
+            } else {
+                let investList = textMatches(/^邀请$/).find();
+                for (let i = 0; i < investList.length; i++) {
+                    let yaoqingBtn = textMatches(/^邀请$/).findOnce();
+                    if (yaoqingBtn != null) {
+                        yaoqingBtn.click();
+                        sleep(500);
+                    } else {
+                        break;
+                    }
+                }
+                //换一批
+                textContains("换一批推荐好友").findOnce().click();
+                sleep(2000);
+            }
         }
     }
-    //换一批
-    textContains("换一批推荐好友").findOnce().click();
-    sleep(2000);
+
 }
 
 /**
