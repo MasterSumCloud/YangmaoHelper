@@ -41,7 +41,7 @@ function juadgeSlefAtHome() {
     if (chickenOPoint != null && chickenOPoint.length > 0) {
         let findPoint = chickenOPoint[0];
         click(findPoint.point.x, findPoint.point.y);
-        sleep(2000);
+        sleep(5000);
         // 找自己的鸡
         click(deviceWidth * 0.37, deviceHeight * 0.74);
         sleep(1000);
@@ -64,7 +64,8 @@ function juadgeSlefAtHome() {
 
 
 function juadgeHasZeiji() {
-    toastLog("查看是否有贼鸡！")
+    toastLog("查看是否有贼鸡！");
+    sleep(3000);
     let screenZj = getScreenImg();
     let zeiren = images.read("./res/zei_chicken.png");
     let pList = images.matchTemplate(screenZj, zeiren, { threshold: 0.8, region: [Math.round(deviceWidth * 0.185), deviceHeight * 0.63], max: 2 });
@@ -104,5 +105,6 @@ function getScreenImg() {
         return screenPic;
     }
 }
-startFarm();
-// module.exports = startFarm;
+// requestScreenCapture();
+// startFarm();
+module.exports = startFarm;

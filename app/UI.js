@@ -7,9 +7,6 @@ let dingdongGame = require("./src/dingdong.js");
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 
-const margin = 60;
-const buttonWidth = parseInt(deviceWidth * 0.30);
-
 //判断无障碍服务有没有开启
 let installService = false;
 //是否连续执行 买菜签到
@@ -29,14 +26,15 @@ let currentExeTask = null;
 let currentCaptureScreenPermission = false;
 //悬浮窗权限
 let popPermission = false;
-
+//蚂蚁森林 巡航模式
+let isOpenCruiseMode = false;
 
 
 ui.layout(
     <vertical>
-        <text marginLeft="15sp" marginTop="10sp">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
-        <text marginLeft="15sp" marginTop="10sp">本项目代码开元，请放心使用！！！</text>
-        <horizontal w="auto" h="auto" marginLeft="15sp">
+        <text marginLeft="15dp" marginTop="10sp">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
+        <text marginLeft="15dp" marginTop="10sp">本项目代码开元，请放心使用！！！</text>
+        <horizontal w="auto" h="auto" marginLeft="15dp">
             <text marginLeft="30sp">无障碍</text>
             <Switch w="auto" h="auto" id="autoService" checked="{{installService}}"></Switch>
             <text marginLeft="30sp">截图</text>
@@ -45,20 +43,20 @@ ui.layout(
             <Switch w="auto" h="auto" id="popService" checked="{{popPermission}}"></Switch>
         </horizontal>
         <ScrollView>
-            <vertical margin={"15sp"}>
+            <vertical margin={"15dp"}>
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能1：叮咚买菜签到</text>
-                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                    <horizontal w="auto" h="auto" marginLeft="15dp">
                         <Switch id="swDingdongTask" w="auto" h="auto" checked={isOpenDingdong}></Switch>
-                        <text marginLeft="15sp" marginRight="15sp">咚买菜签到(是否批量执行)</text>
+                        <text marginLeft="15dp" marginRight="15dp">咚买菜签到(是否批量执行)</text>
                     </horizontal>
-                    <button id={"exeDingDondSign"} marginLeft="15sp" marginRight="15sp">单独执行 叮咚</button>
+                    <button id={"exeDingDondSign"} marginLeft="15dp" marginRight="15dp">单独执行 叮咚</button>
                 </vertical>
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能2：淘宝-金币庄园</text>
-                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                    <horizontal w="auto" h="auto" marginLeft="15dp">
                         <Switch id="swTaoGoldTask" w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
-                        <text marginLeft="15sp" marginRight="15sp">金币庄园(是否批量执行)</text>
+                        <text marginLeft="15dp" marginRight="15dp">金币庄园(是否批量执行)</text>
                     </horizontal>
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbTaolife" checked={isOpenTaolife} />
@@ -68,33 +66,37 @@ ui.layout(
                         <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
                         <text>淘金币庄园是否 执行天猫农场</text>
                     </horizontal>
-                    <button id={"exeGoldManor"} marginLeft="15sp" marginRight="15sp">单独执行 金币庄园</button>
+                    <button id={"exeGoldManor"} marginLeft="15dp" marginRight="15dp">单独执行 金币庄园</button>
                 </vertical>
 
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能3：支付宝-蚂蚁森林-蚂蚁庄园</text>
-                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                    <horizontal w="auto" h="auto" marginLeft="15dp">
                         <Switch id="swAntForestTask" w="auto" h="auto" checked={isOpenAntForest}></Switch>
-                        <text marginLeft="15sp" marginRight="15sp">蚂蚁森林(是否批量执行)</text>
+                        <text marginLeft="15dp" marginRight="15dp">蚂蚁森林(是否批量执行)</text>
                     </horizontal>
-                    <horizontal w="auto" h="auto" marginLeft="30sp">
+                    <horizontal w="auto" h="auto" marginLeft="30dp">
                         <CheckBox id="sAliScore" w="auto" h="auto" checked={isNeedGoAlipayScore}></CheckBox>
-                        <text marginLeft="15sp" marginRight="15sp">是否领取支付宝积分</text>
+                        <text marginLeft="15dp" marginRight="15dp">是否领取支付宝积分</text>
+                    </horizontal>
+                    <horizontal marginLeft="30dp">
+                        <CheckBox id="cbAntFarm" checked={isOpenAntFarmElse} />
+                        <text marginLeft="15dp">在蚂蚁森林完毕后 是否执行蚂蚁庄园</text>
                     </horizontal>
                     <horizontal marginLeft="30sp">
-                        <CheckBox id="cbAntFarm" checked={isOpenAntFarmElse} />
-                        <text marginLeft="15sp">在蚂蚁森林完毕后 是否执行蚂蚁庄园</text>
+                        <CheckBox id="cbAntCruise" checked={isOpenCruiseMode} />
+                        <text marginLeft="15dp" marginRight="15dp" h="60dp">蚂蚁森林巡航模式 解释：半个小时内无脑循环在蚂蚁森林。关闭方法：音量键上键，或者悬浮窗的X</text>
                     </horizontal>
-                    <button id={"exeAntForest"} marginLeft="15sp" marginRight="15sp">单独执行 蚂蚁森林</button>
+                    <button id={"exeAntForest"} marginLeft="15dp" marginRight="15dp">单独执行 蚂蚁森林</button>
                 </vertical>
 
                 {/* <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：支付宝-蚂蚁庄园</text>
-                    <horizontal w="auto" h="auto" marginLeft="15sp">
+                    <horizontal w="auto" h="auto" marginLeft="15dp">
                         <Switch w="auto" h="auto" checked={isOpenAntFarm}></Switch>
-                        <text marginLeft="15sp" marginRight="15sp">蚂蚁庄园(是否批量执行)</text>
+                        <text marginLeft="15dp" marginRight="15dp">蚂蚁庄园(是否批量执行)</text>
                     </horizontal>
-                    <button id={"exeAntFarm"} marginLeft="15sp" marginRight="15sp">单独执行 蚂蚁庄园</button>
+                    <button id={"exeAntFarm"} marginLeft="15dp" marginRight="15dp">单独执行 蚂蚁庄园</button>
                 </vertical> */}
             </vertical>
         </ScrollView>
@@ -179,7 +181,7 @@ ui.exeAntForest.click(() => {
             toast("请给截图权限");
             stopTask();
         } else {
-            antForestGame(isOpenAntFarmElse, isNeedGoAlipayScore);
+            antForestGame(isOpenAntFarmElse, isNeedGoAlipayScore, isOpenCruiseMode);
         }
     });
 });
@@ -222,6 +224,15 @@ ui.swAntForestTask.on("check", function (checked) {
     isOpenAntForest = checked;
     console.log("isOpenAntForest=" + isOpenAntForest);
 });
+
+ui.cbAntCruise.on("check", function (checked) {
+    isOpenCruiseMode = checked;
+    isOpenAntFarmElse = false;
+    ui.cbAntFarm.checked = false;
+    console.log("isOpenCruiseMode=" + isOpenCruiseMode);
+});
+
+
 ui.popService.on("check", function (checked) {
     if (!checked) {
         let engins = engines.all();
