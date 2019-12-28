@@ -9,6 +9,7 @@ function startTmaoFarm(isFromGold) {
         witeTime--;
         tMaoFarmDiv = className("android.webkit.WebView").textContains("天猫农场").findOnce();
     }
+    sleep(3000);
     if (tMaoFarmDiv == null) {
         toastLog("等待超时");
         exit();
@@ -45,6 +46,10 @@ function startTmaoFarm(isFromGold) {
 }
 
 function seePriciousBox() {
+    let goShop = textContains("去进店").findOnce();
+    if (goShop==null) {
+        return;
+    }
     for (let i = 0; i < 5; i++) {
         let goShop = textContains("去进店").findOnce();
         if (goShop != null) {
@@ -165,9 +170,9 @@ function whileClickFarm() {
                     clickFarm(x3, gameHigh * 0.453 + stateBarHeigh);
                     break;
             }
-            sleep(100);
+            sleep(1000);
             //如果有升级点一下
-            // click(deviceWidth / 2, Math.round(gameHigh * 0.876 + stateBarHeigh));
+            click(deviceWidth / 2, Math.round(gameHigh * 0.876 + stateBarHeigh));
         }
     }
 
@@ -197,4 +202,6 @@ function clickFarm(x, y) {
     sleep(100);
 }
 
+// requestScreenCapture();
+// startTmaoFarm();
 module.exports = startTmaoFarm;

@@ -189,7 +189,8 @@ function stealAndBack(item) {
 
 function collectEnergy() {
     let hasSelfPower = className("android.widget.Button").textContains("收集能量").findOnce() != null;
-    while (hasSelfPower) {
+    let maxTimes = 9;
+    while (hasSelfPower && maxTimes > 0) {
         toastLog("开始收集");
         let collectSelf = className("android.widget.Button").textContains("收集能量").findOnce();
         if (collectSelf != null) {
@@ -200,6 +201,7 @@ function collectEnergy() {
             hasSelfPower = false;
             break;
         }
+        maxTimes--;
     }
 }
 
@@ -235,7 +237,7 @@ function getNeedGetAliScore(need) {
     if (need) {
         let inMine = id("tab_description").text("我的").findOnce();
         click(inMine.bounds().centerX(), inMine.bounds().centerY());
-        sleep(1000);
+        sleep(1500);
         //判断当前有没有积分可以领取
         let hasScore = textContains("个积分待领取").findOnce();
         if (hasScore != null) {
@@ -244,11 +246,11 @@ function getNeedGetAliScore(need) {
             if (memeberAli != null) {
                 click(memeberAli.bounds().centerX(), memeberAli.bounds().centerY());
                 backCount++;
-                sleep(2000);
+                sleep(3000);
                 let getScoreV = className("android.view.View").text("领积分").findOnce();
                 if (getScoreV != null) {
                     click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
-                    sleep(2000);
+                    sleep(3000);
                     backCount++;
                     let clickGetScore = className("android.view.View").text("点击领取").findOnce();
                     while (clickGetScore != null) {

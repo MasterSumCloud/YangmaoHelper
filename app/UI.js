@@ -91,6 +91,15 @@ ui.layout(
                     <button id={"exeAntForest"} marginLeft="15dp" marginRight="15dp">单独执行 蚂蚁森林</button>
                 </vertical>
 
+                <vertical>
+                    <text textSize="18sp" textStyle="bold">功能4：淘人生</text>
+                    <horizontal w="auto" h="auto" marginLeft="15dp">
+                        <Switch id="swTaoGoldTask" w="auto" h="auto" checked={isOPenTaoLifeOnly}></Switch>
+                        <text marginLeft="15dp" marginRight="15dp">淘人生(是否批量执行)</text>
+                    </horizontal>
+                    <button id={"exeTaolife"} marginLeft="15dp" marginRight="15dp">单独执行 淘人生</button>
+                </vertical>
+
                 {/* <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：支付宝-蚂蚁庄园</text>
                     <horizontal w="auto" h="auto" marginLeft="15dp">
