@@ -3,6 +3,7 @@
 let goldGame = require("./src/godenGard.js");
 let antForestGame = require("./src/antForest.js");
 let dingdongGame = require("./src/dingdong.js");
+let taoLifeGame = require("./src/taoLife.js");
 
 let deviceWidth = device.width;
 let deviceHeight = device.height;
@@ -28,6 +29,8 @@ let currentCaptureScreenPermission = false;
 let popPermission = false;
 //蚂蚁森林 巡航模式
 let isOpenCruiseMode = false;
+//淘人生 是否执行
+// let isOPenTaoLifeOnly = false;
 
 
 ui.layout(
@@ -93,10 +96,12 @@ ui.layout(
 
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：淘人生</text>
-                    <horizontal w="auto" h="auto" marginLeft="15dp">
+                    {/* <horizontal w="auto" h="auto" marginLeft="15dp">
                         <Switch id="swTaoGoldTask" w="auto" h="auto" checked={isOPenTaoLifeOnly}></Switch>
                         <text marginLeft="15dp" marginRight="15dp">淘人生(是否批量执行)</text>
-                    </horizontal>
+                    </horizontal> */}
+                    <text marginLeft="15dp">开发中，不稳定，BUG多，慎用</text>
+                    <text marginLeft="15dp">暂时只支持单独运行</text>
                     <button id={"exeTaolife"} marginLeft="15dp" marginRight="15dp">单独执行 淘人生</button>
                 </vertical>
 
@@ -108,9 +113,9 @@ ui.layout(
                     </horizontal>
                     <button id={"exeAntFarm"} marginLeft="15dp" marginRight="15dp">单独执行 蚂蚁庄园</button>
                 </vertical> */}
+                <button marginBottom = "30dp" id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" />
             </vertical>
         </ScrollView>
-        <button id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" />
     </vertical>
 
 
@@ -242,6 +247,11 @@ ui.cbAntCruise.on("check", function (checked) {
     console.log("isOpenCruiseMode=" + isOpenCruiseMode);
 });
 
+ui.exeTaolife.click(() => {
+    currentExeTask = threads.start(function () {
+        taoLifeGame(false);
+    });
+});
 
 ui.popService.on("check", function (checked) {
     if (!checked) {
