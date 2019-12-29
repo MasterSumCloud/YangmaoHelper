@@ -12,10 +12,20 @@ function startTaobao(isDoTaoLife, isDoFarm) {
     doTaolife = isDoTaoLife;
     doFarm = isDoFarm;
     launch("com.taobao.taobao");
-
-    sleep(3000);
     // //launch app
     let mineTab = juadgeIsTaobaoHome();
+    let witeTaoBaoOpemTime = 8;
+
+    while (mineTab == null && witeTaoBaoOpemTime > 0) {
+        mineTab = juadgeIsTaobaoHome();
+        sleep(1000);
+        witeTaoBaoOpemTime--;
+    }
+    if (witeTaoBaoOpemTime == 0) {
+        toastLog("等待进入界面超时");
+        exit();
+    }
+
     let goldHomeDiv = juadgeIsGoldHome();
 
     if (goldHomeDiv != null) {

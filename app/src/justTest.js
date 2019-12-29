@@ -5,11 +5,16 @@ requestScreenCapture();
 //click(deviceWidth / 2, 1670);
 console.log("开始")
 
-swipe(deviceWidth / 2, deviceHeight - 200, deviceWidth / 2, deviceHeight - 1000, 4000);
-// swipe(deviceWidth / 2, deviceHeight - 200, deviceWidth / 2, deviceHeight - 205, 1000);
-// gestures([0, 1000, [deviceWidth / 2, deviceHeight - 200], [deviceWidth / 2, deviceHeight - 195]],
-    // [1000, 1000, [deviceWidth / 2, 1500], [deviceWidth / 2, 1000]]);
-// press(deviceWidth / 2, deviceHeight * 0.7, 3);
+let setBtn = className("android.widget.LinearLayout").descContains("收藏夹").findOnce();
+let top = setBtn.bounds().top;
+console.log("找到了头像", top);
+
+//找到头像
+// if (setBtn != null) {
+//     let header = setBtn.parent().children()[0];
+//     console.log("找到了头像", header);
+//     click(header.boudns.centerX(), header.boudns.centerY());
+// }
 
 console.log("结束")
 

@@ -3,6 +3,38 @@ let deviceHeight = device.height;
 let EUtil = require('./EUtil.js');
 
 function startTaoLife(isFromGold) {
+    //打开淘宝
+    launch("com.taobao.taobao");
+    //判断是否在淘宝首页
+    let homeMine = className("android.widget.FrameLayout").descContains("我的淘宝").findOnce();
+    let witeTaoBaoOpemTime = 8;
+
+    while (homeMine == null && witeTaoBaoOpemTime > 0) {
+        homeMine = className("android.widget.FrameLayout").descContains("我的淘宝").findOnce();
+        sleep(1000);
+        witeTaoBaoOpemTime--;
+    }
+
+    if (witeTaoBaoOpemTime == 0) {
+        toastLog("等待进入界面超时");
+        exit();
+    }
+
+    if (homeMine != null) {
+        sleep(1000);
+        //在首页
+        homeMine.click();
+        sleep(1000);
+        //去到游戏界面
+        let collectUI = className("android.widget.LinearLayout").descContains("收藏夹").findOnce();
+        console.log("找到了收藏夹", collectUI);
+        //找到头像
+        if (collectUI != null) {
+            let clickY = collectUI.bounds().top - 100;
+            let clickX = collectUI.bounds().centerX();
+            click(clickX, clickY);
+        }
+    }
     let taoLifeDiv = className("android.webkit.WebView").text("第二人生").findOnce();
     let witeTime = 15;
     while (taoLifeDiv == null & witeTime > 0) {
@@ -10,26 +42,32 @@ function startTaoLife(isFromGold) {
         witeTime--;
         taoLifeDiv = className("android.webkit.WebView").text("第二人生").findOnce();
     }
-    sleep(5000);
     if (taoLifeDiv == null) {
         toastLog("等待超时");
         exit();
     } else {
+        console.log("进来了");
+        //给加载时间
+        sleep(10000);
         if (isFromGold) {
             toastLog("金币庄园过来,多呆10秒");
             sleep(11000);
         }
         if (isFromGold) {
             //判断当前界面 是否有送卡
+            console.log("判断当前界面 是否有送卡");
             getCurentHasCartToGet();
             //判断当前是否有可关闭广告
+            console.log("判断当前是否有可关闭广告");
             juadgeCurrentHasAD();
             //返回上级
             _backTo();
         } else {
             //判断当前界面 是否有送卡
+            console.log("判断当前界面 是否有送卡");
             getCurentHasCartToGet();
             //判断当前是否有可关闭广告
+            console.log("判断当前是否有可关闭广告");
             juadgeCurrentHasAD();
             //送卡
             sendCard();
@@ -47,7 +85,7 @@ function sendCard() {
         console.log("找到看朋友入口", searchResult);
         click(searchResult[0].point.x + 50, searchResult[0].point.y + 50);
         sleep(1000);
-        let sendCard = 0;
+        let sendCard = 6;
         console.log("进入好友互动列表");
         for (let k = 0; k < 8; k++) {
             console.log("进入好友互动列表 开始送卡和点赞=" + k);
@@ -62,7 +100,7 @@ function sendCard() {
                     let color2 = images.pixel(getScreenImg(), cardItem.point.x + 65, cardItem.point.y + 38)
                     let isSimiler = colors.isSimilar(color1, color2);
                     console.log("颜色对比", color1 + "===" + color2);
-                    if (!isSimiler) {
+                    if (!isSimiler || sendCard < 5) {
                         continue;
                     }
                     click(cardItem.point.x + 50, cardItem.point.y + 50);
@@ -90,6 +128,7 @@ function sendCard() {
                                 sendCard++;
                                 if (sendCard == 5) {//5次送卡  有额外一个弹窗
                                     toastLog("5次送卡  有额外一个弹窗 关闭");
+                                    sleep(1500);
                                     let confirmB = EUtil.ImageSearchEngin('./res/taolife_send_5_confirm.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight * 0.21], 1);
                                     if (confirmB != -1) {
                                         sleep(1500);
@@ -213,7 +252,7 @@ function getScreenImg() {
 }
 
 requestScreenCapture();
-// startTaoLife();
 sendCard();
+// startTaoLife();
 // module.exports = startTaoLife;
 
