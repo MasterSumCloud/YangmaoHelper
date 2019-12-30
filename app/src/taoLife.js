@@ -81,6 +81,8 @@ function startTaoLife(isFromGold) {
             sendCard();
             //抽套装
             getSuits();
+            //去玩游戏
+            
             //去领取签到的
             singnGetCj();
         }
@@ -122,8 +124,12 @@ function getSuits() {
             }
             // 去获取的卡片任务都做了
             let moreCard = EUtil.ImageSearchEngin('./res/taolife_get_more_card.png', [0, deviceHeight - 250, deviceWidth, 250], 1);
-            click(moreCard[0].point.x + 60, moreCard[0].point.y + 60);
-            sleep(1000);
+            console.log("做获取卡片任务", moreCard);
+            if (moreCard != -1) {
+                click(moreCard[0].point.x + 60, moreCard[0].point.y + 60);
+                sleep(1000);
+            }
+
             let invest = EUtil.ImageSearchEngin('./res/taolife_go_invest.png', [deviceWidth / 2, deviceHeight * 0.45, deviceWidth / 2, 400], 1);
             if (invest != -1) {
                 click(invest[0].point.x, invest[0].point.y);
@@ -299,30 +305,36 @@ function backGameBtn(color) {
 }
 
 function singnGetCj() {
-    let qiandao = className("android.view.View").text("成就签到").findOnce().parent().children()[5].children()[0];
-    if (qiandao != null) {
-        console.log("成就签到");
-        qiandao.click();
-        sleep(1000);
-        let xinyuanka = className("android.view.View").text("心愿卡 x2").findOnce().parent();
-        let childs = xinyuanka.children()[3];
-        childs.click();
-        sleep(1000);
+    let naJiangli = EUtil.ImageSearchEngin('./res/taolife_take_ward.png', [deviceWidth / 2, 0, deviceWidth / 2, 400], 1);
+    if (naJiangli != -1) {
+        console.log("去领取奖励");
+        click(naJiangli[0].point.x, naJiangli[0].point.y);
+        sleep(3000);
+        let qiandao = className("android.view.View").text("成就签到").findOnce().parent().children()[5].children()[0];
+        if (qiandao != null) {
+            console.log("成就签到");
+            qiandao.click();
+            sleep(1000);
+            let xinyuanka = className("android.view.View").text("心愿卡 x2").findOnce().parent();
+            let childs = xinyuanka.children()[3];
+            childs.click();
+            sleep(1000);
+        }
+
+        let tiliSign = className("android.view.View").text("拿服装消耗 5 次体力").findOnce().parent().children()[5].children()[0];
+        tiliSign.click();
+        console.log("拿服装消耗");
+
+        let xiadan = className("android.view.View").text("下单购买宝贝1次").findOnce().parent().children()[5].children()[0];
+        xiadan.click();
+        console.log("下单购买宝贝1次");
+
+        let taozhuan = className("android.view.View").text("抽套装玩法参与 1 次").findOnce().parent().children()[5].children()[0];
+        taozhuan.click();
+        console.log("抽套装玩法参与");
+        //回去白色的
+        backGameBtn("#FFFFFF");
     }
-
-    let tiliSign = className("android.view.View").text("拿服装消耗 5 次体力").findOnce().parent().children()[5].children()[0];
-    tiliSign.click();
-    console.log("拿服装消耗");
-
-    let xiadan = className("android.view.View").text("下单购买宝贝1次").findOnce().parent().children()[5].children()[0];
-    xiadan.click();
-    console.log("下单购买宝贝1次");
-
-    let taozhuan = className("android.view.View").text("抽套装玩法参与 1 次").findOnce().parent().children()[5].children()[0];
-    taozhuan.click();
-    console.log("抽套装玩法参与");
-    //回去白色的
-    backGameBtn("#FFFFFF");
 }
 
 

@@ -301,7 +301,7 @@ function goGet5GoldAndBack(x, y, height) {
 
 function getWaterDrop() {
     //需要执行的任务集合
-    let arrTask = ["每日免费领水滴", "浏览指定商品", "精选好货", "逛高抵扣商品赚果实", "逛逛你的淘宝人生", "逛逛天猫农场", "淘宝吃货"];
+    let arrTask = ["每日免费领水滴", "浏览指定商品", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生领服装", "逛农场领免费水果", "淘宝吃货"];
 
     for (let i = 0; i < arrTask.length; i++) {
         sleep(2000)
@@ -320,9 +320,9 @@ function getWaterDrop() {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 13000, true);
             swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
-        } else if (singleTask === "逛逛你的淘宝人生") {
+        } else if (singleTask === "逛淘宝人生领服装") {
             if (doTaolife) {
-                let qgg = getEquQggUi("逛逛你的淘宝人生");
+                let qgg = getEquQggUi("逛淘宝人生领服装");
                 if (qgg != null) {
                     qgg.click();
                     let startTaoLife = require("./taoLife.js");
@@ -331,7 +331,7 @@ function getWaterDrop() {
             } else {
                 toast("不执行淘人生");
             }
-        } else if (singleTask === "逛逛天猫农场") {
+        } else if (singleTask === "逛农场领免费水果") {
             if (doFarm) {
                 let qgg = getEquQggUi(singleTask);
                 if (qgg != null) {

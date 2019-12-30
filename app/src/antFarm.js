@@ -12,6 +12,7 @@ function startFarm() {
         antFarm = className("android.webkit.WebView").textContains("蚂蚁庄园").findOnce();
     }
     if (antFarm != null) {
+        sleep(5000);
         //判断自己家的鸡在不在
         juadgeSlefAtHome();
         //判断是否有贼鸡
