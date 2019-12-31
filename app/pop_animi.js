@@ -88,7 +88,8 @@ function menuOnClick(view) {
             toastLog("打开主界面");
             break;
         case "菜单2":
-            toastLog("暂时没啥用");
+            toastLog("开始星星球");
+            engines.execScriptFile("./lib/startBall.js");
             break;
         case "菜单3":
             toastLog("不知道执行个啥 留着");
