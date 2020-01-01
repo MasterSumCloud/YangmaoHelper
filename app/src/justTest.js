@@ -1,16 +1,14 @@
-// let EUtil = require('./EUtil.js');
+let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 importPackage(org.joda.time);
-// requestScreenCapture();
+requestScreenCapture();
 //click(deviceWidth / 2, 1670);
 console.log("开始")
 
-const CONFIG_STORAGE_NAME = 'ant_start_score'
-let configStorage = storages.create(CONFIG_STORAGE_NAME);
-configStorage.put("starsBallTargetScore", 210);
-let data = configStorage.get("starsBallTargetScore");
-console.log("da===", data);
+sleep(1000);
+let hasCardAfter12 = EUtil.ImageSearchEngin('./res/taolife/taolife_get_card6.png', [deviceWidth * 0.7, deviceHeight / 2], 1);
+console.log("da===", hasCardAfter12);
 
 
 

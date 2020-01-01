@@ -1,6 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let EUtil = require('../EUtil.js');
+let EUtil = require('./EUtil.js');
 
 function startTaoLife(isFromGold) {
     //打开淘宝 金币庄园过来不判断
@@ -107,11 +107,11 @@ function getSuits() {
         if (getMoreCardBtn != null) {
             //判断是否有卡片领取
             console.log("查看是否有12点后的卡片领取");
-            let hasCardAfter12 = EUtil.ImageSearchEngin('./res/taolife/taolife_get_card6.png', [deviceWidth * 0.8, deviceHeight / 2, deviceWidth * 0.2, 200], 1);
+            let hasCardAfter12 = EUtil.ImageSearchEngin('./res/taolife/taolife_get_card6.png', [deviceWidth * 0.7, deviceHeight / 2], 1);
             if (hasCardAfter12 != -1) {
                 console.log("领取12点后的卡片");
                 //点击领取
-                click(hasCardAfter12[0].point.x, hasCardAfter12[0].point.y);
+                click(hasCardAfter12[0].point.x + 30, hasCardAfter12[0].point.y + 10);
                 sleep(1000);
                 //关闭弹窗
                 let confirmB = EUtil.ImageSearchEngin('./res/taolife/taolife_send_5_confirm.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight * 0.21], 1);
@@ -409,7 +409,7 @@ function startTiliGame() {
     let startGame = EUtil.ImageSearchEngin('./res/taolife/taolife_start.png', [deviceWidth / 2, deviceHeight - 400, deviceWidth / 2, 400], 1);
     if (startGame != -1) {
         console.log("开始玩游戏");
-        click(startGame[0].point.x, startGame[0].point.y);
+        click(startGame[0].point.x + 50, startGame[0].point.y + 50);
         sleep(3000);
         //判断是否还有体力
         let maxError = 0;
@@ -444,8 +444,11 @@ function startTiliGame() {
                         continue;
                         break
                     case 4://去拍照
-                        takePhoto();
+                        takePhotoTask();
                         break;
+                    case 7://去送卡
+                        sendCardTask();
+                        break
                     case 5:
                         juadgeTypeToPlay();
                         break
@@ -538,7 +541,50 @@ function startTiliGame() {
     }
 }
 
-function takePhoto() {
+
+function sendCardTask() {
+    let goSendCard = EUtil.ImageSearchEngin('./res/taolife/taolife_do_task.png', [150, deviceHeight / 2, deviceWidth - 300, 500], 1);
+    if (goSendCard != -1) {
+        click(goSendCard[0].point.x, goSendCard[0].point.y);
+        sleep(3000);
+        let hasSend = false;
+        for (let k = 0; k < 8; k++) {
+            console.log("进入好友互动列表 开始送卡和点赞=" + k);
+            let sendCardPosition = EUtil.ImageSearchEngin('./res/taolife/taolife_send_card.png', [deviceWidth * 0.7, deviceHeight / 2, deviceWidth * 0.3 - 100, deviceHeight / 2], 5);
+            if (sendCardPosition != -1) {
+                console.log("开始送卡");
+                for (let i = 0; i < sendCardPosition.length; i++) {
+                    let cardItem = sendCardPosition[i];
+                    //需要进行二次对比 判断颜色是否一致  否则是送过得
+                    let temple1 = images.read('./res/taolife/taolife_send_card.png');
+                    let color1 = images.pixel(temple1, 65, 38);
+                    let color2 = images.pixel(getScreenImg(), cardItem.point.x + 65, cardItem.point.y + 38)
+                    let isSimiler = colors.isSimilar(color1, color2);
+                    console.log("颜色对比", color1 + "===" + color2);
+                    //第五个才开始判断颜色 不一样则直接跳过 否则不跳
+                    if (sendCard > 4) {
+                        if (!isSimiler) {
+                            continue;
+                        }
+                    }
+                    click(cardItem.point.x + 50, cardItem.point.y + 50);
+                    sleep(300);
+                    hasSend = true;
+                    break;
+                }
+            }
+            //滑动屏幕
+            // let scrollHeight = 202 * 5 * k;
+            swipe(deviceWidth / 2, deviceHeight - 200, deviceWidth / 2, deviceHeight - 1000, 4000);
+            sleep(4000);
+            toastLog("下一屏");
+        }
+        backGameBtn();
+        sleep(2000);
+        //跑首页去了  需要重新进
+    }
+}
+function takePhotoTask() {
     let goTakePhoto = EUtil.ImageSearchEngin('./res/taolife/taolife_do_task.png', [150, deviceHeight / 2, deviceWidth - 300, 500], 1);
     if (goTakePhoto != -1) {
         click(goTakePhoto[0].point.x, goTakePhoto[0].point.y);
@@ -642,8 +688,8 @@ function juadgeTypeToPlay() {
     //判断是否是 偶遇大人
     let oyMaster = EUtil.ImageSearchEngin('./res/taolife/taolife_oyMaster.png', [150, deviceHeight * 0.31, deviceWidth - 300, deviceHeight * 0.4], 1);
     if (oyMaster != -1) {//达人可能送钱 送卡片 送体力
-        toastLog("偶遇大人");
-        click(deviceWidth / 2, oyMaster[0].point.y + 492);
+        toastLog("偶遇达人");
+        click(deviceWidth * 0.69, oyMaster[0].point.y + 492);
         sleep(1000);
         return 2;
     }
@@ -664,6 +710,11 @@ function juadgeTypeToPlay() {
         if (takePhotoTask != -1) {
             console.log("任务 去拍照");
             return 4;
+        }
+        let sendCardTask = EUtil.ImageSearchEngin('./res/taolife/taolife_send_wish_card.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
+        if (sendCardTask != -1) {
+            console.log("任务 去送卡片");
+            return 7;
         }
     }
     //发现品牌
@@ -695,5 +746,6 @@ function juadgeTiliZero() {
 // requestScreenCapture();
 // getSuits();
 // startTaoLife();
+// startTiliGame();
 module.exports = startTaoLife;
 
