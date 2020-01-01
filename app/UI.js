@@ -31,6 +31,8 @@ let popPermission = false;
 let isOpenCruiseMode = false;
 //淘人生 是否执行
 // let isOPenTaoLifeOnly = false;
+//是否执行星星球
+let isOpenAntFarmStartBall = true;
 
 
 ui.layout(
@@ -87,6 +89,10 @@ ui.layout(
                         <CheckBox id="cbAntFarm" checked={isOpenAntFarmElse} />
                         <text marginLeft="15dp">在蚂蚁森林完毕后 是否执行蚂蚁庄园</text>
                     </horizontal>
+                    <horizontal marginLeft="30dp">
+                        <CheckBox id="cbAntFarmStartsBall" checked={isOpenAntFarmStartBall} />
+                        <text marginLeft="15dp">蚂蚁庄园 玩星星球</text>
+                    </horizontal>
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbAntCruise" checked={isOpenCruiseMode} />
                         <text marginLeft="15dp" marginRight="15dp" h="60dp">蚂蚁森林巡航模式 解释：半个小时内无脑循环在蚂蚁森林。关闭方法：音量键上键，或者悬浮窗的X</text>
@@ -113,7 +119,7 @@ ui.layout(
                     </horizontal>
                     <button id={"exeAntFarm"} marginLeft="15dp" marginRight="15dp">单独执行 蚂蚁庄园</button>
                 </vertical> */}
-                <button marginBottom = "30dp" id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" />
+                <button marginBottom="30dp" id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" />
             </vertical>
         </ScrollView>
     </vertical>
@@ -196,7 +202,7 @@ ui.exeAntForest.click(() => {
             toast("请给截图权限");
             stopTask();
         } else {
-            antForestGame(isOpenAntFarmElse, isNeedGoAlipayScore, isOpenCruiseMode);
+            antForestGame(isOpenAntFarmElse, isNeedGoAlipayScore, isOpenCruiseMode, isOpenAntFarmStartBall);
         }
     });
 });
@@ -238,6 +244,10 @@ ui.swTaoGoldTask.on("check", function (checked) {
 ui.swAntForestTask.on("check", function (checked) {
     isOpenAntForest = checked;
     console.log("isOpenAntForest=" + isOpenAntForest);
+});
+ui.cbAntFarmStartsBall.on("check", function (checked) {
+    isOpenAntFarmStartBall = checked;
+    console.log("isOpenAntFarmStartBall=" + isOpenAntFarmStartBall);
 });
 
 ui.cbAntCruise.on("check", function (checked) {

@@ -1,7 +1,7 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 
-function startAntForest(playFarm, getAliScore, forestCruiseMode) {
+function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmStartBall) {
     //进入支付宝
     launch("com.eg.android.AlipayGphone");
     sleep(1000);
@@ -70,7 +70,7 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode) {
             if (antFf) {
                 antFf.click();
                 let antFramGame = require("./antFarm.js")
-                antFramGame();
+                antFramGame(isOpenAntFarmStartBall);
             }
         }
         back();

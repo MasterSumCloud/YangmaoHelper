@@ -1,7 +1,8 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
+let EUtil = require('./EUtil.js');
 
-function startFarm() {
+function startFarm(isOpenAntFarmStartBall) {
     //进入支付宝
     //判断当前是否进入了蚂蚁庄园
     let antFarm = className("android.webkit.WebView").textContains("蚂蚁庄园").findOnce();
@@ -17,6 +18,27 @@ function startFarm() {
         juadgeSlefAtHome();
         //判断是否有贼鸡
         juadgeHasZeiji();
+        //玩星星球
+        if (isOpenAntFarmStartBall) {
+            let antsports = EUtil.ImageSearchEngin('./res/antFarm_sports.png', [deviceWidth * 0.815, deviceHeight * 0.315], 1);
+            if (antsports != -1) {
+                click(antsports[0].point.x, antsports[0].point.y);
+                sleep(1000);
+                let ballItem = EUtil.ImageSearchEngin('./res/antFarm_stars_ball.png', [0, deviceHeight / 2], 1);
+                if (ballItem != -1) {
+                    click(ballItem[0].point.x, ballItem[0].point.y);
+                    sleep(5000);
+                    toastLog("开始星星球");
+                    engines.execScriptFile("./lib/startBall.js");
+                    sleep(70 * 1000);
+                    back();
+                    sleep(2000);
+                    click(deviceWidth / 2, 300);
+                    sleep(2000);
+                }
+            }
+
+        }
         //喂饲料 930 2000
         click(Math.round(deviceWidth * 0.861), Math.round(deviceHeight * 0.9));
         sleep(500);
@@ -106,6 +128,6 @@ function getScreenImg() {
         return screenPic;
     }
 }
-// requestScreenCapture();
-// startFarm();
-module.exports = startFarm;
+requestScreenCapture();
+startFarm(true);
+// module.exports = startFarm;
