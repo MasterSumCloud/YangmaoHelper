@@ -88,7 +88,27 @@ function menuOnClick(view) {
             toastLog("打开主界面");
             break;
         case "菜单2":
-            toastLog("开始星星球");
+            // var w = floaty.rawWindow(
+            //     <vertical>
+            //         <horizontal w="auto" h="auto">
+            //             <text marginLeft="30sp">目标分数</text>
+            //             <input id="ballScore" text="210" />
+            //             <button id="ballSetOk" text="确定" />
+            //         </horizontal>
+            //     </vertical>
+            // );
+            // w.setSize(device.width / 2, device.height / 2);
+            // ui.run(function(){
+            //     w.ballSetOk.on("文本");
+            // });
+            // dialogs.input("输入需要玩的分数", "210").then(score => {
+            //     console.log("分数是", score);
+            //     const CONFIG_STORAGE_NAME = 'ant_start_score'
+            //     let configStorage = storages.create(CONFIG_STORAGE_NAME);
+            //     configStorage.put("starsBallTargetScore", score);
+            //     toastLog("开始星星球");
+            //     sleep(1000);
+            // });
             engines.execScriptFile("./lib/startBall.js");
             break;
         case "菜单3":
@@ -139,6 +159,10 @@ function menuOnClick(view) {
             break;
     }
     animation_menu();
+}
+
+function startBall() {
+    engines.execScriptFile("./lib/startBall.js");
 }
 
 
@@ -226,6 +250,7 @@ var w_menu = floaty.rawWindow(
         <butLogo-layout name="{{but_data.menu_5.name}}" src="{{but_data.menu_5.src}}" bg="{{but_data.menu_5.bg}}" layout_gravity="center" />
     </frame>
 )
+
 
 //主按钮悬浮窗  无需更改
 //不能设置bg参数

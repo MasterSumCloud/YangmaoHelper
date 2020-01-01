@@ -5,6 +5,8 @@ importClass(java.util.concurrent.TimeUnit)
 // let { commonFunctions } = require('./CommonFunction.js')
 let { runningQueueDispatcher } = require('./lib/RunningQueueDispatcher.js')
 // let _config = require('./config.js').config
+const CONFIG_STORAGE_NAME = 'ant_start_score'
+let configStorage = storages.create(CONFIG_STORAGE_NAME);
 
 requestScreenCapture(false)
 
@@ -19,9 +21,18 @@ let default_config = {
   reco: [200, 100, 750, 1900],
   threshold: 4,
   // 目标分数
-  targetScore: 210,
+  targetScore: getTargetScoreDef(),
   // 运行超时时间 毫秒
   timeout: 240000
+}
+
+function getTargetScoreDef() {
+  let scoreTarget = configStorage.get("starsBallTargetScore");
+  if (!scoreTarget) {
+    scoreTarget = 210;
+  }
+  console.log("目标分数", scoreTarget);
+  return scoreTarget;
 }
 
 let config = {}
@@ -43,7 +54,7 @@ Object.keys(default_config).forEach(key => {
 })
 console.verbose('转换后的配置：' + JSON.stringify(config))
 
-function Player () {
+function Player() {
   this.floatyWindow = null
   this.floatyLock = null
   this.floatyInitCondition = null

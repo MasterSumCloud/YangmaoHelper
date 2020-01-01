@@ -1,6 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let EUtil = require('./EUtil.js');
+let EUtil = require('../EUtil.js');
 
 function startFarm(isOpenAntFarmStartBall) {
     //进入支付宝
@@ -128,6 +128,6 @@ function getScreenImg() {
         return screenPic;
     }
 }
-requestScreenCapture();
-startFarm(true);
-// module.exports = startFarm;
+// requestScreenCapture();
+// startFarm(true);
+module.exports = startFarm;

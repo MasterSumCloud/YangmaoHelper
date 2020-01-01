@@ -4,6 +4,8 @@ let goldGame = require("./src/godenGard.js");
 let antForestGame = require("./src/antForest.js");
 let dingdongGame = require("./src/dingdong.js");
 let taoLifeGame = require("./src/taoLife.js");
+const CONFIG_STORAGE_NAME = 'ant_start_score'
+let configStorage = storages.create(CONFIG_STORAGE_NAME);
 
 let deviceWidth = device.width;
 let deviceHeight = device.height;
@@ -33,7 +35,8 @@ let isOpenCruiseMode = false;
 // let isOPenTaoLifeOnly = false;
 //是否执行星星球
 let isOpenAntFarmStartBall = true;
-
+//默认的数量
+let defaultBarScore = configStorage.get("starsBallTargetScore", 210);
 
 ui.layout(
     <vertical>
@@ -91,7 +94,9 @@ ui.layout(
                     </horizontal>
                     <horizontal marginLeft="30dp">
                         <CheckBox id="cbAntFarmStartsBall" checked={isOpenAntFarmStartBall} />
-                        <text marginLeft="15dp">蚂蚁庄园 玩星星球</text>
+                        <text marginLeft="15dp">蚂蚁庄园 玩星星球 目标分数</text>
+                        <input id="ballScore" text={defaultBarScore} />
+                        <button id="ballSetOk" text="确定" />
                     </horizontal>
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbAntCruise" checked={isOpenCruiseMode} />
@@ -263,6 +268,14 @@ ui.exeTaolife.click(() => {
     });
 });
 
+ui.ballSetOk.click(function () {
+    //通过getText()获取输入的内容
+    let score = ui.ballScore.getText();
+    console.log("设置分数", score);
+    configStorage.put("starsBallTargetScore", parseInt(score));
+    toast("设置成功");
+});
+
 ui.popService.on("check", function (checked) {
     if (!checked) {
         let engins = engines.all();
@@ -305,7 +318,6 @@ ui.doMutilTask.click(() => {
         toastLog("请给全部权限");
         console.log("installService=" + installService, "currentCaptureScreenPermission=" + currentCaptureScreenPermission, "popPermission=" + popPermission)
     }
-
 });
 
 function stopTask() {

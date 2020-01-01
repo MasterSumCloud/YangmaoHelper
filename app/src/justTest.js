@@ -1,14 +1,17 @@
-let EUtil = require('./EUtil.js');
+// let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
+importPackage(org.joda.time);
 // requestScreenCapture();
 //click(deviceWidth / 2, 1670);
 console.log("开始")
 
+const CONFIG_STORAGE_NAME = 'ant_start_score'
+let configStorage = storages.create(CONFIG_STORAGE_NAME);
+configStorage.put("starsBallTargetScore", 210);
+let data = configStorage.get("starsBallTargetScore");
+console.log("da===", data);
 
-
-requestScreenCapture();
-startTiliGame();
 
 
 console.log("结束")

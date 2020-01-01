@@ -6,13 +6,12 @@ let { getVerName, waitForAction } = files.exists("./MODULE_MONSTER_FUNC") ? requ
 };
 
 module.exports = function (runtime, scope) {
-
   let is_pro = getVerName("current_autojs").match(/[Pp]ro/);
   let timing = is_pro ? com.stardust.autojs.core.timing : org.autojs.autojs.timing;
   var timers = Object.create(runtime.timers);
   var TimedTask = is_pro ? timing.TimedTask.Companion : timing.TimedTask;
   var IntentTask = timing.IntentTask;
-  var TimedTaskManager = is_pro ? timing.TimedTaskManager.Companion.getInstance() : timing.TimedTaskManager.getInstance();
+  var TimedTaskManager = is_pro ? timing.TimedTaskManager.Companion.getInstance : timing.TimedTaskManager.getInstance;
   var bridges = require("__bridges__");
   let days_ident = [
     'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday',
