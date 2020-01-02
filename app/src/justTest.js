@@ -1,18 +1,15 @@
-let EUtil = require('./EUtil.js');
+// let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-importPackage(org.joda.time);
-requestScreenCapture();
+// requestScreenCapture();
 //click(deviceWidth / 2, 1670);
 console.log("开始")
 
-sleep(1000);
-let hasCardAfter12 = EUtil.ImageSearchEngin('./res/taolife/taolife_get_card6.png', [deviceWidth * 0.7, deviceHeight / 2], 1);
-console.log("da===", hasCardAfter12);
+let dd = textContains("去换衣服").findOnce();
 
 
 
-console.log("结束")
+console.log("结束",dd)
 
 function getScreenImg() {
     let screenPic = captureScreen();
