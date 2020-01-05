@@ -1,5 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
+let EUtil = require('../EUtil.js');
 
 let gameDiv = null;
 let stateBarHeigh = -1;
@@ -105,6 +106,19 @@ function goWaterDrop() {
         click(device.width / 2, stateBarHeigh + 100);
         sleep(1000);
     }
+    sleep(2000);
+    //获取水滴
+    clickWater();
+}
+
+function clickWater() {
+    let shuidi = EUtil.ImageSearchEngin('./res/home_shuidi.png', [0, deviceHeight * 0.193, deviceWidth, 350], 5);
+    if (shuidi != -1) {
+        shuidi.forEach(element => {
+            click(element.point.x + 20, element.point.y);
+            sleep(100);
+        });
+    }
 }
 
 function quJiaoShui() {
@@ -150,11 +164,21 @@ function quJiaoShui() {
 function goNuggetsAndBack() {
     click(Math.round(deviceWidth * 0.556), Math.round(gameHigh * 0.513 + stateBarHeigh));
     sleep(5000);
+    //先领取  金币
+    let allGold = EUtil.ImageSearchEngin('./res/gold_hom.png', [0, 200, deviceWidth, 800], 5);
+    if (allGold != -1) {
+        allGold.forEach(element => {
+            click(element.point.x + 20, element.point.y - 20);
+            sleep(1000);
+        });
+    }
+
     swipe(device.width / 2, device.height * 0.9, device.width / 2, 0, 1000);
     sleep(100);
 
     clickInvestMulti();
     clickInvestMulti();
+
     back();
 }
 
@@ -164,26 +188,23 @@ function goNuggetsAndBack() {
 function clickInvestMulti() {
     let myTeam = className("android.view.View").text("我的团队").findOnce();
     if (myTeam != null) {
-        let currentGroupNum = myTeam.parent().children()[3];
-        if (currentGroupNum != null) {
-            let currentNum = currentGroupNum.text();
-            if (currentNum == 50) {
-                toastLog("当前人数满了不再邀请");
-            } else {
-                let investList = textMatches(/^邀请$/).find();
-                for (let i = 0; i < investList.length; i++) {
-                    let yaoqingBtn = textMatches(/^邀请$/).findOnce();
-                    if (yaoqingBtn != null) {
-                        yaoqingBtn.click();
-                        sleep(500);
-                    } else {
-                        break;
-                    }
+        let currentNum = className("android.view.View").text("（50/50人）").findOnce();
+        if (currentNum != null) {
+            toastLog("当前人数满了不再邀请");
+        } else {
+            let investList = textMatches(/^邀请$/).find();
+            for (let i = 0; i < investList.length; i++) {
+                let yaoqingBtn = textMatches(/^邀请$/).findOnce();
+                if (yaoqingBtn != null) {
+                    yaoqingBtn.click();
+                    sleep(500);
+                } else {
+                    break;
                 }
-                //换一批
-                textContains("换一批推荐好友").findOnce().click();
-                sleep(2000);
             }
+            //换一批
+            textContains("换一批推荐好友").findOnce().click();
+            sleep(2000);
         }
     }
 
@@ -301,7 +322,7 @@ function goGet5GoldAndBack(x, y, height) {
 
 function getWaterDrop() {
     //需要执行的任务集合
-    let arrTask = ["每日免费领水滴", "浏览指定商品", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生领服装", "逛农场领免费水果", "淘宝吃货"];
+    let arrTask = ["每日免费领水滴", "浏览指定商品", "逛淘金币年货节会场", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生领服装", "逛农场领免费水果", "淘宝吃货"];
 
     for (let i = 0; i < arrTask.length; i++) {
         sleep(2000)
@@ -311,6 +332,9 @@ function getWaterDrop() {
             const daka = textContains("打卡").findOnce();
             openAndBack(daka, 0, false);
         } else if (singleTask === "浏览指定商品") {
+            let qgg = getEquQggUi(singleTask);
+            openAndBack(qgg, 13000, true);
+        } else if (singleTask === "逛淘金币年货节会场") {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 13000, true);
         } else if (singleTask === "精选好货") {

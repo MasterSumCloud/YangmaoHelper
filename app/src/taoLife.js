@@ -1,6 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let EUtil = require('./EUtil.js');
+let EUtil = require('../EUtil.js');
 
 function startTaoLife(isFromGold) {
     //打开淘宝 金币庄园过来不判断
@@ -385,8 +385,8 @@ function _backTo() {
     let backTxt = images.read("./res/back_taobao.png");
     let hasCardMatches = images.matchTemplate(backScreen, backTxt, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight * 0.27], max: 1 }).matches;
     if (hasCardMatches != null && hasCardMatches.length > 0) {
-        click(deviceWidth / 2, hasCardMatches.point.y);
-        sleep(2000);
+        click(deviceWidth / 2, hasCardMatches[0].point.y);
+        sleep(6000);
     }
 }
 

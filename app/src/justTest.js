@@ -4,12 +4,15 @@ let deviceHeight = device.height;
 // requestScreenCapture();
 //click(deviceWidth / 2, 1670);
 console.log("开始")
+function clickInvestMulti() {
+    let myTeam = className("android.view.View").text("（50/50人）").findOnce();
+    console.log("t我靠满人", myTeam);
 
-let dd = textContains("去换衣服").findOnce();
+}
 
+clickInvestMulti();
 
-
-console.log("结束",dd)
+console.log("结束")
 
 function getScreenImg() {
     let screenPic = captureScreen();
