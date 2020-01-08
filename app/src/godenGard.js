@@ -68,28 +68,40 @@ function openGoldGarden() {
     stateBarHeigh = gameDiv.bounds().top;
     gameHigh = gameDiv.bounds().bottom - gameDiv.bounds().top;
 
-    //有售后进入后滑动到了底部
-    //返回到顶部
-    swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
+    //判断是否有金主弹窗
+    let jinzuClose = text("TB1wtozXwvGK1Jjy0FgXXX9hFXa-168-168").findOnce();
+    if (jinzuClose) {
+        jinzuClose.parent().click();
+    }
 
     let jinbiVist = textContains("立即签到").findOnce();
     //判断有没有金币签到 
     if (jinbiVist != null) {
         jinbiVist.click();
         sleep(1000);
-        className("android.widget.Image").text("TB1mJFIgET1gK0jSZFrXXcNCXXa-72-72").findOne().click()
+        className("android.widget.Image").textStartsWith("TB1mJFIgET1gK0jSZFrXXcNCXXa-72-72").findOne().click()
     }
 
+    //有售后进入后滑动到了底部
+    //返回到顶部
+    swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
+
     sleep(3000);
+    //点下果子  收一下
+    click(deviceWidth / 2, deviceHeight * 0.356);
+    sleep(1000);
+
     toast("开始做领水滴任务");
     goWaterDrop();
     //金币庄园
     sleep(2000);
     //掘金团队
+    swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
     toast("开始做掘金团队");
     goNuggetsAndBack();
     sleep(2000);
     //领金币
+    swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
     toast("开始今日任务");
     toDaygoldTask();
 }
@@ -162,7 +174,9 @@ function quJiaoShui() {
 
 
 function goNuggetsAndBack() {
-    click(Math.round(deviceWidth * 0.556), Math.round(gameHigh * 0.513 + stateBarHeigh));
+    // click(Math.round(deviceWidth * 0.556), Math.round(gameHigh * 0.513 + stateBarHeigh));
+    let gameList = className("android.widget.Image").id("__SVG_SPRITE_NODE__").findOnce();
+    gameList.parent().child(3).child(0).child(3).child(0).click();
     sleep(5000);
     //先领取  金币
     let allGold = EUtil.ImageSearchEngin('./res/gold_hom.png', [0, 200, deviceWidth, 800], 5);
@@ -214,8 +228,36 @@ function clickInvestMulti() {
  * 每日金币领取
  */
 function toDaygoldTask() {
-    click(Math.round(deviceWidth * 0.102), Math.round(gameHigh * 0.513 + stateBarHeigh));
+    // click(Math.round(deviceWidth * 0.102), Math.round(gameHigh * 0.513 + stateBarHeigh));
+    let gameList = className("android.widget.Image").id("__SVG_SPRITE_NODE__").findOnce();
+    gameList.parent().child(3).child(0).child(0).child(0).click();
     sleep(3000);
+    //先判断是否成就领取
+    let jiangli = className("android.view.View").desc("领奖励").findOnce();
+    if (jiangli != null) {
+        click(jiangli.bounds().centerX(), jiangli.bounds().centerY());
+        sleep(3000);
+        let backBtnCj = className("android.widget.ImageButton").desc("转到上一层级").findOne(2000);
+        if (backBtnCj != null) {
+            let cjjl = className("android.view.View").desc("领取奖励").findOnce();
+            while (cjjl != null) {
+                cjjl.parent().click();
+                let cjjjd = className("android.view.View").desc("领取奖励").findOne(3000);
+                if (cjjjd != null) {
+                    cjjjd.parent().click();
+                    sleep(13000);
+                    back();
+                    sleep(1000);
+                    back();
+                    sleep(1000);
+                }
+                cjjl = className("android.view.View").desc("领取奖励").findOnce();
+                // sleep(1000);
+            }
+            backBtnCj.click();
+            sleep(2000);
+        }
+    }
     //先滑动半个屏幕
     swipe(deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, 0, 1000);
     sleep(100);
@@ -322,7 +364,7 @@ function goGet5GoldAndBack(x, y, height) {
 
 function getWaterDrop() {
     //需要执行的任务集合
-    let arrTask = ["每日免费领水滴", "浏览指定商品", "逛淘金币年货节会场", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生领服装", "逛农场领免费水果", "淘宝吃货"];
+    let arrTask = ["每日免费领水滴", "浏览指定商品", "逛福果领免费水果", "逛淘金币年货节会场", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生领服装", "逛农场领免费水果", "淘宝吃货"];
 
     for (let i = 0; i < arrTask.length; i++) {
         sleep(2000)
@@ -332,6 +374,9 @@ function getWaterDrop() {
             const daka = textContains("打卡").findOnce();
             openAndBack(daka, 0, false);
         } else if (singleTask === "浏览指定商品") {
+            let qgg = getEquQggUi(singleTask);
+            openAndBack(qgg, 13000, true);
+        } else if (singleTask === "逛福果领免费水果") {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 13000, true);
         } else if (singleTask === "逛淘金币年货节会场") {

@@ -4,13 +4,9 @@ let deviceHeight = device.height;
 // requestScreenCapture();
 //click(deviceWidth / 2, 1670);
 console.log("开始")
-function clickInvestMulti() {
-    let myTeam = className("android.view.View").text("（50/50人）").findOnce();
-    console.log("t我靠满人", myTeam);
 
-}
+className("android.widget.Image").textStartsWith("TB1mJFIgET1gK0jSZFrXXcNCXXa-72-72").findOne().click()
 
-clickInvestMulti();
 
 console.log("结束")
 
