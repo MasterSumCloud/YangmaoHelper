@@ -23,9 +23,9 @@
 ### 百度云下载地址 链接:[https://pan.baidu.com/s/1jradOvFF9-z53ycNaUd8MQ](https://pan.baidu.com/s/1jradOvFF9-z53ycNaUd8MQ)  密码:`r8rh`
 
 ## 最新版 请下载
-### 更新内容：1.7.2
+### 更新内容：1.7.5
 
-#### 修复蚂蚁森林和蚂蚁庄园BUG，淘人生单独执行
+#### 完善和修正淘金币庄园自动领取，收果实，领水滴
 
 ## 其他
 
