@@ -1,6 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let EUtil = require('../EUtil.js');
+let EUtil = require('./EUtil.js');
 
 function startTaoLife(isFromGold) {
     //打开淘宝 金币庄园过来不判断
@@ -81,12 +81,23 @@ function startTaoLife(isFromGold) {
             sendCard();
             //抽套装
             getSuits();
+            achieveMentIdentity();
             //去玩游戏
             startTiliGame();
+            achieveMentIdentity();
             //去领取签到的
             singnGetCj();
         }
 
+    }
+}
+
+function achieveMentIdentity() {
+    let achieveMentPop = EUtil.ImageSearchEngin('./res/taolife/taolife_achievement.png', [150, deviceHeight / 4, deviceWidth - 300, deviceHeight * 0.5], 1);
+    while (achieveMentPop != -1) {
+        click(deviceWidth / 2, achieveMentPop[0].point.y + deviceHeight * 0.537);
+        sleep(1000);
+        achieveMentPop = EUtil.ImageSearchEngin('./res/taolife/taolife_achievement.png', [150, deviceHeight / 4, deviceWidth - 300, deviceHeight * 0.5], 1);
     }
 }
 
@@ -107,6 +118,7 @@ function getSuits() {
         if (getMoreCardBtn != null) {
             //判断是否有卡片领取
             console.log("查看是否有12点后的卡片领取");
+            sleep(2000);
             let hasCardAfter12 = EUtil.ImageSearchEngin('./res/taolife/taolife_get_card6.png', [deviceWidth * 0.7, deviceHeight / 2], 1);
             if (hasCardAfter12 != -1) {
                 console.log("领取12点后的卡片");
@@ -170,20 +182,9 @@ function getSuits() {
                 while (!hasGetSuit && maxSearch > 0) {
                     //判断当前套装数量
                     if (hasNumSuit.length < 4) {//没有抽完
-                        console.log("当前套装没有抽完");
-                        let choutaozhuang = EUtil.ImageSearchEngin('./res/taolife/taolife_get_suit.png', [deviceWidth / 2, deviceHeight - 300, deviceWidth / 2, 300], 1);
-                        if (choutaozhuang != -1) {
-                            console.log("抽套装");
-                            click(choutaozhuang[0].point.x, choutaozhuang[0].point.y);
-                            sleep(5000);
-                            //抽套装
-                            let confrimSuit = EUtil.ImageSearchEngin('./res/taolife/taolife_send_5_confirm.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight * 0.21], 1);
-                            if (confrimSuit != -1) {
-                                click(confrimSuit[0].point.x, confrimSuit[0].point.y);
-                                sleep(1000);
-                                hasGetSuit = true;
-                                break;
-                            }
+                        hasGetSuit = getCmitSuit();
+                        if (hasGetSuit) {
+                            break;
                         }
                     } else {//当前套装已经齐全 换下一套
                         console.log("当前套装已完成，换下一套");
@@ -193,7 +194,8 @@ function getSuits() {
                         maxSearch--;
                     }
                 }
-
+            } else {
+                getCmitSuit();
             }
         }
         //搞定了 回去
@@ -201,6 +203,28 @@ function getSuits() {
     } else {
         toastLog("不在游戏首页，退出")
         exit();
+    }
+}
+
+function getCmitSuit() {
+    console.log("当前套装没有抽完");
+    let choutaozhuang = EUtil.ImageSearchEngin('./res/taolife/taolife_get_suit.png', [deviceWidth / 2, deviceHeight - 300, deviceWidth / 2, 300], 1);
+    if (choutaozhuang != -1) {
+        console.log("抽套装");
+        click(choutaozhuang[0].point.x, choutaozhuang[0].point.y);
+        sleep(2000);
+        //抽套装
+        let confrimSuit = EUtil.ImageSearchEngin('./res/taolife/taolife_send_5_confirm.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight * 0.21], 1);
+        if (confrimSuit != -1) {
+            click(confrimSuit[0].point.x, confrimSuit[0].point.y);
+            sleep(2000);
+            //继续查看是否有是因为面部二次弹窗
+            let faceUnlock = EUtil.ImageSearchEngin('./res/taolife/taolife_face_unlock.png', [150, deviceHeight * 0.31, deviceWidth - 300, deviceHeight * 0.4], 1);
+            if (faceUnlock != -1) {
+                click(faceUnlock[0].point.x - 10, faceUnlock[0].point.y + deviceHeight * 0.334);
+            }
+            return true;
+        }
     }
 }
 
@@ -315,7 +339,7 @@ function singnGetCj() {
             console.log("成就签到");
             qiandao.click();
             sleep(1000);
-            let xinyuanka = className("android.view.View").text("心愿卡 x2").findOnce().parent();
+            let xinyuanka = className("android.view.View").text("心愿卡 x1").findOnce().parent();
             let childs = xinyuanka.children()[3];
             childs.click();
             sleep(1000);
@@ -842,9 +866,10 @@ function juadgeTiliZero() {
     return hasTili != -1;
 }
 
-// requestScreenCapture();
-// getSuits();
+requestScreenCapture();
+sleep(2000);
+singnGetCj();
 // startTaoLife();
 // startTiliGame();
-module.exports = startTaoLife;
+// module.exports = startTaoLife;
 
