@@ -367,6 +367,9 @@ function getWaterDrop() {
     let arrTask = ["每日免费领水滴", "浏览指定商品", "逛福果领免费水果", "逛淘金币年货节会场", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生领服装", "逛农场领免费水果", "淘宝吃货"];
 
     for (let i = 0; i < arrTask.length; i++) {
+        if (i == 3) {
+            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
+        }
         sleep(2000)
         let singleTask = arrTask[i];
         toast("开始" + singleTask);
@@ -388,7 +391,6 @@ function getWaterDrop() {
         } else if (singleTask === "逛高抵扣商品赚果实") {
             let qgg = getEquQggUi(singleTask);
             openAndBack(qgg, 13000, true);
-            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
         } else if (singleTask === "逛淘宝人生领服装") {
             if (doTaolife) {
                 let qgg = getEquQggUi("逛淘宝人生领服装");

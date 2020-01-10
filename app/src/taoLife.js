@@ -62,6 +62,8 @@ function startTaoLife(isFromGold) {
             sleep(11000);
         }
         if (isFromGold) {
+            //判断当前是否有任务的送卡的弹窗
+            juadgeTypeToPlay();
             //判断当前界面 是否有送卡
             console.log("判断当前界面 是否有送卡");
             getCurentHasCartToGet();

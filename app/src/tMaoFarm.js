@@ -17,6 +17,8 @@ function startTmaoFarm(isFromGold) {
         if (isFromGold) {
             toastLog("金币庄园过来,多呆10秒");
             sleep(11000);
+            back();
+            return;
         }
         let imidShou = textContains("立即去收").findOnce();
         //每日第一次进去提示

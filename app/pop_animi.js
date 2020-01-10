@@ -126,6 +126,9 @@ function menuOnClick(view) {
                     if (soureces.toString().endsWith("UI.js")) {
                         engin.forceStop();
                         toastLog("关闭执行");
+                    }else if(soureces.toString().endsWith("taoTree.js")) {
+                        engin.forceStop();
+                        toastLog("关闭执行");
                     }
                 });
             }
