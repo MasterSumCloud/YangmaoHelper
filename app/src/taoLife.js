@@ -1,6 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let EUtil = require('./EUtil.js');
+let EUtil = require('../EUtil.js');
 
 function startTaoLife(isFromGold) {
     //打开淘宝 金币庄园过来不判断
@@ -866,10 +866,10 @@ function juadgeTiliZero() {
     return hasTili != -1;
 }
 
-requestScreenCapture();
-sleep(2000);
-singnGetCj();
+// requestScreenCapture();
+// sleep(2000);
+// singnGetCj();
 // startTaoLife();
 // startTiliGame();
-// module.exports = startTaoLife;
+module.exports = startTaoLife;
 

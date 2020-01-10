@@ -40,9 +40,9 @@ let defaultBarScore = configStorage.get("starsBallTargetScore", 210);
 
 ui.layout(
     <vertical>
-        <text marginLeft="15dp" marginTop="10sp">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
-        <text marginLeft="15dp" marginTop="10sp">本项目代码开元，请放心使用！！！</text>
-        <text marginLeft="15dp" marginTop="10sp">联系作者：QQ群 567679111</text>
+        <text marginLeft="15dp" marginTop="10sp" textColor="#D65253">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
+        <text marginLeft="15dp" marginTop="10sp" textColor="#D65253">本项目代码开源，请放心使用！！！需要源码加群联系作者</text>
+        <text marginLeft="15dp" marginTop="10sp"  textColor="#2b8754">联系作者：QQ群 567679111</text>
         <horizontal w="auto" h="auto" marginLeft="15dp">
             <text marginLeft="30sp">无障碍</text>
             <Switch w="auto" h="auto" id="autoService" checked="{{installService}}"></Switch>
@@ -98,6 +98,7 @@ ui.layout(
                         <input id="ballScore" text={defaultBarScore} />
                         <button id="ballSetOk" text="确定" />
                     </horizontal>
+                    <text marginLeft="30dp" marginRight="15dp">备注：蚂蚁庄园的星星球，如果需要单独刷分，设置好分数，确定，打开悬浮穿。去到星星球游戏界面，然后打开悬浮点击第二个！</text>
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbAntCruise" checked={isOpenCruiseMode} />
                         <text marginLeft="15dp" marginRight="15dp" h="60dp">蚂蚁森林巡航模式 解释：半个小时内无脑循环在蚂蚁森林。关闭方法：音量键上键，或者悬浮窗的X</text>
@@ -114,6 +115,12 @@ ui.layout(
                     <text marginLeft="15dp">开发中，不稳定，BUG多，慎用</text>
                     <text marginLeft="15dp">暂时只支持单独运行</text>
                     <button id={"exeTaolife"} marginLeft="15dp" marginRight="15dp">单独执行 淘人生</button>
+                </vertical>
+
+                <vertical>
+                <text textSize="18sp" textStyle="bold">功能5：淘宝活动种果树</text>
+                    <text marginLeft="15dp" marginRight="15dp">使用方法：所有权限开启后，点击切换到淘宝，到种树页面，然后打开悬浮穿点击第三个</text>
+                    <button id={"goTaobao"} marginLeft="15dp" marginRight="15dp">切换到淘宝</button>
                 </vertical>
 
                 {/* <vertical>
@@ -217,6 +224,9 @@ ui.exeGoldManor.click(() => {
     currentExeTask = threads.start(function () {
         goldGame(isOpenTaolife, isOpenTmFarm);
     });
+});
+ui.goTaobao.click(() => {
+    launch("com.taobao.taobao");
 });
 
 ui.cbTaolife.on("check", function (checked) {
