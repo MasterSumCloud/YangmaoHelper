@@ -35,6 +35,11 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
             sleep(5000);
         }
         console.log("巡航模式状态" + forestCruiseMode);
+        //过年增加 有个弹窗
+        let closeMc = className("android.widget.Button").text("关闭蒙层").findOnce();
+        if (closeMc != null) {
+            closeMc.click();
+        }
         //启用了巡航模式
         if (forestCruiseMode) {
             toastLog("开启巡航模式")

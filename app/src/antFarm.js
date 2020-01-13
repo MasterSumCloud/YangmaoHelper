@@ -14,6 +14,11 @@ function startFarm(isOpenAntFarmStartBall) {
     }
     if (antFarm != null) {
         sleep(5000);
+        //额外判断弹窗
+        let wheatBtn = EUtil.ImageSearchEngin('./res/antFarm_wheat.png', [deviceWidth / 3, deviceHeight * 0.675, deviceWidth / 3, deviceHeight * .3], 1);
+        if (wheatBtn != -1) {
+            click(wheatBtn[0].point.x, wheatBtn[0].point.y);
+        }
         //判断自己家的鸡在不在
         juadgeSlefAtHome();
         //判断是否有贼鸡
@@ -39,6 +44,9 @@ function startFarm(isOpenAntFarmStartBall) {
             }
 
         }
+        //判断是否有饲料可以领取
+        // getFoodsCanTake();
+        // sleep(1000);
         //喂饲料 930 2000
         click(Math.round(deviceWidth * 0.861), Math.round(deviceHeight * 0.9));
         sleep(500);
@@ -51,6 +59,15 @@ function startFarm(isOpenAntFarmStartBall) {
     }
     toastLog("完事收工");
     back();
+}
+
+function getFoodsCanTake() {
+    let food = EUtil.ImageSearchEngin('./res/antFarm_food.png', [deviceWidth / 2, deviceHeight * 0.36], 5);
+    if (food != -1) {
+        food.forEach(element => {
+            click(element.point.x + 90, element.point.y + 130);
+        });
+    }
 }
 
 function juadgeSlefAtHome() {
