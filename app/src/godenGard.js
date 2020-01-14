@@ -117,6 +117,7 @@ function goWaterDrop() {
         //关闭水滴领取框
         click(device.width / 2, stateBarHeigh + 100);
         sleep(1000);
+        toastLog("关闭水滴弹窗");
     }
     sleep(2000);
     //获取水滴
@@ -126,6 +127,7 @@ function goWaterDrop() {
 function clickWater() {
     let shuidi = EUtil.ImageSearchEngin('./res/home_shuidi.png', [0, deviceHeight * 0.193, deviceWidth, 350], 5);
     if (shuidi != -1) {
+        toastLog("领取任务所得水滴");
         shuidi.forEach(element => {
             click(element.point.x + 20, element.point.y);
             sleep(100);

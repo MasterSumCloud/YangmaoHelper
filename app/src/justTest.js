@@ -1,12 +1,14 @@
-let EUtil = require('./EUtil.js');
+// let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-requestScreenCapture();
+// requestScreenCapture();
 //click(deviceWidth / 2, 1670);
 console.log("开始")
-let goldEnergy = EUtil.ImageSearchEngin('./res/antTree_gold_energy.png', [0, deviceHeight * 0.135, deviceWidth, deviceHeight * 0.135], 1);
-click(goldEnergy[0].point.x + 50, goldEnergy[0].point.y + 50);
-console.log("获取到的坐标", goldEnergy)
+
+
+let gameList = className("android.widget.Image").id("__SVG_SPRITE_NODE__").findOnce();
+gameList.parent().child(3).child(0).child(3).child(0).click();
+
 
 console.log("结束")
 
