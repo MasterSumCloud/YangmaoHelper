@@ -1,9 +1,9 @@
 {
   "assets": [],
   "build": {
-    "build_id": "FBB14A6A-3",
-    "build_number": 3,
-    "build_time": 1576596344813,
+    "build_id": "D3A53EC0-1",
+    "build_number": 1,
+    "build_time": 1578972098611,
     "release": false
   },
   "encryptLevel": 0,
@@ -13,7 +13,7 @@
     "displaySplash": true,
     "hideLogs": false,
     "splashIcon": "res/splashIcon.png",
-    "splashText": "Powered by Eagle",
+    "splashText": "Designed by Eagle",
     "stableMode": false
   },
   "main": "main.js",
@@ -26,8 +26,8 @@
   "scripts": {},
   "signingConfig": {
     "alias": "ohsheet",
-    "keystore": "/storage/emulated/0/Scripts/.keystore/薅羊毛.jks",
-    "uuid": "68e5320a-4278-4cb0-bcc3-7e9474d34af6"
+    "keystore": "res/薅羊毛.jks",
+    "uuid": "47a613ef-121b-42c1-aeff-82798fe47067"
   },
   "versionCode": 27,
   "versionName": "1.7.7"
