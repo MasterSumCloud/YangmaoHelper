@@ -4,7 +4,7 @@ importClass(android.animation.AnimatorSet)
 importClass(android.view.animation.BounceInterpolator)
 
 //importClass(android.content.BroadcastReceiver);
-importClass(android.content.ContextWrapper);
+// importClass(android.content.ContextWrapper);
 importClass(android.content.IntentFilter);
 
 /**************可修改参数 */
@@ -126,7 +126,7 @@ function menuOnClick(view) {
                     if (soureces.toString().endsWith("UI.js")) {
                         engin.forceStop();
                         toastLog("关闭执行");
-                    }else if(soureces.toString().endsWith("taoTree.js")) {
+                    } else if (soureces.toString().endsWith("taoTree.js")) {
                         engin.forceStop();
                         toastLog("关闭执行");
                     }
@@ -488,11 +488,11 @@ w_logo._but.setOnTouchListener(function (view, event) {
 });
 
 //exit()退出事件
-events.on('exit', function () {
-    if (intent_CHANGED != null) {
-        //关闭 屏幕旋转监听广播
-        new ContextWrapper(context).unregisterReceiver(intent_CHANGED);
-    }
-});
+// events.on('exit', function () {
+//     if (intent_CHANGED != null) {
+//         //关闭 屏幕旋转监听广播
+//         new ContextWrapper(context).unregisterReceiver(intent_CHANGED);
+//     }
+// });
 
 setInterval(() => { }, 1000);

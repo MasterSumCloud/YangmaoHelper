@@ -1,5 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
+let EUtil = require('../EUtil.js');
 
 function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmStartBall) {
     //进入支付宝
@@ -39,7 +40,11 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
         let closeMc = className("android.widget.Button").text("关闭蒙层").findOnce();
         if (closeMc != null) {
             closeMc.click();
+            sleep(1000);
         }
+        //是否有好友送的能量
+        getGoldEnergy();
+
         //启用了巡航模式
         if (forestCruiseMode) {
             toastLog("开启巡航模式")
@@ -90,6 +95,16 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
         exit();
     }
 
+}
+
+function getGoldEnergy() {
+    toastLog("判断是否有黄金能量");
+    let goldEnergy = EUtil.ImageSearchEngin('./res/antTree_gold_energy.png', [0, deviceHeight * 0.135, deviceWidth, deviceHeight * 0.135], 1);
+    while (goldEnergy != -1) {
+        click(goldEnergy[0].point.x + 50, goldEnergy[0].point.y - 50);
+        sleep(1000);
+        goldEnergy = EUtil.ImageSearchEngin('./res/antTree_gold_energy.png', [0, deviceHeight * 0.135, deviceWidth, deviceHeight * 0.135], 1);
+    }
 }
 
 function circleCode(circle, times) {

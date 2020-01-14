@@ -45,8 +45,8 @@ function startFarm(isOpenAntFarmStartBall) {
 
         }
         //判断是否有饲料可以领取
-        // getFoodsCanTake();
-        // sleep(1000);
+        getFoodsCanTake();
+        sleep(1000);
         //喂饲料 930 2000
         click(Math.round(deviceWidth * 0.861), Math.round(deviceHeight * 0.9));
         sleep(500);
@@ -62,12 +62,40 @@ function startFarm(isOpenAntFarmStartBall) {
 }
 
 function getFoodsCanTake() {
+    let getFoods = EUtil.ImageSearchEngin('./res/antFarm_get_good.png', [0, deviceHeight * 0.8], 1);
+    if (getFoods != -1) {
+        click(getFoods[0].point.x, getFoods[0].point.y);
+        let hasfull = clickFood();
+        if (!hasfull) {
+            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.2, 1000);
+            clickFood();
+        }
+        click(deviceWidth / 2, 400);
+        sleep(1000);
+    }
+}
+
+function clickFood() {
     let food = EUtil.ImageSearchEngin('./res/antFarm_food.png', [deviceWidth / 2, deviceHeight * 0.36], 5);
+    let hasFull = false;
     if (food != -1) {
+        sleep(2000);
         food.forEach(element => {
             click(element.point.x + 90, element.point.y + 130);
+            let imgScrrenPop = getScreenImg();
+            let fullNot = images.findMultiColors(imgScrrenPop, "#CCCCCC", [[20, 20, "#CCCCCC"], [deviceWidth * 0.39, 20, "#ff3c45"]], {
+                region: [deviceWidth * 0.12, deviceHeight * 0.39, deviceWidth * 0.76, deviceHeight / 4]
+            });
+            if (fullNot != null) {//粮食满了
+                click(deviceWidth * 0.69, fullNot.y + 50);
+                hasFull = true;
+                return hasFull;
+            } else {
+                sleep(5000);
+            }
         });
     }
+    return hasFull;
 }
 
 function juadgeSlefAtHome() {
@@ -91,7 +119,7 @@ function juadgeSlefAtHome() {
             region: [deviceWidth * 0.12, deviceHeight * 0.39, deviceWidth * 0.76, deviceHeight / 4]
         });
         if (popNote != null) {//点错了
-            click(popNote.point.x + 100, popNote.point.y + 50);
+            click(popNote.x + 100, popNote.y + 50);
             sleep(1000);
             click(deviceWidth * 0.79, deviceHeight * 0.74);
             sleep(5000);
