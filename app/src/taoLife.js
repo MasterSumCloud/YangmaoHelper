@@ -809,9 +809,7 @@ function atHome() {
             click(deviceWidth * 0.227, hasSuits[0].point.y);
             sleep(2000);
             toastLog("领取第一个")
-            juadgeTypeToPlay();
-            sleep(1000);
-            juadgeTypeToPlay();
+            doSameHome();
             return;
         }
         //第二个没点 点第二个
@@ -819,9 +817,7 @@ function atHome() {
             click(deviceWidth / 2, hasSuits[0].point.y);
             sleep(2000);
             toastLog("领取第二个");
-            juadgeTypeToPlay();
-            sleep(1000);
-            juadgeTypeToPlay();
+            doSameHome();
             return;
         }
         //第三个没点 点第三个
@@ -829,9 +825,7 @@ function atHome() {
             click(deviceWidth * 0.73, hasSuits[0].point.y);
             sleep(2000);
             toastLog("领取第三个");
-            juadgeTypeToPlay();
-            sleep(1000);
-            juadgeTypeToPlay();
+            doSameHome();
             return;
         }
     } else {
@@ -839,18 +833,24 @@ function atHome() {
         click(deviceWidth * 0.227, deviceHeight * 0.563);
         sleep(2000);
         toastLog("领取第一个")
-        juadgeTypeToPlay();
-        sleep(1000);
-        juadgeTypeToPlay();
+        doSameHome();
         return;
     }
+
+
+}
+
+function doSameHome() {
+    juadgeTypeToPlay();
+    sleep(1000);
+    juadgeTypeToPlay();
+    sleep(1000);
     //判断是否有新地图
     let newmap = EUtil.ImageSearchEngin('./res/taolife/taolife_newmap.png', [0, deviceHeight / 3, deviceWidth, deviceHeight / 3], 1);
     if (newmap != -1) {
         click(deviceWidth / 2, newmap[0].point.y + 773);
         sleep(1000);
     }
-
 }
 
 function getTice() {
@@ -900,7 +900,7 @@ function juadgeTypeToPlay() {
             return 9;
         }
 
-        let friendThumbUp = EUtil.ImageSearchEngin('./res/taolife/taolife_friend_subup.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
+        let friendThumbUp = EUtil.ImageSearchEngin('./res/taolife/taolife_friend_sumb.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
         if (friendThumbUp != -1) {
             console.log("任务 去给好友点赞");
             return 8;
@@ -936,7 +936,7 @@ function juadgeTiliZero() {
 
 requestScreenCapture();
 sleep(2000);
-// singnGetCj();
-startTiliGame();
+startTaoLife(false);
+// startTiliGame();
 // module.exports = startTaoLife;
 
