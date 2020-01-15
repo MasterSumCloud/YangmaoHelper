@@ -18,6 +18,26 @@ function ImageSearchEngin(templeUrl, areaRgion, maxNum) {
 }
 
 /**
+ * 根据小图找大图 如果不存在返回-1
+ * @param {相思值} threshold
+ * @param {小图的路径} templeUrl 
+ * @param {搜索参数} areaRgion 
+ * @param {最大查找数量} maxNum 
+ */
+
+function ImageSearchEnginSelfThrehold(threshold, templeUrl, areaRgion, maxNum) {
+    let screen = getScreenImg();
+    let temple = images.read(templeUrl);
+    let hasCardMatches = images.matchTemplate(screen, temple, { threshold: threshold, region: areaRgion, max: maxNum }).matches;
+    console.log("找图工具类提示", hasCardMatches);
+    if (hasCardMatches == null || hasCardMatches.length == 0) {
+        return -1;
+    } else {
+        return hasCardMatches;
+    }
+}
+
+/**
  * 根据颜色搜索坐标点 不存在返回-1
  * @param {需要找的颜色} templeColor 
  * @param {搜索参数} areaRgion 
@@ -68,3 +88,4 @@ function getScreenImg() {
 
 module.exports.ImageSearchEngin = ImageSearchEngin
 module.exports.ColorSearchEngin = ColorSearchEngin
+module.exports.ImageSearchEnginSelfThrehold = ImageSearchEnginSelfThrehold
