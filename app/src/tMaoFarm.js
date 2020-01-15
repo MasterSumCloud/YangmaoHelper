@@ -14,26 +14,26 @@ function startTmaoFarm(isFromGold) {
         toastLog("等待超时");
         exit();
     } else {
-        if (isFromGold) {
-            toastLog("金币庄园过来,多呆10秒");
-            sleep(11000);
-            back();
-            return;
-        }
+        // if (isFromGold) {
+        //     toastLog("金币庄园过来,多呆10秒");
+        //     sleep(11000);
+        //     back();
+        //     return;
+        // }
         let imidShou = textContains("立即去收").findOnce();
         //每日第一次进去提示
         if (imidShou != null) {
             imidShou.click();
             sleep(500);
         }
-        //先收集所有的太阳
-        collectSuns();
         //点击农田
         whileClickFarm();
+        //所有的太阳
+        collectSuns();
         //去做任务
         finisTask();
         //去做进店任务
-        seePriciousBox();
+        // seePriciousBox();
         //关闭弹窗
         let popTop = textContains("TB13zrOKSzqK1RjSZFHXXb3CpXa").findOnce();
         if (popTop != null) {
@@ -49,12 +49,13 @@ function startTmaoFarm(isFromGold) {
 
 function seePriciousBox() {
     let goShop = textContains("去进店").findOnce();
-    if (goShop==null) {
+    if (goShop == null) {
         return;
     }
     for (let i = 0; i < 5; i++) {
         let goShop = textContains("去进店").findOnce();
         if (goShop != null) {
+            toastLog("去进店");
             goShop.click();
             let goOrn = textContains("店铺微淘").findOnce();
             let witeMaxSec = 8;
@@ -63,27 +64,27 @@ function seePriciousBox() {
                 goOrn = textContains("店铺微淘").findOnce();
                 witeMaxSec--;
             }
+            toastLog("进入店铺");
             //先直接找一遍
-            let maxSearch = 3;
+            let maxSearch = 5;
             while (maxSearch > 0) {
                 let tmGame = descContains("天猫农场").findOnce();
                 if (tmGame != null) {
+                    toastLog("找到了");
+                    sleep(1000);
                     let openV = descContains("立即打开").findOnce();
                     click(openV.bounds().centerX(), openV.bounds().centerY());
                     maxSearch = 0;
                     break;
                 } else {
-                    rootautomator.swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.1, 1000);
+                    swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.1, 1000);
                     maxSearch--;
-                    sleep(100);
                 }
             }
+            toastLog("返回 开始第" + (i + 1) + "次");
             back();
-        } else {
-            break;
         }
     }
-
 }
 
 
@@ -123,7 +124,6 @@ function collectSuns() {
             for (let i = 0; i < hasSunsMatches.length; i++) {
                 let item = hasSunsMatches[i];
                 click(item.point.x, item.point.y);
-                sleep(100);
             }
             hasSunsMatches = images.matchTemplate(farmScreen, hasSums, { threshold: 0.8, region: [0, gameDiv.bounds().top, deviceWidth, gameDiv.bounds().bottom - gameDiv.bounds().top], max: 9 }).matches;
             maxTime--;
@@ -131,7 +131,6 @@ function collectSuns() {
     } else {
         toastLog("未获取到游戏的上部分布局，退出");
     }
-
 }
 
 function whileClickFarm() {
@@ -172,12 +171,11 @@ function whileClickFarm() {
                     clickFarm(x3, gameHigh * 0.453 + stateBarHeigh);
                     break;
             }
-            sleep(1000);
-            //如果有升级点一下
-            click(deviceWidth / 2, Math.round(gameHigh * 0.876 + stateBarHeigh));
         }
+        //有升级点一下
+        click(deviceWidth / 2, Math.round(gameHigh * 0.876 + stateBarHeigh));
+        sleep(1000);
     }
-
 }
 
 /**
@@ -201,7 +199,7 @@ function clickFarm(x, y) {
         confirm.click();
     }
     click(x, y);
-    sleep(100);
+    // sleep(100);
 }
 
 // requestScreenCapture();

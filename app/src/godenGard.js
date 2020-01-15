@@ -94,7 +94,7 @@ function openGoldGarden() {
     toast("开始做领水滴任务");
     goWaterDrop();
     //金币庄园
-    sleep(2000);
+    sleep(3000);
     //掘金团队
     swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
     toast("开始做掘金团队");
@@ -237,15 +237,19 @@ function toDaygoldTask() {
     //先判断是否成就领取
     let jiangli = className("android.view.View").desc("领奖励").findOnce();
     if (jiangli != null) {
+        toastLog("有成就待领取")
         click(jiangli.bounds().centerX(), jiangli.bounds().centerY());
         sleep(3000);
         let backBtnCj = className("android.widget.ImageButton").desc("转到上一层级").findOne(2000);
         if (backBtnCj != null) {
             let cjjl = className("android.view.View").desc("领取奖励").findOnce();
+            toastLog("开始领取成就")
             while (cjjl != null) {
+                console.log("成就循环中");
                 cjjl.parent().click();
                 let cjjjd = className("android.view.View").desc("领取奖励").findOne(3000);
                 if (cjjjd != null) {
+                    console.log("点击领取");
                     cjjjd.parent().click();
                     sleep(13000);
                     back();
@@ -366,78 +370,57 @@ function goGet5GoldAndBack(x, y, height) {
 
 function getWaterDrop() {
     //需要执行的任务集合
-    let arrTask = ["每日免费领水滴", "浏览指定商品", "逛福果领免费水果", "逛淘金币年货节会场", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生领服装", "逛农场领免费水果", "淘宝吃货"];
+    let arrTask = ["每日免费领水滴", "浏览指定商品", "逛福果领免费水果", "逛淘宝内衣会场", "逛淘金币年货节会场", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生", "逛农场", "淘宝吃货"];
 
     for (let i = 0; i < arrTask.length; i++) {
-        if (i == 3) {
-            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.6, 1000);
+        if (singleTask == "精选好货") {
+            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.3, 500);
+            sleep(1000);
         }
-        sleep(2000)
         let singleTask = arrTask[i];
-        toast("开始" + singleTask);
-        if (singleTask === "每日免费领水滴") {
-            const daka = textContains("打卡").findOnce();
-            openAndBack(daka, 0, false);
-        } else if (singleTask === "浏览指定商品") {
-            let qgg = getEquQggUi(singleTask);
-            openAndBack(qgg, 13000, true);
-        } else if (singleTask === "逛福果领免费水果") {
-            let qgg = getEquQggUi(singleTask);
-            openAndBack(qgg, 13000, true);
-        } else if (singleTask === "逛淘金币年货节会场") {
-            let qgg = getEquQggUi(singleTask);
-            openAndBack(qgg, 13000, true);
-        } else if (singleTask === "精选好货") {
-            let qgg = getEquQggUi(singleTask);
-            openAndBack(qgg, 13000, true);
-        } else if (singleTask === "逛高抵扣商品赚果实") {
-            let qgg = getEquQggUi(singleTask);
-            openAndBack(qgg, 13000, true);
-        } else if (singleTask === "逛淘宝人生领服装") {
-            if (doTaolife) {
-                let qgg = getEquQggUi("逛淘宝人生领服装");
-                if (qgg != null) {
-                    qgg.click();
-                    let startTaoLife = require("./taoLife.js");
-                    startTaoLife(true);
-                }
-            } else {
-                toast("不执行淘人生");
-            }
-        } else if (singleTask === "逛农场领免费水果") {
-            if (doFarm) {
-                let qgg = getEquQggUi(singleTask);
-                if (qgg != null) {
-                    qgg.click();
-                    let tMaoFarm = require("./tMaoFarm.js");
-                    tMaoFarm(true);
-                }
-            } else {
-                toast("不执行天猫农场");
-            }
-        } else if (singleTask === "淘宝吃货") {
-            let qgg = getEquQggUi(singleTask);
-            openAndBack(qgg, 16000, true);
-        }
-    }
-
-
-    function tudiClick() {
-        //判断是否有土地升级
-        let tudi = className("android.widget.Button").textContains("种下").findOnce();
-        let hasTudi = tudi != null;
-        while (hasTudi) {
-            let tud2 = className("android.widget.Button").textContains("种下").findOnce();
-            if (tud2 != null) {
-                tud2.click();
-                sleep(1000);
-            } else {
-                hasTudi = false;
+        switch (singleTask) {
+            case "每日免费领水滴":
+                let singnBtn = textContains("打卡").findOnce();
+                openAndBack(singnBtn, 0, false);
                 break;
-            }
+            case "浏览指定商品":
+            case "逛福果领免费水果":
+            case "逛淘金币年货节会场":
+            case "精选好货":
+            case "逛高抵扣商品赚果实":
+            case "淘宝吃货":
+            case "逛淘宝内衣会场":
+                let bacnBtn = getEquQggUi(singleTask);
+                openAndBack(bacnBtn, 13000, true);
+                break;
+            case "逛淘宝人生":
+                if (doTaolife) {
+                    let qgg = getEquQggUi(singleTask);
+                    if (qgg != null) {
+                        qgg.click();
+                        let startTaoLife = require("./taoLife.js");
+                        startTaoLife(true);
+                    }
+                } else {
+                    toast("不执行淘人生");
+                }
+                break;
+            case "逛农场":
+                if (doFarm) {
+                    let qgg = getEquQggUi(singleTask);
+                    if (qgg != null) {
+                        qgg.click();
+                        let tMaoFarm = require("./tMaoFarm.js");
+                        tMaoFarm(true);
+                    }
+                } else {
+                    toast("不执行天猫农场");
+                }
+                break;
+            default:
+                break;
         }
     }
-
 
     function getEquQggUi(strQ) {
         //拿到拿到的去逛逛
@@ -470,6 +453,7 @@ function getWaterDrop() {
             sleep(delay);
             if (needBack) {
                 back();
+                sleep(2000);
             }
         }
     }

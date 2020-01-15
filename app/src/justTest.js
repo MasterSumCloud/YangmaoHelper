@@ -1,14 +1,12 @@
 // let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-// requestScreenCapture();
+requestScreenCapture();
+sleep(2000);
 //click(deviceWidth / 2, 1670);
 console.log("开始")
 
-
-let gameList = className("android.widget.Image").id("__SVG_SPRITE_NODE__").findOnce();
-gameList.parent().child(3).child(0).child(3).child(0).click();
-
+swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.3, 1000);
 
 console.log("结束")
 

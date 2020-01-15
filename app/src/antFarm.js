@@ -64,6 +64,7 @@ function startFarm(isOpenAntFarmStartBall) {
 function getFoodsCanTake() {
     let getFoods = EUtil.ImageSearchEngin('./res/antFarm_get_good.png', [0, deviceHeight * 0.8], 1);
     if (getFoods != -1) {
+        toastLog("查看是否有可收取的粮食");
         click(getFoods[0].point.x, getFoods[0].point.y);
         let hasfull = clickFood();
         if (!hasfull) {
