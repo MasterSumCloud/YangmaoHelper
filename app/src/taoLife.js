@@ -96,11 +96,11 @@ function startTaoLife(isFromGold, isJustPlayGame) {
 function juadgeIsAtHome() {
     sleep(5000);
     let maxWite = 15;
-    let homeUiLoading = EUtil.ImageSearchEngin('./res/taolife/taolife_loading_ui.png', [0, deviceHeight], 1);
+    let homeUiLoading = EUtil.ImageSearchEngin('./res/taolife/taolife_loading_ui.png', [0, 300], 1);
     while (homeUiLoading != null && maxWite > 0) {
         sleep(1000);
         maxWite--;
-        homeUiLoading = EUtil.ImageSearchEngin('./res/taolife/taolife_loading_ui.png', [0, deviceHeight], 1);
+        homeUiLoading = EUtil.ImageSearchEngin('./res/taolife/taolife_loading_ui.png', [0, 300], 1);
     }
     sleep(5000);
 }
@@ -677,10 +677,10 @@ function get4TiliAfterDotask() {
     }
 }
 
-function photoUpTask(){
+function photoUpTask() {
     let photoUpTask = EUtil.ImageSearchEngin('./res/taolife/taolife_do_task.png', [150, deviceHeight / 2, deviceWidth - 300, 500], 1);
     if (photoUpTask != -1) {
-        
+
     }
 }
 
@@ -995,8 +995,8 @@ function juadgeTiliZero() {
 
 requestScreenCapture();
 sleep(2000);
-// startTaoLife(false);
-startTiliGame(true, true);
+startTaoLife(false, false);
+// startTiliGame();
 // singnGetCj();
 // module.exports = startTaoLife;
 
