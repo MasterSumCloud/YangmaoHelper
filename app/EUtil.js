@@ -58,6 +58,7 @@ function ColorSearchEngin(templeColor, areaRgion, threshold) {
 }
 
 function ColorImageEngin(templeColor, areaRgion, threshold) {
+    let screen = getScreenImg();
     let findPoint = findColor(screen, templeColor, {
         region: areaRgion,
         threshold: threshold
@@ -89,3 +90,5 @@ function getScreenImg() {
 module.exports.ImageSearchEngin = ImageSearchEngin
 module.exports.ColorSearchEngin = ColorSearchEngin
 module.exports.ImageSearchEnginSelfThrehold = ImageSearchEnginSelfThrehold
+module.exports.ColorImageEngin = ColorImageEngin
+
