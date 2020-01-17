@@ -164,19 +164,19 @@ function getSuits() {
         click(taozhuangBtn[0].point.x + 50, taozhuangBtn[0].point.y + 50);
         //等待 是否进入界面
         let witeTime = 5;
-        let getMoreCardBtn = EUtil.ImageSearchEngin('./res/taolife/taolife_get_more_card.png', [0, deviceHeight - 250, deviceWidth, 250], 1);
-        while (getMoreCardBtn == null && witeTime > 0) {
+        let getMoreCardBtn = EUtil.ImageSearchEngin('./res/taolife/taolife_get_more_card.png', [0, deviceHeight - 350, deviceWidth, 350], 1);
+        while (getMoreCardBtn == -1 && witeTime > 0) {
             sleep(1000);
-            getMoreCardBtn = EUtil.ImageSearchEngin('./res/taolife/taolife_get_more_card.png', [0, deviceHeight - 250, deviceWidth, 250], 1);
+            getMoreCardBtn = EUtil.ImageSearchEngin('./res/taolife/taolife_get_more_card.png', [0, deviceHeight - 350, deviceWidth, 350], 1);
             witeTime--;
         }
-
-        if (getMoreCardBtn != null) {
+        console.log("做获取卡片任务", getMoreCardBtn);
+        if (getMoreCardBtn != -1) {
             // 去获取的卡片任务都做了
-            let moreCard = EUtil.ImageSearchEngin('./res/taolife/taolife_get_more_card.png', [0, deviceHeight - 250, deviceWidth, 250], 1);
-            console.log("做获取卡片任务", moreCard);
-            if (moreCard != -1) {
-                click(moreCard[0].point.x + 60, moreCard[0].point.y + 60);
+            // let moreCard = EUtil.ImageSearchEngin('./res/taolife/taolife_get_more_card.png', [0, deviceHeight - 250, deviceWidth, 250], 1);
+            // console.log("做获取卡片任务", getMoreCardBtn);
+            if (getMoreCardBtn != -1) {
+                click(getMoreCardBtn[0].point.x + 60, getMoreCardBtn[0].point.y + 60);
                 sleep(1000);
             }
 
@@ -184,7 +184,7 @@ function getSuits() {
             if (invest != -1) {
                 click(deviceWidth * 0.87, invest[0].point.y + 60);
                 //等待弹窗
-                sleep(2000);
+                sleep(3000);
                 //固定点第一个
                 click(100, deviceHeight * 0.6);
                 sleep(2000);
@@ -425,6 +425,7 @@ function singnGetCj() {
         let taozhuan = className("android.view.View").text("抽套装玩法参与 1 次").findOnce().parent().children()[5].children()[0];
         taozhuan.click();
         console.log("抽套装玩法参与");
+        sleep(1000);
         //回去白色的
         back();
     }
@@ -551,7 +552,7 @@ function startTiliGame() {
                         takePhotoTask();
                         break;
                     case 7://去送卡
-                        sendCardTask();
+                        sendCardTask(2);
                         break
                     case 8://去点赞
                         friendThumbTask();
@@ -680,9 +681,55 @@ function get4TiliAfterDotask() {
 function photoUpTask() {
     let photoUpTask = EUtil.ImageSearchEngin('./res/taolife/taolife_do_task.png', [150, deviceHeight / 2, deviceWidth - 300, 500], 1);
     if (photoUpTask != -1) {
-
+        click(makeUpTask[0].point.x, makeUpTask[0].point.y);
+        sleep(3000);
+        subUp();
+        backGameBtn();
+        sleep(5000);
     }
 }
+function subUp() {
+    for (let i = 0; i < 3; i++) {
+        let listCard = className("android.widget.ListView").find();
+        let listV = null;
+        if (listCard != null && listCard.length > 0) {
+            listCard.forEach(element => {
+                let wideList = element.bounds().right - element.bounds().left;
+                console.log("列表宽度", wideList);
+                if (wideList > 1000 && wideList < 1080) {
+                    listV = element;
+                }
+            });
+        }
+        if (listV != null) {
+            let listChild = listV.children();
+            listChild.forEach(element => {
+                // console.log("孩子", element);
+
+                // let friendThumbUp = EUtil.ImageSearchEngin('./res/taolife/taolife_friend_sumb.png', [0, 998, deviceWidth, 600], 1);
+                try {
+                    let clickT = element.child(0).child(1).child(2).child(1);
+                    clickT.click();
+                } catch (error) {
+
+                }
+
+            });
+            for (let k = 0; k < 3; k++) {
+                let newCode = className("android.widget.Image").text("ty_icon_money.739dddb9").findOnce();
+                if (newCode != null) {
+                    newCode.parent().child(2).click();
+                }
+            }
+        }
+        swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 1000);
+        sleep(1000);
+        swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 1000);
+        sleep(1000);
+    }
+
+}
+
 
 function makeupSelfTask() {
     let makeUpTask = EUtil.ImageSearchEngin('./res/taolife/taolife_do_task.png', [150, deviceHeight / 2, deviceWidth - 300, 500], 1);
@@ -747,13 +794,16 @@ function friendThumbTask() {
     playGoGameView();
 }
 
-function sendCardTask() {
+function sendCardTask(taskTime) {
+    if(taskTime==undefined || taskTime==null){
+        taskTime = 8;
+    }
     let goSendCard = EUtil.ImageSearchEngin('./res/taolife/taolife_do_task.png', [150, deviceHeight / 2, deviceWidth - 300, 500], 1);
     if (goSendCard != -1) {
         click(goSendCard[0].point.x, goSendCard[0].point.y);
         sleep(3000);
         let hasSend = false;
-        for (let k = 0; k < 8; k++) {
+        for (let k = 0; k < taskTime; k++) {
             console.log("进入好友互动列表 开始送卡和点赞=" + k);
             let sendCardPosition = EUtil.ImageSearchEngin('./res/taolife/taolife_send_card.png', [deviceWidth * 0.7, deviceHeight / 2, deviceWidth * 0.3 - 100, deviceHeight / 2], 5);
             if (sendCardPosition != -1) {
@@ -942,29 +992,45 @@ function juadgeTypeToPlay() {
     let magicBox = EUtil.ImageSearchEngin('./res/taolife/taolife_find_magic_box.png', [150, deviceHeight * 0.31, deviceWidth - 300, deviceHeight * 0.4], 1);
     if (magicBox != -1) {
         toastLog("发现神秘礼盒")
-        //继续分析盒子类型
-        let takePhotoTask = EUtil.ImageSearchEngin('./res/taolife/taolife_take_photo.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
-        if (takePhotoTask != -1) {
-            console.log("任务 去拍照");
-            return 4;
-        }
-        let makeUpSelfTask = EUtil.ImageSearchEngin('./res/taolife/taolife_makeup_self.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
-        if (makeUpSelfTask != -1) {
-            console.log("任务 去打扮自己");
-            return 9;
-        }
 
-        let friendThumbUp = EUtil.ImageSearchEngin('./res/taolife/taolife_friend_sumb.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
-        if (friendThumbUp != -1) {
-            console.log("任务 去给好友点赞");
-            return 8;
+        let taskSbox = taskAnalysis(magicBox);
+        switch (taskSbox) {
+            case "拍照":
+                return 4;
+            case "打扮自己":
+                return 9;
+            case "好友点赞":
+                return 8;
+            case "照片点赞":
+                return 12;
+            case "送心愿卡":
+                return 7;
+            default:
+                break;
         }
+        // //继续分析盒子类型
+        // let takePhotoTask = EUtil.ImageSearchEngin('./res/taolife/taolife_take_photo.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
+        // if (takePhotoTask != -1) {
+        //     console.log("任务 去拍照");
+        //     return 4;
+        // }
+        // let makeUpSelfTask = EUtil.ImageSearchEngin('./res/taolife/taolife_makeup_self.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
+        // if (makeUpSelfTask != -1) {
+        //     console.log("任务 去打扮自己");
+        //     return 9;
+        // }
 
-        let phtotThumbUp = EUtil.ImageSearchEngin('./res/taolife/taolife_photo_subup.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
-        if (phtotThumbUp != -1) {
-            console.log("任务 给照片点赞");
-            return 12;
-        }
+        // let friendThumbUp = EUtil.ImageSearchEngin('./res/taolife/taolife_friend_sumb.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
+        // if (friendThumbUp != -1) {
+        //     console.log("任务 去给好友点赞");
+        //     return 8;
+        // }
+
+        // let phtotThumbUp = EUtil.ImageSearchEngin('./res/taolife/taolife_photo_subup.png', [150, magicBox[0].point.y, deviceWidth - 300, 600], 1);
+        // if (phtotThumbUp != -1) {
+        //     console.log("任务 给照片点赞");
+        //     return 12;
+        // }
     }
     //发现品牌
     let findBrand = EUtil.ImageSearchEngin('./res/taolife/taolife_find_brand.png', [150, deviceHeight * 0.31, deviceWidth - 300, deviceHeight * 0.4], 1);
@@ -987,6 +1053,16 @@ function juadgeTypeToPlay() {
     return -1;
 }
 
+function taskAnalysis(magicBox) {
+    // let magicBox = EUtil.ImageSearchEngin('./res/taolife/taolife_find_magic_box.png', [150, deviceHeight * 0.31, deviceWidth - 300, deviceHeight * 0.4], 1);
+    let screen = getScreenImg();
+    let temple = images.clip(screen, magicBox[0].point.x + 100, magicBox[0].point.y + 150, 242, 82);
+    images.save(temple, "/sdcard/haoyangmaoTask.png");
+    // app.viewFile("/sdcard/haoyangmaoTask.png");
+    let analysisText = EUtil.baiduAnasisText("/sdcard/haoyangmaoTask.png");
+    return analysisText;
+}
+
 function juadgeTiliZero() {
     let hasTili = EUtil.ImageSearchEnginSelfThrehold(0.9, './res/taolife/taolife_juadge_tili0.png', [deviceWidth / 3, deviceHeight - 800, deviceWidth / 3, 300], 1);
     //如果为-1 则还有体力 不为-1则没了
@@ -995,8 +1071,9 @@ function juadgeTiliZero() {
 
 requestScreenCapture();
 sleep(2000);
-startTaoLife(false, false);
+// startTaoLife(false, false);
 // startTiliGame();
-// singnGetCj();
+singnGetCj();
+// getSuits();
 // module.exports = startTaoLife;
 

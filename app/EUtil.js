@@ -57,6 +57,40 @@ function ColorSearchEngin(templeColor, areaRgion, threshold) {
     }
 }
 
+function baiduAnasisText(anaImageUrl) {
+    let client_id = "btqNvE0yVq25URT236GRmSIs"; // client_id 
+    let Secret_Key = "4HMAhrZoaE0jCBebslH3wuGgaw5d80j1"; //Secret_Key
+    let temple = images.read(anaImageUrl);
+    let image = images.toBase64(temple, "png", quality = 100)
+
+    let url = "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=" + client_id + "&client_secret=" + Secret_Key;
+    let res = http.get(url);
+    let rel = "";
+    if (res.statusCode == 200) {
+        rel = res.body.string().toString();
+        let map = eval("(" + rel + ")");
+        rel = map.access_token;
+    }
+    url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + rel;
+    res = http.post(url, {
+        "image": image
+    })
+    if (res.statusCode == 200) {
+        rel = res.body.string().toString();
+        print(rel);
+        let map = eval("(" + rel + ")");
+        rel = map.words_result;
+        let list = new Array();
+        list = rel;
+        let words = "";
+        for (let i = 0; i < list.length; i++) {
+            let ss = list[i];
+            words += ss.words;
+        }
+        return words;//识别出来的结果
+    }
+}
+
 function ColorImageEngin(templeColor, areaRgion, threshold) {
     let screen = getScreenImg();
     let findPoint = findColor(screen, templeColor, {
@@ -91,4 +125,5 @@ module.exports.ImageSearchEngin = ImageSearchEngin
 module.exports.ColorSearchEngin = ColorSearchEngin
 module.exports.ImageSearchEnginSelfThrehold = ImageSearchEnginSelfThrehold
 module.exports.ColorImageEngin = ColorImageEngin
+module.exports.baiduAnasisText = baiduAnasisText
 
