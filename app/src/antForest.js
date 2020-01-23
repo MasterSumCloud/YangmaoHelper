@@ -49,22 +49,32 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
         if (forestCruiseMode) {
             toastLog("开启巡航模式")
             let minite = 29;
-            let timeShow = setInterval(function () {
-                toast("剩余时间" + minite + "分");
-            }, 60 * 1000);
+            // let timeShow = setInterval(function () {
+            //     toast("剩余时间" + minite + "分");
+            // }, 60 * 1000);
             //30分钟后取消
-            setTimeout(function () {
-                doHalfHour = false;
-                clearInterval(timeShow);
-            }, 30 * 60 * 1000);
+            // setTimeout(function () {
+            //     doHalfHour = false;
+            //     clearInterval(timeShow);
+            // }, 1 * 60 * 1000);
 
             let doHalfHour = true;
             let circleTimes = 0;
 
             while (doHalfHour) {
+                let dateT = new Date();
+                let h = dateT.getHours();
+                let m = dateT.getMinutes();
+                if (h == 7 && m > 40) {
+                    break;
+                }
+                // console.log("获取到的时间", date.getHours())
+                console.log("执行中", circleTimes);
                 circleTimes++;
                 circleCode(true, circleTimes);
             }
+
+            console.log("执行中结束");
         } else {
             circleCode(false, 1);
         }

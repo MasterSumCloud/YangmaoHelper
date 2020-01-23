@@ -1069,11 +1069,11 @@ function juadgeTiliZero() {
     return hasTili == -1;
 }
 
-requestScreenCapture();
-sleep(2000);
+// requestScreenCapture();
+// sleep(2000);
 // startTaoLife(false, false);
 // startTiliGame();
-singnGetCj();
+// singnGetCj();
 // getSuits();
-// module.exports = startTaoLife;
+module.exports = startTaoLife;
 

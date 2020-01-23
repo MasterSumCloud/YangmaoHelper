@@ -1,5 +1,7 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
+const CONFIG_STORAGE_NAME = 'starsBallTargetScore'
+let configStorage = storages.create(CONFIG_STORAGE_NAME);
 
 function weakScreen() {
     if (device.isScreenOn()) {
@@ -14,7 +16,7 @@ function weakScreen() {
     //开始输入密码
     let passUnlock = descContains("密码解锁").findOnce();
     if (passUnlock != null) {
-        let passWorld = "000000";
+        let passWorld = configStorage.get("savePhonePassword");
         for (i = 0; i < passWorld.length; i++) {
             let ids = "key" + passWorld.charAt(i);
             let key = id(ids).findOnce();
@@ -23,7 +25,6 @@ function weakScreen() {
                 sleep(100);
             }
         }
-
     }
     let confirm = id("key_enter_text").findOnce();
     if (confirm != null) {
@@ -72,4 +73,5 @@ function startTask() {
     }
 };
 
-module.exports = weakScreen
+weakScreen();
+// module.exports = weakScreen

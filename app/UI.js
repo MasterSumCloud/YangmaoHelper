@@ -5,7 +5,7 @@ let antForestGame = require("./src/antForest.js");
 let dingdongGame = require("./src/dingdong.js");
 let taoLifeGame = require("./src/taoLife.js");
 // let weakScreen = require("./src/AutoUnLockScreen.js");
-const CONFIG_STORAGE_NAME = 'ant_start_score'
+const CONFIG_STORAGE_NAME = 'starsBallTargetScore'
 let configStorage = storages.create(CONFIG_STORAGE_NAME);
 
 let deviceWidth = device.width;
@@ -39,9 +39,11 @@ let isOpenAntFarmStartBall = true;
 //默认的数量
 let defaultBarScore = configStorage.get("starsBallTargetScore", 210);
 // 是否开启早7点定时自动偷能量
-let isOpenTimerForestTask = false;
+let isOpenTimerForestTask = configStorage.get("isOpenTimerForestTask", false);;
 //是否每5小时循环一次
-let isOpen5HourTask = false;
+let isOpen5HourTask = configStorage.get("isOpen5HourTask", false);;;
+//上次设置的密码
+let savePassowrd = configStorage.get("savePhonePassword");
 
 ui.layout(
     <vertical>
@@ -128,18 +130,25 @@ ui.layout(
                     <button id={"goTaobao"} marginLeft="15dp" marginRight="15dp">切换到淘宝</button>
                 </vertical>
 
-                {/* <vertical>
+                <vertical>
                     <text textSize="18sp" textStyle="bold">功能6：定时执行蚂蚁森林</text>
                     <text marginLeft="15dp" marginRight="15dp">说明：间隔5小时循环一次，每天早上7点整进行开始，7点执行30分钟循环后结束，之后每隔5小时会自动唤醒屏幕自动执行</text>
+                    <text marginLeft="15dp" marginRight="15dp">特别强调：按音量上键会关闭所有脚本，如果不想误关，建议关闭此功能，方法打开本APP，按下返回键，右上角3个点点击设置，对应关闭即可 </text>
+                    <horizontal marginLeft="30dp">
+                        <text marginLeft="15dp">当前手机密码</text>
+                        <input id="phonePassword" text={savePassowrd} inputType="numberPassword" />
+                        <button id="phonePasswordConfirm" text="保存" />
+                    </horizontal>
                     <horizontal marginLeft="30dp">
                         <CheckBox id="openTimerForestTask" checked={isOpenTimerForestTask} />
-                        <text marginLeft="15dp">是否每日早7点定时偷能量，注意需要APP保活，对应开启方法自行百度</text>
+                        <text marginLeft="15dp" h="45dp">是否每日早7点定时偷能量，注意需要APP保活，对应开启方法自行百度</text>
                     </horizontal>
                     <horizontal marginLeft="30dp">
                         <CheckBox id="open5HourTask" checked={isOpen5HourTask} />
                         <text marginLeft="15dp">是否启用5小时循环定时唤醒</text>
                     </horizontal>
-                </vertical> */}
+                    <button id={"startTimerAntTask"} marginLeft="15dp" marginRight="15dp">保存配置并运行</button>
+                </vertical>
 
                 {/* <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：支付宝-蚂蚁庄园</text>
@@ -282,6 +291,16 @@ ui.cbAntFarmStartsBall.on("check", function (checked) {
     isOpenAntFarmStartBall = checked;
     console.log("isOpenAntFarmStartBall=" + isOpenAntFarmStartBall);
 });
+ui.openTimerForestTask.on("check", function (checked) {
+    isOpenTimerForestTask = checked;
+    configStorage.put("isOpenTimerForestTask", checked);
+    console.log("isOpenTimerForestTask=" + isOpenTimerForestTask);
+});
+ui.open5HourTask.on("check", function (checked) {
+    isOpen5HourTask = checked;
+    configStorage.put("isOpen5HourTask", checked);
+    console.log("isOpen5HourTask=" + isOpen5HourTask);
+});
 
 ui.cbAntCruise.on("check", function (checked) {
     isOpenCruiseMode = checked;
@@ -303,6 +322,49 @@ ui.ballSetOk.click(function () {
     configStorage.put("starsBallTargetScore", parseInt(score));
     toast("设置成功");
 });
+
+ui.phonePasswordConfirm.click(function () {
+    //通过getText()获取输入的内容
+    let passowrd = ui.phonePassword.getText();
+    if (passowrd != undefined) {
+        console.log("保存的密码", passowrd);
+        configStorage.put("savePhonePassword", String(passowrd));
+        toastLog("设置成功");
+    } else {
+        toastLog("密码不能为空");
+    }
+});
+
+ui.startTimerAntTask.click(function () {
+    //开启定时7点功能
+    if (isOpenTimerForestTask) {
+        let opened = false;
+        let task7 = setInterval(function () {
+            let dateT = new Date();
+            let h = dateT.getHours();
+            let m = dateT.getMinutes();
+            if (h == 7 && m >= 0 && m < 10) {
+                engines.execScriptFile("./src/AutoUnLockScreen.js");
+                opened = true;
+            }
+            console.log("当前检测时间", h + ":" + m)
+        }, 5 * 60 * 1000);
+
+        if (opened) {
+            clearInterval(task7);
+        }
+
+    }
+
+    if (isOpen5HourTask) {
+        setInterval(function () {
+            engines.execScriptFile("./src/AutoUnLockScreen.js");
+            console.log("当前检测时间5小时", h + ":" + m)
+        }, 5 * 60 * 60 * 1000);
+    }
+    toastLog("定时任务已开启动");
+});
+
 
 ui.popService.on("check", function (checked) {
     if (!checked) {
