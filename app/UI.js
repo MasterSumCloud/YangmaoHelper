@@ -4,6 +4,7 @@ let goldGame = require("./src/godenGard.js");
 let antForestGame = require("./src/antForest.js");
 let dingdongGame = require("./src/dingdong.js");
 let taoLifeGame = require("./src/taoLife.js");
+// let weakScreen = require("./src/AutoUnLockScreen.js");
 const CONFIG_STORAGE_NAME = 'ant_start_score'
 let configStorage = storages.create(CONFIG_STORAGE_NAME);
 
@@ -37,15 +38,19 @@ let isOpenCruiseMode = false;
 let isOpenAntFarmStartBall = true;
 //默认的数量
 let defaultBarScore = configStorage.get("starsBallTargetScore", 210);
+// 是否开启早7点定时自动偷能量
+let isOpenTimerForestTask = false;
+//是否每5小时循环一次
+let isOpen5HourTask = false;
 
 ui.layout(
     <vertical>
         <text marginLeft="15dp" marginTop="10sp" textColor="#D65253">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
         <text marginLeft="15dp" marginTop="10sp" textColor="#D65253">本项目代码开源，请放心使用！！！需要源码加群联系作者</text>
-        <text marginLeft="15dp" marginTop="10sp"  textColor="#2b8754">联系作者：QQ群 567679111</text>
+        <text marginLeft="15dp" marginTop="10sp" textColor="#2b8754">联系作者：QQ群 567679111</text>
         <horizontal w="auto" h="auto" marginLeft="15dp">
             <text marginLeft="30sp">无障碍</text>
-            <Switch w="auto" h="auto" id="autoService" checked="{{installService}}"></Switch>
+            <Switch w="auto" h="auto" id="autoService" checked="{{auto.service != null}}"></Switch>
             <text marginLeft="30sp">截图</text>
             <Switch w="auto" h="auto" id="captureScreenService" checked="{{currentCaptureScreenPermission}}"></Switch>
             <text marginLeft="30sp">悬浮窗</text>
@@ -118,10 +123,23 @@ ui.layout(
                 </vertical>
 
                 <vertical>
-                <text textSize="18sp" textStyle="bold">功能5：淘宝活动种果树</text>
+                    <text textSize="18sp" textStyle="bold">功能5：淘宝活动种果树</text>
                     <text marginLeft="15dp" marginRight="15dp">使用方法：所有权限开启后，点击切换到淘宝，到种树页面，然后打开悬浮穿点击第三个</text>
                     <button id={"goTaobao"} marginLeft="15dp" marginRight="15dp">切换到淘宝</button>
                 </vertical>
+
+                {/* <vertical>
+                    <text textSize="18sp" textStyle="bold">功能6：定时执行蚂蚁森林</text>
+                    <text marginLeft="15dp" marginRight="15dp">说明：间隔5小时循环一次，每天早上7点整进行开始，7点执行30分钟循环后结束，之后每隔5小时会自动唤醒屏幕自动执行</text>
+                    <horizontal marginLeft="30dp">
+                        <CheckBox id="openTimerForestTask" checked={isOpenTimerForestTask} />
+                        <text marginLeft="15dp">是否每日早7点定时偷能量，注意需要APP保活，对应开启方法自行百度</text>
+                    </horizontal>
+                    <horizontal marginLeft="30dp">
+                        <CheckBox id="open5HourTask" checked={isOpen5HourTask} />
+                        <text marginLeft="15dp">是否启用5小时循环定时唤醒</text>
+                    </horizontal>
+                </vertical> */}
 
                 {/* <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：支付宝-蚂蚁庄园</text>

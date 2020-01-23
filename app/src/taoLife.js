@@ -1,6 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let EUtil = require('./EUtil.js');
+let EUtil = require('../EUtil.js');
 
 function startTaoLife(isFromGold, isJustPlayGame) {
     //打开淘宝 金币庄园过来不判断

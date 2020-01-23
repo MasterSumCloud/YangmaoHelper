@@ -16,7 +16,7 @@
     "splashText": "Designed by Eagle",
     "stableMode": false
   },
-  "main": "main_test.js",
+  "main": "main.js",
   "name": "薅羊毛",
   "optimization": {
     "removeOpenCv": false,
