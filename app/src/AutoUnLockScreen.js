@@ -4,6 +4,8 @@ const CONFIG_STORAGE_NAME = 'starsBallTargetScore'
 let configStorage = storages.create(CONFIG_STORAGE_NAME);
 
 function weakScreen() {
+    configStorage.put("antForestCanDo", true);
+
     if (device.isScreenOn()) {
         //开始输入密码
     } else {
@@ -60,6 +62,11 @@ function openAndDoit() {
                 huaweiSc.click();
             }
             sleep(1000);
+            let xunhangText = textContains("蚂蚁森林巡航模式").findOnce();
+            if (xunhangText != null) {
+                let chx = xunhangText.parent().child(0);
+                click(chx.bounds().centerX(), chx.bounds().centerY());
+            }
             return true;
         }
     }
@@ -67,7 +74,7 @@ function openAndDoit() {
 
 function startTask() {
     // let startTask = text("单独执行 蚂蚁森林").findOnce();
-    let startTask = text("单独执行 金币庄园").findOnce();
+    let startTask = text("单独执行 蚂蚁森林").findOnce();
     if (startTask != null) {
         startTask.click();
     }

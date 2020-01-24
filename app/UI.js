@@ -5,8 +5,8 @@ let antForestGame = require("./src/antForest.js");
 let dingdongGame = require("./src/dingdong.js");
 let taoLifeGame = require("./src/taoLife.js");
 // let weakScreen = require("./src/AutoUnLockScreen.js");
-const CONFIG_STORAGE_NAME = 'starsBallTargetScore'
-let configStorage = storages.create(CONFIG_STORAGE_NAME);
+// const CONFIG_STORAGE_NAME = 'starsBallTargetScore'
+let configStorage = storages.create('starsBallTargetScore');
 
 let deviceWidth = device.width;
 let deviceHeight = device.height;
@@ -132,7 +132,7 @@ ui.layout(
 
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能6：定时执行蚂蚁森林</text>
-                    <text marginLeft="15dp" marginRight="15dp">说明：间隔5小时循环一次，每天早上7点整进行开始，7点执行30分钟循环后结束，之后每隔5小时会自动唤醒屏幕自动执行</text>
+                    <text marginLeft="15dp" marginRight="15dp">说明：每天早上7点整进行开始(因为CPU休眠，可能纯在误差)，7点执行30分钟循环后结束</text>
                     <text marginLeft="15dp" marginRight="15dp">特别强调：按音量上键会关闭所有脚本，如果不想误关，建议关闭此功能，方法打开本APP，按下返回键，右上角3个点点击设置，对应关闭即可 </text>
                     <horizontal marginLeft="30dp">
                         <text marginLeft="15dp">当前手机密码</text>
@@ -143,10 +143,10 @@ ui.layout(
                         <CheckBox id="openTimerForestTask" checked={isOpenTimerForestTask} />
                         <text marginLeft="15dp" h="45dp">是否每日早7点定时偷能量，注意需要APP保活，对应开启方法自行百度</text>
                     </horizontal>
-                    <horizontal marginLeft="30dp">
+                    {/* <horizontal marginLeft="30dp">
                         <CheckBox id="open5HourTask" checked={isOpen5HourTask} />
                         <text marginLeft="15dp">是否启用5小时循环定时唤醒</text>
-                    </horizontal>
+                    </horizontal> */}
                     <button id={"startTimerAntTask"} marginLeft="15dp" marginRight="15dp">保存配置并运行</button>
                 </vertical>
 
@@ -296,11 +296,11 @@ ui.openTimerForestTask.on("check", function (checked) {
     configStorage.put("isOpenTimerForestTask", checked);
     console.log("isOpenTimerForestTask=" + isOpenTimerForestTask);
 });
-ui.open5HourTask.on("check", function (checked) {
-    isOpen5HourTask = checked;
-    configStorage.put("isOpen5HourTask", checked);
-    console.log("isOpen5HourTask=" + isOpen5HourTask);
-});
+// ui.open5HourTask.on("check", function (checked) {
+//     isOpen5HourTask = checked;
+//     configStorage.put("isOpen5HourTask", checked);
+//     console.log("isOpen5HourTask=" + isOpen5HourTask);
+// });
 
 ui.cbAntCruise.on("check", function (checked) {
     isOpenCruiseMode = checked;
@@ -338,30 +338,34 @@ ui.phonePasswordConfirm.click(function () {
 ui.startTimerAntTask.click(function () {
     //开启定时7点功能
     if (isOpenTimerForestTask) {
-        let opened = false;
-        let task7 = setInterval(function () {
+        setInterval(function () {
             let dateT = new Date();
             let h = dateT.getHours();
             let m = dateT.getMinutes();
             if (h == 7 && m >= 0 && m < 10) {
-                engines.execScriptFile("./src/AutoUnLockScreen.js");
-                opened = true;
+                let starting = configStorage.get("antForestCanDo", false);
+                if (!starting) {
+                    engines.execScriptFile("./src/AutoUnLockScreen.js");
+                }
             }
-            console.log("当前检测时间", h + ":" + m)
-        }, 5 * 60 * 1000);
-
-        if (opened) {
-            clearInterval(task7);
-        }
-
+            console.log("当前检测时间", h + ":" + m);
+        }, 1 * 60 * 1000);
     }
 
-    if (isOpen5HourTask) {
-        setInterval(function () {
-            engines.execScriptFile("./src/AutoUnLockScreen.js");
-            console.log("当前检测时间5小时", h + ":" + m)
-        }, 5 * 60 * 60 * 1000);
-    }
+    // if (isOpen5HourTask) {
+    //     setInterval(function () {
+    //         let dateT = new Date();
+    //         let h = dateT.getHours();
+    //         let m = dateT.getMinutes();
+    //         if (h == 7 && m >= 30 && m < 40) {
+    //             let starting = configStorage.get("antForestCanDo", false);
+    //             if (!starting) {
+    //                 engines.execScriptFile("./src/AutoUnLockScreen.js");
+    //             }
+    //         }
+    //         console.log("当前检测时间循环5的", h + ":" + m);
+    //     }, 1 * 60 * 1000);
+    // }
     toastLog("定时任务已开启动");
 });
 

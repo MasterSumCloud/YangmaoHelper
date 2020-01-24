@@ -1,6 +1,8 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 let EUtil = require('../EUtil.js');
+const CONFIG_STORAGE_NAME = 'starsBallTargetScore'
+let configStorage = storages.create(CONFIG_STORAGE_NAME);
 
 function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmStartBall) {
     //进入支付宝
@@ -100,6 +102,7 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
         back();
         sleep(500);
         toastLog("完成了");
+        configStorage.put("antForestCanDo", false);
     } else {
         toastLog("没有在首页检测到蚂蚁森林，请去更多里添加");
         exit();
