@@ -124,10 +124,16 @@ ui.layout(
                     <button id={"exeTaolife"} marginLeft="15dp" marginRight="15dp">单独执行 淘人生</button>
                 </vertical>
 
-                <vertical>
+                {/* <vertical>
                     <text textSize="18sp" textStyle="bold">功能5：淘宝活动种果树</text>
                     <text marginLeft="15dp" marginRight="15dp">使用方法：所有权限开启后，点击切换到淘宝，到种树页面，然后打开悬浮穿点击第三个</text>
                     <button id={"goTaobao"} marginLeft="15dp" marginRight="15dp">切换到淘宝</button>
+                </vertical> */}
+
+                <vertical>
+                    <text textSize="18sp" textStyle="bold">功能5：王者荣耀自动刷金币</text>
+                    <text marginLeft="15dp" marginRight="15dp">使用方法：权限都给，打开悬浮窗放一边，进入游戏，关闭所有广告，打开悬浮窗，点击第三个提示开启成功！</text>
+                    <button id={"goWangzhe"} marginLeft="15dp" marginRight="15dp">打开王者荣耀</button>
                 </vertical>
 
                 <vertical>
@@ -252,9 +258,14 @@ ui.exeGoldManor.click(() => {
         goldGame(isOpenTaolife, isOpenTmFarm);
     });
 });
-ui.goTaobao.click(() => {
-    launch("com.taobao.taobao");
+// ui.goTaobao.click(() => {
+//     launch("com.taobao.taobao");
+// });
+
+ui.goWangzhe.click(() => {
+    launch("com.tencent.tmgp.sgame");
 });
+
 
 ui.cbTaolife.on("check", function (checked) {
     isOpenTaolife = checked;

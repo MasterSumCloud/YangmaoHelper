@@ -370,7 +370,7 @@ function goGet5GoldAndBack(x, y, height) {
 
 function getWaterDrop() {
     //需要执行的任务集合
-    let arrTask = ["每日免费领水滴", "浏览指定商品", "逛福果领免费水果", "逛淘宝内衣会场", "逛淘金币年货节会场", "精选好货", "逛高抵扣商品赚果实", "逛淘宝人生", "逛农场", "淘宝吃货"];
+    let arrTask = ["每日免费领水滴", "每日打卡领水滴", "浏览指定商品", "逛福果领免费水果", "逛淘宝内衣会场", "精选好货", "逛品牌抵扣好货", "逛高抵扣商品赚果实", "逛淘宝人生", "逛农场", "淘宝吃货"];
 
     for (let i = 0; i < arrTask.length; i++) {
         if (singleTask == "精选好货") {
@@ -380,14 +380,15 @@ function getWaterDrop() {
         let singleTask = arrTask[i];
         switch (singleTask) {
             case "每日免费领水滴":
+            case "每日打卡领水滴":
                 let singnBtn = textContains("打卡").findOnce();
                 openAndBack(singnBtn, 0, false);
                 break;
             case "浏览指定商品":
             case "逛福果领免费水果":
-            case "逛淘金币年货节会场":
             case "精选好货":
             case "逛高抵扣商品赚果实":
+            case "逛品牌抵扣好货":
             case "淘宝吃货":
             case "逛淘宝内衣会场":
                 let bacnBtn = getEquQggUi(singleTask);

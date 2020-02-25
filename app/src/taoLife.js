@@ -57,9 +57,9 @@ function startTaoLife(isFromGold, isJustPlayGame) {
         toastLog("等待超时");
         exit();
     } else {
-        console.log("进来了");
+        console.log("进来了，休息20秒");
+        sleep(20000);
         //给加载时间
-        juadgeIsAtHome();
         if (isFromGold) {
             while (juadgeHomeStateType() != -1) {
                 toastLog("首页关闭中");
@@ -91,20 +91,6 @@ function startTaoLife(isFromGold, isJustPlayGame) {
 
     }
 }
-
-
-function juadgeIsAtHome() {
-    sleep(5000);
-    let maxWite = 15;
-    let homeUiLoading = EUtil.ImageSearchEngin('./res/taolife/taolife_loading_ui.png', [0, 300], 1);
-    while (homeUiLoading != null && maxWite > 0) {
-        sleep(1000);
-        maxWite--;
-        homeUiLoading = EUtil.ImageSearchEngin('./res/taolife/taolife_loading_ui.png', [0, 300], 1);
-    }
-    sleep(5000);
-}
-
 
 function juadgeHomeStateType() {
     //可能是签到

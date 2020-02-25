@@ -115,7 +115,7 @@ function menuOnClick(view) {
             // toastLog("开发使用 请勿点击");
             // engines.execScriptFile("./src/justTest.js");
             // engines.execScriptFile("./src/taoLife.js");
-            engines.execScriptFile("./lib/taoTree.js");
+            // engines.execScriptFile("./lib/taoTree.js");
             break;
         case "菜单4":
             let engins = engines.all();
