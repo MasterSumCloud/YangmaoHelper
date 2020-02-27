@@ -132,7 +132,7 @@ ui.layout(
 
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能5：王者荣耀自动刷金币</text>
-                    <text marginLeft="15dp" marginRight="15dp">使用方法：权限都给，打开悬浮窗放一边，进入游戏，关闭所有广告，打开悬浮窗，点击第三个提示开启成功！</text>
+                    <text marginLeft="15dp" marginRight="15dp">使用方法：只给无障碍和悬浮窗，打开悬浮窗放一边，进入游戏，关闭所有广告，打开悬浮窗，点击第三个提示开启成功！注意：某些手机例如华为有一个截图弹窗，点击确定。特别解释：在开始前，自己手动先去冒险关卡选择合适的阵容和地图，要求能全自动通关的，自己过一次</text>
                     <button id={"goWangzhe"} marginLeft="15dp" marginRight="15dp">打开王者荣耀</button>
                 </vertical>
 

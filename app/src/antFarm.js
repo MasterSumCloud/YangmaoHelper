@@ -15,7 +15,7 @@ function startFarm(isOpenAntFarmStartBall) {
     if (antFarm != null) {
         sleep(5000);
         //额外判断弹窗
-        let wheatBtn = EUtil.ImageSearchEngin('./res/antFarm_wheat.png', [deviceWidth / 3, deviceHeight * 0.675, deviceWidth / 3, deviceHeight * .3], 1);
+        let wheatBtn = EUtil.ImageSearchEngin('./res/wz_game_start.png', [deviceWidth / 3, deviceHeight * 0.675, deviceWidth / 3, deviceHeight * .3], 1);
         if (wheatBtn != -1) {
             click(wheatBtn[0].point.x, wheatBtn[0].point.y);
         }

@@ -3,8 +3,8 @@ importClass(android.animation.ObjectAnimator)
 importClass(android.animation.AnimatorSet)
 importClass(android.view.animation.BounceInterpolator)
 
-//importClass(android.content.BroadcastReceiver);
-// importClass(android.content.ContextWrapper);
+// importClass(android.content.BroadcastReceiver);
+importClass(android.content.ContextWrapper);
 importClass(android.content.IntentFilter);
 
 /**************可修改参数 */
@@ -115,7 +115,7 @@ function menuOnClick(view) {
             // toastLog("开发使用 请勿点击");
             // engines.execScriptFile("./src/justTest.js");
             // engines.execScriptFile("./src/taoLife.js");
-            // engines.execScriptFile("./lib/taoTree.js");
+            engines.execScriptFile("./src/wangZhe.js");
             break;
         case "菜单4":
             let engins = engines.all();
@@ -288,7 +288,7 @@ for (let i = 0; i < 2; i++) {
 }
 
 //注册监听屏幕旋转广播
-/*var intent_CHANGED
+var intent_CHANGED
 filter = new IntentFilter();
 filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
 new ContextWrapper(context).registerReceiver(intent_CHANGED = new BroadcastReceiver({
@@ -297,7 +297,7 @@ new ContextWrapper(context).registerReceiver(intent_CHANGED = new BroadcastRecei
         getScreenDirection()
     }
 }), filter)
-*/
+
 
 //按钮停靠时隐藏到屏幕的X值
 var but_logo_r = 0
