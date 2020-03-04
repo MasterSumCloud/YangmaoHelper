@@ -1,64 +1,92 @@
-let EUtil = require('./EUtil.js');
+// let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-requestScreenCapture();
-sleep(2000);
+// requestScreenCapture();
+// sleep(2000);
 
 console.log("开始")
 
-
-function quJiaoShui() {
-    let toujibi = className("android.widget.Button").text("偷金币").findOnce();
-    click(toujibi.bounds().centerX(), toujibi.bounds().centerY());
-    if (toujibi != null) {
-        sleep(2000);
-        let haoyGold = textContains("个好友可偷金币").findOnce();
-        while (haoyGold != null) {
-            let kejiaoshui = className("android.widget.Button").text("可浇水").findOnce();
-            while (kejiaoshui != null) {
-                kejiaoshui.click();
-                sleep(2000);
-                let jiaoshui = className("android.widget.Button").text("浇水").findOnce();
-                if (jiaoshui != null) {
-                    click(jiaoshui.bounds().centerX(), jiaoshui.bounds().centerY());
-                    let back = className("android.widget.Button").text("返回").findOnce();
-                    if (back != null) {
-                        back.click();
-                        sleep(1500);
+function getWaterDrop() {
+    let partent = textStartsWith("领水滴 做任务领水滴，可大幅提升植物成熟后的收获哦").findOnce();
+    if (partent != null) {
+        let listTask = partent.child(0).child(1).child(0);
+        for (let i = 0; i < listTask.childCount(); i++) {
+            // let taskItemPosition = i % 4;
+            let taskNameUi = listTask.child(i);
+            let taskType = -1;
+            if (taskNameUi.text() != null && taskNameUi.text().includes("每日限领")) {
+                if (i > 24) {//滑动一屏幕
+                    swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.2, 2000)
+                    sleep(2000);
+                }
+                let taskName = taskNameUi.text();
+                console.log("进来的任务=", taskName)
+                if (taskName != null && taskName != undefined && taskName != '') {
+                    if (taskName.includes("打卡")) {
+                        taskType = 1;
+                    } else if (taskName.includes("淘宝人生")) {
+                        taskType = 2;
+                    } else if (taskName.includes("消消消")) {
+                        taskType = 3;
+                    } else if (taskName.includes("下单")) {
+                        taskType = 4;
+                    } else if (taskName.includes("金币")) {
+                        taskType = 5;
+                    } else if (taskName.includes("首页")) {
+                        taskType = 6;
+                    } else {
+                        taskType = 11;
+                    }
+                    console.log("执行的任务类型", taskType)
+                    //判断是否可以做 或者已经做过了
+                    if (i + 4 < listTask.childCount()) {
+                        let finishTypeUi = listTask.child(i + 4);
+                        let stateTaskType = finishTypeUi.text();
+                        if (stateTaskType != null && stateTaskType != undefined && stateTaskType != '') {
+                            if (stateTaskType.includes("冷却中")) {
+                                console.log("冷却中的任务", taskName);
+                            } else if (stateTaskType.includes("已完成")) {
+                                console.log("已完成的任务", taskName);
+                            } else {
+                                if (taskType == 1) {
+                                    if (stateTaskType == '打卡') {
+                                        console.log("执行的任务名字", taskName);
+                                        liuLanAndBack(finishTypeUi, 0, false);
+                                        getWaterDrop();
+                                        break;
+                                    }
+                                } else if (taskType == 11) {
+                                    if (stateTaskType == '去逛逛' || stateTaskType == '去完成') {
+                                        console.log("执行的任务名字", taskName);
+                                        liuLanAndBack(finishTypeUi, 15000, true);
+                                        getWaterDrop();
+                                        break;
+                                    }
+                                } else {
+                                    console.log("不做的任务", taskName);
+                                }
+                            }
+                        }
                     }
                 }
-                kejiaoshui = className("android.widget.Button").text("可浇水").findOnce();
             }
-
-
-            let toujinb = EUtil.ImageSearchEngin('./res/toujinb_btn.png', [deviceWidth / 2, deviceHeight * 0.35, deviceWidth / 2, deviceHeight * 0.65], 5);
-            if (toujinb != -1) {
-                toujinb.forEach(element => {
-                    click(element.point.x + 20, element.point.y + 50);
-                    sleep(2000);
-                    //写死坐标 点一下
-                    click(deviceWidth / 2, deviceHeight * 0.356);
-                    sleep(1000);
-                    let back = className("android.widget.Button").text("返回").findOnce();
-                    if (back != null) {
-                        back.click();
-                        sleep(1500);
-                    }
-                });
-
-            }
-
-            haoyGold.click();
-            swipe(deviceWidth / 2, deviceHeight * 0.7, deviceWidth / 2, deviceHeight * 0.3, 2000);
-            sleep(1000);
-            haoyGold = textContains("个好友可偷金币").findOnce();
         }
     }
-
 }
 
-quJiaoShui();
+function liuLanAndBack(uiSelf, delay, needBack) {
+    if (uiSelf != null) {
+        // click(deviceWidth * 0.85, uiSelf.bounds().centerY());
+        uiSelf.click()
+        sleep(delay);
+        if (needBack) {
+            back();
+            sleep(3000);
+        }
+    }
+}
 
+getWaterDrop();
 
 console.log("结束")
 

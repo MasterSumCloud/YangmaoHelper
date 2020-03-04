@@ -92,7 +92,7 @@ function openGoldGarden() {
     sleep(1000);
 
     toast("开始做领水滴任务");
-    // goWaterDrop();
+    goWaterDrop();
     //金币庄园
     sleep(3000);
     //加入头金币和浇水
@@ -151,6 +151,7 @@ function quJiaoShui() {
                 let jiaoshui = className("android.widget.Button").text("浇水").findOnce();
                 if (jiaoshui != null) {
                     click(jiaoshui.bounds().centerX(), jiaoshui.bounds().centerY());
+                    sleep(1000);
                     let back = className("android.widget.Button").text("返回").findOnce();
                     if (back != null) {
                         back.click();
@@ -161,21 +162,34 @@ function quJiaoShui() {
             }
 
 
-            let toujinb = EUtil.ImageSearchEngin('./res/toujinb_btn.png', [deviceWidth / 2, deviceHeight * 0.35, deviceWidth / 2, deviceHeight * 0.65], 5);
-            if (toujinb != -1) {
-                toujinb.forEach(element => {
-                    click(element.point.x + 20, element.point.y + 50);
-                    sleep(2000);
-                    //写死坐标 点一下
-                    click(deviceWidth / 2, deviceHeight * 0.356);
-                    sleep(1000);
-                    let back = className("android.widget.Button").text("返回").findOnce();
-                    if (back != null) {
-                        back.click();
-                        sleep(1500);
-                    }
-                });
-
+            // let toujinb = EUtil.ImageSearchEngin('./res/toujinb_btn.png', [deviceWidth / 2, deviceHeight * 0.35, deviceWidth / 2, deviceHeight * 0.65], 5);
+            // if (toujinb != -1) {
+            //     toujinb.forEach(element => {
+            //         click(element.point.x + 20, element.point.y + 50);
+            //         sleep(2000);
+            //         //写死坐标 点一下
+            //         click(deviceWidth / 2, deviceHeight * 0.356);
+            //         sleep(1000);
+            //         let back = className("android.widget.Button").text("返回").findOnce();
+            //         if (back != null) {
+            //             back.click();
+            //             sleep(1500);
+            //         }
+            //     });
+            // }
+            let kejiaoshui = className("android.widget.Button").textContains("，偷金币").findOnce();
+            while (kejiaoshui != null) {
+                kejiaoshui.click();
+                sleep(2000);
+                //写死坐标 点一下
+                click(deviceWidth / 2, deviceHeight * 0.356);
+                sleep(1000);
+                let back = className("android.widget.Button").text("返回").findOnce();
+                if (back != null) {
+                    back.click();
+                    sleep(1500);
+                }
+                kejiaoshui = className("android.widget.Button").textContains("，偷金币").findOnce();
             }
 
             haoyGold.click();
@@ -426,35 +440,28 @@ function goGet5GoldAndBack(x, y, height) {
 
 function getWaterDrop() {
     //需要执行的任务集合
-    let arrTask = ["38节打卡领水滴", "浏览指定商品", "浏览天猫38主会场", "逛38尖货榜单会场", "浏览精选好货", "逛福果领免费水果", "逛高比例抵扣商品", "精选好货", "逛品牌抵扣好货", "逛金币大牌抵扣好货", "逛年度单品抢红包", "逛淘宝人生", "逛农场", "淘宝吃货"];
+    let arrTask = ["38节打卡领水滴", "逛品牌会员俱乐部", "逛38尖货榜单会场", "浏览指定商品", "浏览精选好货", "逛高比例抵扣商品", "逛福果领免费水果", "逛金币大牌抵扣好货", "逛年度单品抢红包"];
 
     for (let i = 0; i < arrTask.length; i++) {
-        if (singleTask == "浏览精选好货") {
+        if (i == 4) {
             swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.3, 500);
             sleep(1000);
         }
         let singleTask = arrTask[i];
+        let btnTask = findShuidiView(singleTask);
         switch (singleTask) {
             case "38节打卡领水滴":
-                let singnBtn = textContains("打卡").findOnce();
-                openAndBack(singnBtn, 0, false);
+                liuLanAndBack(btnTask, 0, false);
                 break;
-            case "浏览指定商品":
-            case "浏览天猫38主会场":
+            case "逛品牌会员俱乐部":
             case "逛38尖货榜单会场":
-            case "逛福果领免费水果":
+            case "浏览指定商品":
             case "浏览精选好货":
-                let baBtn = getEquQwcUi(singleTask);
-                openAndBack(baBtn, 15000, true);
-                break;
-            case "淘宝吃货":
+            case "逛高比例抵扣商品":
+            case "逛福果领免费水果":
             case "逛金币大牌抵扣好货":
             case "逛年度单品抢红包":
-            case "逛品牌抵扣好货":
-            case "逛高比例抵扣商品":
-                let bacnBtn = getEquQggUi(singleTask);
-                openAndBack(bacnBtn, 13000, true);
-                break;
+                liuLanAndBack(btnTask, 15000, true);
             case "逛淘宝人生":
                 if (doTaolife) {
                     let qgg = getEquQggUi(singleTask);
@@ -481,6 +488,21 @@ function getWaterDrop() {
                 break;
             default:
                 break;
+        }
+    }
+
+    function findShuidiView(fundStr) {
+        return className("android.view.View").textStartsWith(fundStr).findOnce();
+    }
+
+    function liuLanAndBack(uiObject, delay, needBack) {
+        if (uiObject != null) {
+            click(deviceWidth * 0.85, uiobject.bounds().centerY());
+            sleep(delay);
+            if (needBack) {
+                back();
+                sleep(2000);
+            }
         }
     }
 
@@ -533,6 +555,7 @@ function getWaterDrop() {
         }
         return null;
     }
+
 
     function openAndBack(uiObject, delay, needBack) {
         if (uiObject != null) {
