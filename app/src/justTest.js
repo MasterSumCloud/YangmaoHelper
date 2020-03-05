@@ -10,60 +10,66 @@ function getWaterDrop() {
     let partent = textStartsWith("领水滴 做任务领水滴，可大幅提升植物成熟后的收获哦").findOnce();
     if (partent != null) {
         let listTask = partent.child(0).child(1).child(0);
-        for (let i = 0; i < listTask.childCount(); i++) {
-            // let taskItemPosition = i % 4;
-            let taskNameUi = listTask.child(i);
-            let taskType = -1;
-            if (taskNameUi.text() != null && taskNameUi.text().includes("每日限领")) {
-                if (i > 24) {//滑动一屏幕
-                    swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.2, 2000)
-                    sleep(2000);
-                }
-                let taskName = taskNameUi.text();
-                console.log("进来的任务=", taskName)
-                if (taskName != null && taskName != undefined && taskName != '') {
-                    if (taskName.includes("打卡")) {
-                        taskType = 1;
-                    } else if (taskName.includes("淘宝人生")) {
-                        taskType = 2;
-                    } else if (taskName.includes("消消消")) {
-                        taskType = 3;
-                    } else if (taskName.includes("下单")) {
-                        taskType = 4;
-                    } else if (taskName.includes("金币")) {
-                        taskType = 5;
-                    } else if (taskName.includes("首页")) {
-                        taskType = 6;
-                    } else {
-                        taskType = 11;
+        //先拿到所有可执行的任务 
+        let canDoTask = [];
+        for (let k = 0; k < listTask.childCount(); k++) {
+            let taskItem = listTask.child(k);
+            if (taskItem != null) {
+                let textOfItem = taskItem.text();
+                if (textOfItem != null && textOfItem != undefined && textOfItem != '') {
+                    if (textOfItem.includes('每日限领')) {
+                        let putTask = textOfItem.slice(0, textOfItem.indexOf(" ") + 1);
+                        if (putTask.includes("首页")) {
+                            continue;
+                        } else if (putTask.includes("淘宝人生")) {
+                            continue;
+                        } else if (putTask.includes("消消消")) {
+                            continue;
+                        } else if (putTask.includes("下单")) {
+                            continue;
+                        } else if (putTask.includes("进群打卡")) {
+                            continue;
+                        }
+                        console.log("保存的任务", putTask)
+                        canDoTask.push(putTask);
                     }
-                    console.log("执行的任务类型", taskType)
-                    //判断是否可以做 或者已经做过了
-                    if (i + 4 < listTask.childCount()) {
-                        let finishTypeUi = listTask.child(i + 4);
-                        let stateTaskType = finishTypeUi.text();
-                        if (stateTaskType != null && stateTaskType != undefined && stateTaskType != '') {
-                            if (stateTaskType.includes("冷却中")) {
-                                console.log("冷却中的任务", taskName);
-                            } else if (stateTaskType.includes("已完成")) {
-                                console.log("已完成的任务", taskName);
-                            } else {
-                                if (taskType == 1) {
-                                    if (stateTaskType == '打卡') {
-                                        console.log("执行的任务名字", taskName);
-                                        liuLanAndBack(finishTypeUi, 0, false);
-                                        getWaterDrop();
-                                        break;
-                                    }
-                                } else if (taskType == 11) {
-                                    if (stateTaskType == '去逛逛' || stateTaskType == '去完成') {
-                                        console.log("执行的任务名字", taskName);
-                                        liuLanAndBack(finishTypeUi, 15000, true);
-                                        getWaterDrop();
-                                        break;
-                                    }
+                }
+            }
+        }
+
+        for (let o = 0; o < canDoTask.length; o++) {
+            let doName = canDoTask[o];
+            findTaskAndDoIt(doName);
+        }
+    }
+}
+
+function findTaskAndDoIt(doName) {
+    let partent = textStartsWith("领水滴 做任务领水滴，可大幅提升植物成熟后的收获哦").findOnce();
+    if (partent != null) {
+        let listTask = partent.child(0).child(1).child(0);
+        for (let k = 0; k < listTask.childCount(); k++) {
+            let taskItem = listTask.child(k);
+            if (taskItem != null) {
+                let textOfItem = taskItem.text();
+                if (textOfItem != null && textOfItem != undefined && textOfItem != '') {
+                    if (textOfItem.startsWith(doName)) {
+                        if (k + 4 < listTask.childCount()) {
+                            let finishTypeUi = listTask.child(k + 4);
+                            let stateTaskType = finishTypeUi.text();
+                            if (stateTaskType != null && stateTaskType != undefined && stateTaskType != '') {
+                                if (stateTaskType.includes("冷却中")) {
+                                    console.log("冷却中的任务", doName);
+                                } else if (stateTaskType.includes("已完成")) {
+                                    console.log("已完成的任务", doName);
                                 } else {
-                                    console.log("不做的任务", taskName);
+                                    if (stateTaskType == '去逛逛' || stateTaskType == '去完成') {
+                                        console.log("执行的任务名字", doName);
+                                        liuLanAndBack(finishTypeUi, 15000, true);
+                                    } else if (stateTaskType == '打卡') {
+                                        console.log("执行的任务名字", doName);
+                                        liuLanAndBack(finishTypeUi, 0, false);
+                                    }
                                 }
                             }
                         }
@@ -72,6 +78,7 @@ function getWaterDrop() {
             }
         }
     }
+
 }
 
 function liuLanAndBack(uiSelf, delay, needBack) {
