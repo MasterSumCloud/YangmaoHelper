@@ -7,7 +7,7 @@ let deviceHeight = device.height;
 console.log("开始")
 
 function getWaterDrop() {
-    let partent = textStartsWith("领水滴 做任务领水滴，可大幅提升植物成熟后的收获哦").findOnce();
+    let partent = textEndsWith("！ 关闭").findOnce();
     if (partent != null) {
         let listTask = partent.child(0).child(1).child(0);
         //先拿到所有可执行的任务 
@@ -29,6 +29,8 @@ function getWaterDrop() {
                             continue;
                         } else if (putTask.includes("进群打卡")) {
                             continue;
+                        } else if (putTask.includes("去搜索")) {
+                            continue;
                         }
                         console.log("保存的任务", putTask)
                         canDoTask.push(putTask);
@@ -37,54 +39,53 @@ function getWaterDrop() {
             }
         }
 
-        for (let o = 0; o < canDoTask.length; o++) {
+        for (let o = 0; o < 4; o++) {
             let doName = canDoTask[o];
-            findTaskAndDoIt(doName);
+            console.log("任务==", doName);
+            findTaskAndDoIt2(doName);
+            sleep(3000);
         }
     }
 }
 
-function findTaskAndDoIt(doName) {
-    let partent = textStartsWith("领水滴 做任务领水滴，可大幅提升植物成熟后的收获哦").findOnce();
-    if (partent != null) {
-        let listTask = partent.child(0).child(1).child(0);
-        for (let k = 0; k < listTask.childCount(); k++) {
-            let taskItem = listTask.child(k);
-            if (taskItem != null) {
-                let textOfItem = taskItem.text();
-                if (textOfItem != null && textOfItem != undefined && textOfItem != '') {
-                    if (textOfItem.startsWith(doName)) {
-                        if (k + 4 < listTask.childCount()) {
-                            let finishTypeUi = listTask.child(k + 4);
-                            let stateTaskType = finishTypeUi.text();
-                            if (stateTaskType != null && stateTaskType != undefined && stateTaskType != '') {
-                                if (stateTaskType.includes("冷却中")) {
-                                    console.log("冷却中的任务", doName);
-                                } else if (stateTaskType.includes("已完成")) {
-                                    console.log("已完成的任务", doName);
-                                } else {
-                                    if (stateTaskType == '去逛逛' || stateTaskType == '去完成') {
-                                        console.log("执行的任务名字", doName);
-                                        liuLanAndBack(finishTypeUi, 15000, true);
-                                    } else if (stateTaskType == '打卡') {
-                                        console.log("执行的任务名字", doName);
-                                        liuLanAndBack(finishTypeUi, 0, false);
-                                    }
-                                }
-                            }
-                        }
+function findTaskAndDoIt2(doName) {
+    let itemTaskUi = textStartsWith(doName).findOnce();
+    if (itemTaskUi != null) {
+        try {
+            let finishTypeUi = itemTaskUi.parent().child(itemTaskUi.indexInParent() + 4);
+            let stateTaskType = finishTypeUi.text();
+            if (stateTaskType != null && stateTaskType != undefined && stateTaskType != '') {
+                if (stateTaskType.includes("冷却中")) {
+                    console.log("冷却中的任务", doName);
+                } else if (stateTaskType.includes("已完成")) {
+                    console.log("已完成的任务", doName);
+                } else {
+                    if (stateTaskType == '去逛逛' || stateTaskType == '去完成') {
+                        console.log("执行的任务UI", itemTaskUi);
+                        // liuLanAndBack(finishTypeUi, 15000, true);
+                        // waitUiReload(doName, 1);
+                    } else if (stateTaskType == '打卡') {
+                        console.log("执行的任务UI", itemTaskUi);
+                        liuLanAndBack(finishTypeUi, 0, false);
+                        // waitUiReload(doName, 1);
                     }
                 }
             }
-        }
-    }
+        } catch (error) {
 
+        }
+
+    }
 }
+
+getWaterDrop();
+
+console.log("结束")
 
 function liuLanAndBack(uiSelf, delay, needBack) {
     if (uiSelf != null) {
-        // click(deviceWidth * 0.85, uiSelf.bounds().centerY());
-        uiSelf.click()
+        click(deviceWidth * 0.85, uiSelf.bounds().centerY());
+        // uiSelf.click()
         sleep(delay);
         if (needBack) {
             back();
@@ -92,10 +93,6 @@ function liuLanAndBack(uiSelf, delay, needBack) {
         }
     }
 }
-
-getWaterDrop();
-
-console.log("结束")
 
 function getScreenImg() {
     let screenPic = captureScreen();

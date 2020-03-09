@@ -126,6 +126,37 @@ function goWaterDrop() {
     clickWater();
 }
 
+function findTaskAndDoIt2(doName) {
+    let itemTaskUi = textStartsWith(doName).findOnce();
+    if (itemTaskUi != null) {
+        // console.log("测试=="+itemTaskUi.indexInParent())
+        try {
+            let finishTypeUi = itemTaskUi.parent().child(itemTaskUi.indexInParent() + 4);
+            let stateTaskType = finishTypeUi.text();
+            if (stateTaskType != null && stateTaskType != undefined && stateTaskType != '') {
+                if (stateTaskType.includes("冷却中")) {
+                    console.log("冷却中的任务", doName);
+                } else if (stateTaskType.includes("已完成")) {
+                    console.log("已完成的任务", doName);
+                } else {
+                    if (stateTaskType == '去逛逛' || stateTaskType == '去完成') {
+                        console.log("执行的任务UI", itemTaskUi);
+                        liuLanAndBack(finishTypeUi, 15000, true);
+                        // waitUiReload(doName, 1);
+                    } else if (stateTaskType == '打卡') {
+                        console.log("执行的任务UI", itemTaskUi);
+                        liuLanAndBack(finishTypeUi, 0, false);
+                        // waitUiReload(doName, 1);
+                    }
+                }
+            }
+        } catch (error) {
+
+        }
+
+    }
+}
+
 function clickWater() {
     let shuidi = EUtil.ImageSearchEngin('./res/home_shuidi.png', [0, deviceHeight * 0.193, deviceWidth, 350], 5);
     if (shuidi != -1) {
@@ -160,26 +191,9 @@ function quJiaoShui() {
                 }
                 kejiaoshui = className("android.widget.Button").text("可浇水").findOnce();
             }
-
-
-            // let toujinb = EUtil.ImageSearchEngin('./res/toujinb_btn.png', [deviceWidth / 2, deviceHeight * 0.35, deviceWidth / 2, deviceHeight * 0.65], 5);
-            // if (toujinb != -1) {
-            //     toujinb.forEach(element => {
-            //         click(element.point.x + 20, element.point.y + 50);
-            //         sleep(2000);
-            //         //写死坐标 点一下
-            //         click(deviceWidth / 2, deviceHeight * 0.356);
-            //         sleep(1000);
-            //         let back = className("android.widget.Button").text("返回").findOnce();
-            //         if (back != null) {
-            //             back.click();
-            //             sleep(1500);
-            //         }
-            //     });
-            // }
-            let kejiaoshui = className("android.widget.Button").textContains("，偷金币").findOnce();
-            while (kejiaoshui != null) {
-                kejiaoshui.click();
+            let tuoJinbi = className("android.widget.Button").textContains("，偷金币").findOnce();
+            while (tuoJinbi != null) {
+                tuoJinbi.click();
                 sleep(2000);
                 //写死坐标 点一下
                 click(deviceWidth / 2, deviceHeight * 0.356);
@@ -189,7 +203,7 @@ function quJiaoShui() {
                     back.click();
                     sleep(1500);
                 }
-                kejiaoshui = className("android.widget.Button").textContains("，偷金币").findOnce();
+                tuoJinbi = className("android.widget.Button").textContains("，偷金币").findOnce();
             }
 
             haoyGold.click();
@@ -439,136 +453,125 @@ function goGet5GoldAndBack(x, y, height) {
 }
 
 function getWaterDrop() {
-    //需要执行的任务集合
-    let arrTask = ["38节打卡领水滴", "逛品牌会员俱乐部", "逛38尖货榜单会场", "浏览指定商品", "浏览精选好货", "逛高比例抵扣商品", "逛福果领免费水果", "逛金币大牌抵扣好货", "逛年度单品抢红包"];
-
-    for (let i = 0; i < arrTask.length; i++) {
-        if (i == 4) {
-            swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.3, 500);
-            sleep(1000);
-        }
-        let singleTask = arrTask[i];
-        let btnTask = findShuidiView(singleTask);
-        switch (singleTask) {
-            case "38节打卡领水滴":
-                liuLanAndBack(btnTask, 0, false);
-                break;
-            case "逛品牌会员俱乐部":
-            case "逛38尖货榜单会场":
-            case "浏览指定商品":
-            case "浏览精选好货":
-            case "逛高比例抵扣商品":
-            case "逛福果领免费水果":
-            case "逛金币大牌抵扣好货":
-            case "逛年度单品抢红包":
-                liuLanAndBack(btnTask, 15000, true);
-            case "逛淘宝人生":
-                if (doTaolife) {
-                    let qgg = getEquQggUi(singleTask);
-                    if (qgg != null) {
-                        qgg.click();
-                        let startTaoLife = require("./taoLife.js");
-                        startTaoLife(true);
-                    }
-                } else {
-                    toast("不执行淘人生");
-                }
-                break;
-            case "逛农场":
-                if (doFarm) {
-                    let qgg = getEquQggUi(singleTask);
-                    if (qgg != null) {
-                        qgg.click();
-                        let tMaoFarm = require("./tMaoFarm.js");
-                        tMaoFarm(true);
-                    }
-                } else {
-                    toast("不执行天猫农场");
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    function findShuidiView(fundStr) {
-        return className("android.view.View").textStartsWith(fundStr).findOnce();
-    }
-
-    function liuLanAndBack(uiObject, delay, needBack) {
-        if (uiObject != null) {
-            click(deviceWidth * 0.85, uiobject.bounds().centerY());
-            sleep(delay);
-            if (needBack) {
-                back();
-                sleep(2000);
-            }
-        }
-    }
-
-    function getEquQggUi(strQ) {
-        //拿到拿到的去逛逛
-        let qgg = textContains("去逛逛").find();
-        let qkk = textContains(strQ).findOnce();
-        if (qgg != null && qgg.length > 0 && qkk != null) {
-            for (let i = 0; i < qgg.length; i++) {
-                console.log("第几组", i + 1);
-                let element = qgg[i];
-                if (element != null) {//核对 找到对应的
-                    let top = qkk.bounds().top;
-                    let bottom = qkk.bounds().bottom;
-                    console.log("定位坐标坐标", top + "====" + bottom)
-                    let qTop = element.bounds().top;
-                    let qBottom = element.bounds().bottom;
-                    console.log("去逛逛坐标", qTop + "====" + qBottom)
-                    if (top < qTop && bottom > qBottom) {
-                        console.log("找到了", "坐标" + i);
-                        return element;
+    let partent = textStartsWith("领水滴 做任务领水滴，可大幅提升植物成熟后的收获哦").findOnce();
+    if (partent != null) {
+        let listTask = partent.child(0).child(1).child(0);
+        //先拿到所有可执行的任务 
+        let canDoTask = [];
+        for (let k = 0; k < listTask.childCount(); k++) {
+            let taskItem = listTask.child(k);
+            if (taskItem != null) {
+                let textOfItem = taskItem.text();
+                if (textOfItem != null && textOfItem != undefined && textOfItem != '') {
+                    if (textOfItem.includes('每日限领')) {
+                        let putTask = textOfItem.slice(0, textOfItem.indexOf(" ") + 1);
+                        if (putTask.includes("首页")) {
+                            continue;
+                        } else if (putTask.includes("淘宝人生")) {
+                            continue;
+                        } else if (putTask.includes("消消消")) {
+                            continue;
+                        } else if (putTask.includes("下单")) {
+                            continue;
+                        } else if (putTask.includes("进群打卡")) {
+                            continue;
+                        } else if (putTask.includes("去搜索")) {
+                            continue;
+                        }
+                        console.log("保存的任务", putTask)
+                        canDoTask.push(putTask);
                     }
                 }
             }
         }
-        return null;
-    }
 
-    function getEquQwcUi(strQ) {
-        //拿到拿到的去逛逛
-        let qwc = textContains("去完成").find();
-        let qkk = textContains(strQ).findOnce();
-        if (qwc != null && qwc.length > 0 && qkk != null) {
-            for (let i = 0; i < qwc.length; i++) {
-                console.log("第几组", i + 1);
-                let element = qwc[i];
-                if (element != null) {//核对 找到对应的
-                    let top = qkk.bounds().top;
-                    let bottom = qkk.bounds().bottom;
-                    console.log("定位坐标坐标", top + "====" + bottom)
-                    let qTop = element.bounds().top;
-                    let qBottom = element.bounds().bottom;
-                    console.log("去逛逛坐标", qTop + "====" + qBottom)
-                    if (top < qTop && bottom > qBottom) {
-                        console.log("找到了", "坐标" + i);
-                        return element;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-
-    function openAndBack(uiObject, delay, needBack) {
-        if (uiObject != null) {
-            uiObject.click();
-            sleep(delay);
-            if (needBack) {
-                back();
-                sleep(2000);
-            }
+        // for (let o = 0; o < canDoTask.length; o++) {
+        //有BUG 只领取前4 系统UI刷新后 拿到的控件还是之前的
+        for (let o = 0; o < 4; o++) {
+            let doName = canDoTask[o];
+            findTaskAndDoIt2(doName);
         }
     }
-
 }
+
+function findShuidiView(fundStr) {
+    return className("android.view.View").textStartsWith(fundStr).findOnce();
+}
+
+function liuLanAndBack(uiSelf, delay, needBack) {
+    if (uiSelf != null) {
+        click(deviceWidth * 0.85, uiSelf.bounds().centerY());
+        // uiSelf.click()
+        sleep(delay);
+        if (needBack) {
+            back();
+            sleep(3000);
+        }
+    }
+}
+
+function getEquQggUi(strQ) {
+    //拿到拿到的去逛逛
+    let qgg = textContains("去逛逛").find();
+    let qkk = textContains(strQ).findOnce();
+    if (qgg != null && qgg.length > 0 && qkk != null) {
+        for (let i = 0; i < qgg.length; i++) {
+            console.log("第几组", i + 1);
+            let element = qgg[i];
+            if (element != null) {//核对 找到对应的
+                let top = qkk.bounds().top;
+                let bottom = qkk.bounds().bottom;
+                console.log("定位坐标坐标", top + "====" + bottom)
+                let qTop = element.bounds().top;
+                let qBottom = element.bounds().bottom;
+                console.log("去逛逛坐标", qTop + "====" + qBottom)
+                if (top < qTop && bottom > qBottom) {
+                    console.log("找到了", "坐标" + i);
+                    return element;
+                }
+            }
+        }
+    }
+    return null;
+}
+
+function getEquQwcUi(strQ) {
+    //拿到拿到的去逛逛
+    let qwc = textContains("去完成").find();
+    let qkk = textContains(strQ).findOnce();
+    if (qwc != null && qwc.length > 0 && qkk != null) {
+        for (let i = 0; i < qwc.length; i++) {
+            console.log("第几组", i + 1);
+            let element = qwc[i];
+            if (element != null) {//核对 找到对应的
+                let top = qkk.bounds().top;
+                let bottom = qkk.bounds().bottom;
+                console.log("定位坐标坐标", top + "====" + bottom)
+                let qTop = element.bounds().top;
+                let qBottom = element.bounds().bottom;
+                console.log("去逛逛坐标", qTop + "====" + qBottom)
+                if (top < qTop && bottom > qBottom) {
+                    console.log("找到了", "坐标" + i);
+                    return element;
+                }
+            }
+        }
+    }
+    return null;
+}
+
+
+function openAndBack(uiObject, delay, needBack) {
+    if (uiObject != null) {
+        uiObject.click();
+        sleep(delay);
+        if (needBack) {
+            back();
+            sleep(2000);
+        }
+    }
+}
+
 
 function juadgeIsTaobaoHome() {
     let homeMine = className("android.widget.FrameLayout").descContains("我的淘宝").findOnce();

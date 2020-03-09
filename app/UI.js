@@ -74,14 +74,14 @@ ui.layout(
                         <Switch id="swTaoGoldTask" w="auto" h="auto" checked={isOpenTaobaoGold}></Switch>
                         <text marginLeft="15dp" marginRight="15dp">金币庄园(是否批量执行)</text>
                     </horizontal>
-                    <horizontal marginLeft="30sp">
+                    {/* <horizontal marginLeft="30sp">
                         <CheckBox id="cbTaolife" checked={isOpenTaolife} />
                         <text>淘金币庄园是否 执行淘人生</text>
                     </horizontal>
                     <horizontal marginLeft="30sp">
                         <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
                         <text>淘金币庄园是否 执行天猫农场</text>
-                    </horizontal>
+                    </horizontal> */}
                     <button id={"exeGoldManor"} marginLeft="15dp" marginRight="15dp">单独执行 金币庄园</button>
                 </vertical>
 
@@ -267,15 +267,15 @@ ui.goWangzhe.click(() => {
 });
 
 
-ui.cbTaolife.on("check", function (checked) {
-    isOpenTaolife = checked;
-    console.log("isOpenTaolife=" + isOpenTaolife);
-});
+// ui.cbTaolife.on("check", function (checked) {
+//     isOpenTaolife = checked;
+//     console.log("isOpenTaolife=" + isOpenTaolife);
+// });
 
-ui.cbTmFarm.on("check", function (checked) {
-    isOpenTmFarm = checked;
-    console.log("isOpenTmFarm=" + isOpenTmFarm);
-});
+// ui.cbTmFarm.on("check", function (checked) {
+//     isOpenTmFarm = checked;
+//     console.log("isOpenTmFarm=" + isOpenTmFarm);
+// });
 
 ui.sAliScore.on("check", function (checked) {
     isNeedGoAlipayScore = checked;
