@@ -115,7 +115,7 @@ ui.layout(
 
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：王者荣耀薅羊毛</text>
-                    <text marginLeft="15dp" marginRight="15dp">使用方法：</text>
+                    <text marginLeft="15dp" marginRight="15dp">使用方法：开发中  对玩王者来说是福利，奖励很多的</text>
                     <button id={"extWangZheYm"} marginLeft="15dp" marginRight="15dp">薅羊毛开始</button>
                 </vertical>
 
@@ -317,7 +317,7 @@ ui.cbAntCruise.on("check", function (checked) {
 
 ui.extWangZheYm.click(() => {
     currentExeTask = threads.start(function () {
-        taoLifeGame(false);
+        toast("开发中！！！近2天完成");
     });
 });
 

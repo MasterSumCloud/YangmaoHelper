@@ -29,6 +29,9 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
     }
     //在首页寻找 蚂蚁深林和蚂蚁庄园的入口
     let antForest = id("app_text").textContains("蚂蚁森林").findOnce();
+    if (antForest==null) {
+        antForest = id("app_text_multi_line").textContains("蚂蚁森林").findOnce();
+    }
     if (antForest != null || gamePartHome != null) {
         //在蚂蚁森林
         if (gamePartHome == null) {
@@ -45,7 +48,7 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
             sleep(1000);
         }
         //是否有好友送的能量
-        getGoldEnergy();
+        // getGoldEnergy();
 
         //启用了巡航模式
         if (forestCruiseMode) {
