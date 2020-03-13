@@ -114,14 +114,9 @@ ui.layout(
                 </vertical>
 
                 <vertical>
-                    <text textSize="18sp" textStyle="bold">功能4：淘人生</text>
-                    {/* <horizontal w="auto" h="auto" marginLeft="15dp">
-                        <Switch id="swTaoGoldTask" w="auto" h="auto" checked={isOPenTaoLifeOnly}></Switch>
-                        <text marginLeft="15dp" marginRight="15dp">淘人生(是否批量执行)</text>
-                    </horizontal> */}
-                    <text marginLeft="15dp">开发中，不稳定，BUG多，慎用</text>
-                    <text marginLeft="15dp">暂时只支持单独运行</text>
-                    <button id={"exeTaolife"} marginLeft="15dp" marginRight="15dp">单独执行 淘人生</button>
+                    <text textSize="18sp" textStyle="bold">功能4：王者荣耀薅羊毛</text>
+                    <text marginLeft="15dp" marginRight="15dp">使用方法：</text>
+                    <button id={"extWangZheYm"} marginLeft="15dp" marginRight="15dp">薅羊毛开始</button>
                 </vertical>
 
                 {/* <vertical>
@@ -320,7 +315,7 @@ ui.cbAntCruise.on("check", function (checked) {
     console.log("isOpenCruiseMode=" + isOpenCruiseMode);
 });
 
-ui.exeTaolife.click(() => {
+ui.extWangZheYm.click(() => {
     currentExeTask = threads.start(function () {
         taoLifeGame(false);
     });

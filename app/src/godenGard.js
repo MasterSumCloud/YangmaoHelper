@@ -453,7 +453,7 @@ function goGet5GoldAndBack(x, y, height) {
 }
 
 function getWaterDrop() {
-    let partent = textStartsWith("领水滴 做任务领水滴，可大幅提升植物成熟后的收获哦").findOnce();
+    let partent = textStartsWith("领水滴 完成任务赚水滴，大幅增加庄园植物金币收益！ 关闭").findOnce();
     if (partent != null) {
         let listTask = partent.child(0).child(1).child(0);
         //先拿到所有可执行的任务 
@@ -492,10 +492,6 @@ function getWaterDrop() {
             findTaskAndDoIt2(doName);
         }
     }
-}
-
-function findShuidiView(fundStr) {
-    return className("android.view.View").textStartsWith(fundStr).findOnce();
 }
 
 function liuLanAndBack(uiSelf, delay, needBack) {
