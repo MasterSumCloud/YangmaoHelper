@@ -64,7 +64,8 @@ function startTaobao(isDoTaoLife, isDoFarm) {
  * 淘宝金币庄园 游戏
  */
 function openGoldGarden() {
-    gameDiv = className("android.webkit.WebView").textContains("金币庄园").findOnce();
+    // gameDiv = className("android.webkit.WebView").textContains("金币庄园").findOnce();
+    gameDiv = desc("WVUCWebView").findOnce();
     stateBarHeigh = gameDiv.bounds().top;
     gameHigh = gameDiv.bounds().bottom - gameDiv.bounds().top;
 
@@ -91,10 +92,12 @@ function openGoldGarden() {
     click(deviceWidth / 2, deviceHeight * 0.356);
     sleep(1000);
 
-    toast("开始做领水滴任务");
-    goWaterDrop();
+    // toast("开始做领水滴任务");
+    toast("领水改版 不再执行");
+    // goWaterDrop();
     //金币庄园
     sleep(3000);
+    toast("去浇水偷金币");
     //加入头金币和浇水
     quJiaoShui();
     //掘金团队
@@ -102,20 +105,60 @@ function openGoldGarden() {
     toast("开始做掘金团队");
     goNuggetsAndBack();
     sleep(2000);
+    //成就
+    chengjiu();
+    sleep(2000);
     //领金币
     swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
-    toast("开始今日任务");
-    toDaygoldTask();
+    toast("开始店铺签到");
+    // toDaygoldTask();
+    toShopTask();
+    toast("完事，退出");
+}
+
+
+function toShopTask() {
+    className("android.widget.ListView").findOnce().child(0).child(0).click();
+    sleep(3000);
+    let shopText = descContains("家店铺更新").findOnce();
+    if (shopText != null) {
+        let numOfShop = Number(shopText.desc().replace("家店铺更新", "").replace("共", ""));
+        console.log("坐标", numOfShop);
+        for (let i = 0; i < numOfShop; i++) {
+            let qiandao = desc("签到+5金币").findOnce();
+            console.log("签到", qiandao);
+            if (qiandao != null) {
+                qiandao.parent().click();
+                sleep(1000);
+                backTopLeft();
+                sleep(2000);
+            }
+            if (i % 3 == 0 && i != 0) {
+                swipe(deviceWidth / 2, deviceHeight * 0.9, deviceWidth / 2, deviceHeight * 0.2, 1000)
+                sleep(1500);
+            }
+        }
+        backTopLeft();
+    }
+}
+
+function backTopLeft() {
+    let backTopLife = className("android.widget.ImageButton").desc("转到上一层级").findOne(2000);
+    if (backTopLife != null) {
+        backTopLife.click();
+    }
 }
 
 function goWaterDrop() {
     //做领取水滴任务
     //先拿到游戏的布局
-    let lingSd = className("android.widget.Button").textContains("领水滴").findOnce();
+    // let lingSd = className("android.widget.Button").textContains("领水滴").findOnce();
+    let lingSd = textStartsWith("TB17DQuw7T2gK0jSZPcXXcKkpXa").findOnce();
     if (lingSd != null) {
         click(lingSd.bounds().centerX(), lingSd.bounds().centerY())
         sleep(2000);
         getWaterDrop();
+        // goWaterDropTask();
         //关闭水滴领取框
         click(device.width / 2, stateBarHeigh + 100);
         sleep(1000);
@@ -260,26 +303,24 @@ function oldQujiaoshui() {
 
 
 function goNuggetsAndBack() {
-    // click(Math.round(deviceWidth * 0.556), Math.round(gameHigh * 0.513 + stateBarHeigh));
-    let gameList = className("android.widget.Image").id("__SVG_SPRITE_NODE__").findOnce();
-    gameList.parent().child(3).child(0).child(3).child(0).click();
-    sleep(5000);
-    //先领取  金币
-    let allGold = EUtil.ImageSearchEngin('./res/gold_hom.png', [0, 200, deviceWidth, 800], 5);
-    if (allGold != -1) {
-        allGold.forEach(element => {
-            click(element.point.x + 20, element.point.y - 20);
-            sleep(1000);
-        });
+    let listV = className("android.widget.ListView").findOnce();
+    if (listV != null && listV.childCount() > 3) {
+        listV.child(3).child(0).click();
+        sleep(5000);
+        //先领取  金币
+        let allGold = EUtil.ImageSearchEngin('./res/gold_hom.png', [0, 200, deviceWidth, 800], 5);
+        if (allGold != -1) {
+            allGold.forEach(element => {
+                click(element.point.x + 20, element.point.y - 20);
+                sleep(1000);
+            });
+        }
+        swipe(device.width / 2, device.height * 0.9, device.width / 2, 0, 1000);
+        sleep(100);
+        clickInvestMulti();
+        clickInvestMulti();
+        back();
     }
-
-    swipe(device.width / 2, device.height * 0.9, device.width / 2, 0, 1000);
-    sleep(100);
-
-    clickInvestMulti();
-    clickInvestMulti();
-
-    back();
 }
 
 /**
@@ -314,43 +355,8 @@ function clickInvestMulti() {
  * 每日金币领取
  */
 function toDaygoldTask() {
-    // click(Math.round(deviceWidth * 0.102), Math.round(gameHigh * 0.513 + stateBarHeigh));
-    let gameList = className("android.widget.Image").id("__SVG_SPRITE_NODE__").findOnce();
-    gameList.parent().child(3).child(0).child(0).child(0).click();
+    className("android.widget.ListView").findOnce().child(0).child(0).click();
     sleep(3000);
-    //先判断是否成就领取
-    let jiangli = className("android.view.View").desc("领奖励").findOnce();
-    if (jiangli != null) {
-        toastLog("有成就待领取")
-        click(jiangli.bounds().centerX(), jiangli.bounds().centerY());
-        sleep(3000);
-        let backBtnCj = className("android.widget.ImageButton").desc("转到上一层级").findOne(2000);
-        if (backBtnCj != null) {
-            let cjjl = className("android.view.View").desc("领取奖励").findOnce();
-            toastLog("开始领取成就")
-            while (cjjl != null) {
-                console.log("成就循环中");
-                cjjl.parent().click();
-                let cjjjd = className("android.view.View").desc("领取奖励").findOne(3000);
-                if (cjjjd != null) {
-                    console.log("点击领取");
-                    cjjjd.parent().click();
-                    sleep(13000);
-                    back();
-                    sleep(1000);
-                    back();
-                    sleep(1000);
-                }
-                cjjl = className("android.view.View").desc("领取奖励").findOnce();
-                // sleep(1000);
-            }
-            backBtnCj.click();
-            sleep(2000);
-        }
-    }
-    //先滑动半个屏幕
-    swipe(deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, 0, 1000);
-    sleep(100);
     //找到店铺头
     let shopTtile = className("android.view.View").descContains("好店签到").findOnce();
     if (shopTtile != null) {
@@ -389,11 +395,6 @@ function toDaygoldTask() {
 
         }
     }
-
-    // className("android.support.v7.widget.RecyclerView").findOnce().children()
-    //     .forEach(function (child) {
-    //         log("孩子们", child.bounds());
-    //     });
 
     let goTop = className("android.view.View").descContains("顶部").findOnce();
     let needBackPage = 1;
@@ -440,6 +441,35 @@ function toDaygoldTask() {
     toast("完事了")
 }
 
+
+function chengjiu() {
+    className("android.widget.ListView").findOnce().child(2).child(0).click();
+
+    let backBtnCj = className("android.widget.ImageButton").desc("转到上一层级").findOne(2000);
+    if (backBtnCj != null) {
+        let cjjl = className("android.view.View").desc("领取奖励").findOnce();
+        toastLog("开始领取成就")
+        while (cjjl != null) {
+            console.log("成就循环中");
+            cjjl.parent().click();
+            let cjjjd = className("android.view.View").desc("领取奖励").findOne(3000);
+            if (cjjjd != null) {
+                console.log("点击领取");
+                cjjjd.parent().click();
+                sleep(13000);
+                back();
+                sleep(1000);
+                back();
+                sleep(1000);
+            }
+            cjjl = className("android.view.View").desc("领取奖励").findOnce();
+            // sleep(1000);
+        }
+        backBtnCj.click();
+        sleep(2000);
+    }
+}
+
 /**
     店铺来回签到
  */
@@ -453,9 +483,10 @@ function goGet5GoldAndBack(x, y, height) {
 }
 
 function getWaterDrop() {
-    let partent = textStartsWith("领水滴 完成任务赚水滴，大幅增加庄园植物金币收益！ 关闭").findOnce();
+    // let partent = textStartsWith("领水滴 完成任务赚水滴，大幅增加庄园植物金币收益！ 关闭").findOnce();
+    let partent = text("领水滴 关闭").findOnce();
     if (partent != null) {
-        let listTask = partent.child(0).child(1).child(0);
+        let listTask = partent.child(0).child(1).child(1);
         //先拿到所有可执行的任务 
         let canDoTask = [];
         for (let k = 0; k < listTask.childCount(); k++) {

@@ -115,7 +115,9 @@ ui.layout(
 
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：王者荣耀薅羊毛</text>
-                    <text marginLeft="15dp" marginRight="15dp">使用方法：开发中  对玩王者来说是福利，奖励很多的</text>
+                    <text marginLeft="15dp" marginRight="15dp">使用方法：需要下载的APP有：掌上道聚城、心悦俱乐部、应用宝、QQ浏览器、王者人生、腾讯新闻、腾讯视频、王者营地、腾讯游戏管家</text>
+                    <text marginLeft="15dp" marginRight="15dp">注意事项：目前测试是微信，请大家先自定各种登陆上去把所有能领的礼包全部撸一遍！日常签到在用这个脚本，注意有些奖品需要游戏后才可以领到</text>
+                    <text marginLeft="15dp" marginRight="15dp">特殊：很多脚本写起来太费劲，大家手动领吧，我会写一个攻略，扔群里！有问题群里讨论</text>
                     <button id={"extWangZheYm"} marginLeft="15dp" marginRight="15dp">薅羊毛开始</button>
                 </vertical>
 
@@ -317,7 +319,9 @@ ui.cbAntCruise.on("check", function (checked) {
 
 ui.extWangZheYm.click(() => {
     currentExeTask = threads.start(function () {
-        toast("开发中！！！近2天完成");
+        // toast("开发中！！！近2天完成");
+        engines.execScriptFile("./src/WangZheSignIn.js");
+        
     });
 });
 

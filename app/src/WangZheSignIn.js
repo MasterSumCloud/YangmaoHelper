@@ -8,7 +8,7 @@ function startHandToolMarket() {
     if (libaoCenter != null) {
         console.log("点击礼包中心");
         libaoCenter.parent().click();
-        sleep(1000);
+        sleep(3000);
         let phoneGame = desc("手游").findOne(5000);
         if (phoneGame != null) {
             console.log("点击手游");
@@ -45,7 +45,11 @@ function startHandToolMarket() {
 function startxyClub() {
     launch("com.tencent.tgclub");
     console.log("打开心悦俱乐部");
-    let myGameCenterList = id("my_game_order_list").findOne(8000);
+    let ad = id("image_dialog_close").findOne(8000);
+    if (ad != null) {
+        ad.click();
+    }
+    let myGameCenterList = id("my_game_order_list").findOne(2000);
     if (myGameCenterList != null) {
         let maxSize = myGameCenterList.childCount();
         console.log("我的游戏长度", maxSize)
@@ -115,9 +119,9 @@ function startqqDownLoader() {
 
 function startQQNews() {
     launch("com.tencent.news");
-    let btmBar = id("b5j").findOne(10000);
+    let btmBar = text("活动").findOne(10000);
     if (btmBar != null) {
-        btmBar.child(4).child(0).child(0).click();
+        click(deviceWidth * 0.9, deviceHeight - 100);
         sleep(2000);
         let bonbon = text("BonBon游戏").findOne(2000);
         if (bonbon != null) {
@@ -125,7 +129,11 @@ function startQQNews() {
             sleep(2000);
             let wangzheT = text("王者荣耀").findOne(2000);
             if (wangzheT != null) {
-                wangzheT.parent().child(4).click();
+                // wangzheT.parent().child(4).click();
+                let libao = text("获取礼包").findOne(1000);
+                if (libao != null) {
+                    libao.click();
+                }
                 sleep(1000);
                 let sinin = text("领取签到礼包").findOne(2000);
                 if (sinin != null) {
@@ -254,3 +262,5 @@ function getAllWangZheGift() {
     startYingdi();
     startCenterKeeper();
 }
+
+getAllWangZheGift();

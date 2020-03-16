@@ -6,7 +6,6 @@ let deviceHeight = device.height;
 
 console.log("开始")
 
-
 console.log("结束")
 
 function getScreenImg() {

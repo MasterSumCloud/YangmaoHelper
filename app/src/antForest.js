@@ -29,7 +29,7 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
     }
     //在首页寻找 蚂蚁深林和蚂蚁庄园的入口
     let antForest = id("app_text").textContains("蚂蚁森林").findOnce();
-    if (antForest==null) {
+    if (antForest == null) {
         antForest = id("app_text_multi_line").textContains("蚂蚁森林").findOnce();
     }
     if (antForest != null || gamePartHome != null) {
@@ -146,9 +146,10 @@ function circleCode(circle, times) {
         seekMore.click();
         sleep(3000);
         //判断是否还有更多
-        let screen = getScreenImg();
-        let noMore = images.read("./res/no_more.png");
-        let hasMore = images.matchTemplate(screen, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
+        // let screen = getScreenImg();
+        // let noMore = images.read("./res/no_more.png");
+        // let hasMore = images.matchTemplate(screen, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
+        let hasMore = textAna();
         console.log("是否有更多", hasMore);
         let maxSearchTime = 32;//最大限制次数
         let handImg = images.read("./res/ghand.png");
@@ -164,8 +165,7 @@ function circleCode(circle, times) {
             sleep(1000);
             swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.1, 1000);
             if (maxSearchTime < 27) {//前5次不判断是否到底部
-                let screen2 = getScreenImg();
-                hasMore = images.matchTemplate(screen2, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
+                hasMore = textAna();
                 if (!hasMore) {
                     toastLog("已经没有更多了")
                     break;
@@ -175,13 +175,20 @@ function circleCode(circle, times) {
         }
         //回收资源
         handImg.recycle();
-        noMore.recycle();
 
         if (circle) {
             back();
             sleep(1000);
         }
     }
+}
+
+function textAna() {
+    let screen = getScreenImg();
+    let temple = images.clip(screen, deviceWidth / 2 - 130, deviceHeight - 100, 260, 100);
+    images.save(temple, "/sdcard/no_more_ali_tree.png");
+    let analysisText = EUtil.baiduAnasisText("/sdcard/no_more_ali_tree.png");
+    return analysisText != "没有更多了";
 }
 
 function seekToSteal(simple) {
