@@ -1,5 +1,6 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
+// let EUtil = require('./EUtil.js');
 
 function startHandToolMarket() {
     launch("com.tencent.djcity");
@@ -54,29 +55,55 @@ function startxyClub() {
         let maxSize = myGameCenterList.childCount();
         console.log("我的游戏长度", maxSize)
         if (maxSize > 0) {
-            let lastMore = myGameCenterList.child(maxSize - 1);
+            let lastMore = myGameCenterList.child(0);
             if (lastMore != null) {
                 lastMore.click();
-                console.log("进入更多");
+                console.log("点击第一个");
                 sleep(2000);
                 // let leftScrll = className("android.widget.ScrollView").findOne(3000);
-                let leftScrll = className("android.widget.ScrollView").find()[0];
-                if (leftScrll != null) {
-                    console.log("找到第一个ScrollView")
-                    leftScrll.child(0).child(5).click();
-                    sleep(1000);
-                    let rightScrl = className("android.widget.ScrollView").find()[1];
-                    console.log("找到第二个ScrollView")
-                    if (rightScrl != null) {
-                        rightScrl.child(0).child(8).child(0).click();
-                        console.log("固定位置9")
-                        let libao = text("礼包").findOne(3000);
-                        if (libao != null) {
-                            console.log("打开礼包弹窗")
-                            libao.parent().click();
-                            sleep(2000);
-                            //因为控件不包含任何信息  无法抓取  需要用到识图 
-                        }
+                // let leftScrll = className("android.widget.ScrollView").find()[0];
+                // if (leftScrll != null) {
+                //     console.log("找到第一个ScrollView")
+                //     leftScrll.child(0).child(5).click();
+                //     sleep(1000);
+                //     let rightScrl = className("android.widget.ScrollView").find()[1];
+                //     console.log("找到第二个ScrollView")
+                //     if (rightScrl != null) {
+                //         rightScrl.child(0).child(8).child(0).click();
+                //         console.log("固定位置9")
+                //         ...
+                //     }
+                // }
+                //先去 悦享卡
+                let xiangyue = text("悦享卡").findOne(3000);
+                if (xiangyue != null) {
+                    xiangyue.parent().click();
+                    sleep(5000);
+                    //固定点击
+                    click(deviceWidth / 3, deviceHeight - 160);
+                    let webReturn = id("webview_return").findOnce(); wz_wxtg
+                    if (webReturn != null) {
+                        webReturn.click();
+                        sleep(1000);
+                    }
+                }
+                let libao = text("礼包").findOne(3000);
+                if (libao != null) {
+                    console.log("打开礼包弹窗")
+                    libao.parent().click();
+                    sleep(2000);
+                    for (let i = 0; i < 3; i++) {
+                        //因为控件不包含任何信息  无法抓取  需要用到识图 
+                        let lingBtn = EUtil.ImageSearchEngin('./res/wangzhe/wz_ling_yellow_btn.png', [deviceWidth / 3, 400, deviceWidth / 3, deviceHeight - 400], 3);
+                        lingBtn.forEach(element => {
+                            click(element.point.x + 20, element.point.y + 20);
+                            sleep(1000);
+                            let confirmGet = id("choice_role_action_confirm").findOne(2000);
+                            if (confirmGet != null) {
+                                confirmGet.click();
+                            }
+                        });
+                        swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 1000);
                     }
                 }
             }
@@ -108,6 +135,7 @@ function startqqDownLoader() {
                     if (yjian != null) {
                         yjian.click();
                         //这里会自动进入游戏
+                        home();
                     }
                 }
 
@@ -214,16 +242,21 @@ function startYingdi() {
             }
 
             let confirmGet = text("立即领取").findOnce();
-            while (confirmGet != null) {
-                click(confirmGet.bounds().centerX(), confirmGet.bounds().centerY());
-                sleep(1500);
-                let queD = text("确定").findOne(2000);
-                if (queD != null) {
-                    queD.click();
+            let firstX = confirmGet.bounds().centerX();
+            let firstY = confirmGet.bounds().centerY();
+            let clickCount = text("立即领取").find();
+            if (clickCount != null && clickCount.length > 0) {
+                for (let i = 0; i < clickCount.length; i++) {
+                    click(firstX, firstY);
+                    sleep(1500);
+                    let queD = text("确定").findOne(2000);
+                    if (queD != null) {
+                        queD.click();
+                        sleep(1000);
+                    }
+                    confirmGet = text("立即领取").findOnce();
                     sleep(1000);
                 }
-                confirmGet = text("立即领取").findOnce();
-                sleep(1000);
             }
         }
     }
@@ -253,14 +286,100 @@ function startCenterKeeper() {
     }
 }
 
+function tencentLovePlay() {
+    launch("iwan.tencent.com");
+    let btmLiao = text("礼包").findOne(6000);
+    if (btmLiao != null) {
+        sleep(2000);
+        click(btmLiao.bounds().centerX(), btmLiao.bounds().centerY())
+        let wangZTT = text("王者荣耀").findOne(2000);
+        if (wangZTT != null) {
+            click(wangZTT.bounds().centerX(), wangZTT.bounds().centerY() - 200);
+            sleep(2000);
+            let openMore = text("展开更多").findOne(2000);
+            if (openMore != null) {
+                click(openMore.bounds().centerX(), openMore.bounds().centerY());
+                sleep(1000);
+                // let seeBtm = text("收起更多").findOnce();
+                for (let i = 0; i < 3; i++) {
+                    iLoveGet();
+                    swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 1500);
+                    sleep(1000);
+                }
+            }
+        }
+    }
+}
+
+
+function iLoveGet() {
+    let lingquList = text("领取").find();
+    if (lingquList != null && lingquList.length > 0) {
+        for (let i = 0; i < lingquList.length; i++) {
+            let item = lingquList[i];
+            click(item.bounds().centerX(), item.bounds().centerY());
+            sleep(1000);
+            let conFrm = text("确定").findOne(2000);
+            if (conFrm != null) {
+                click(conFrm.bounds().centerX(), conFrm.bounds().centerY());
+                sleep(1500);
+                // let getFail = text("兑换失败").findOne(2000);
+                // if (getFail != null) {}
+                let failFirm = text("确定").findOne(2000);
+                if (failFirm != null) {
+                    click(failFirm.bounds().centerX(), failFirm.bounds().centerY());
+                }
+            }
+
+        }
+    }
+}
+
+function tencentVideo() {
+    launch("com.tencent.qqlive");
+    let btmV = id("ajg").findOne(8000);
+    if (btmV != null) {
+        click(deviceWidth * 0.9, deviceHeight - 50);
+        sleep(1000);
+        swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 2000);
+        let aiwanV = text("爱玩游戏").findOne(2000);
+        if (aiwanV != null) {
+            aiwanV.parent().parent().click();
+            sleep(2000);
+            //查看是否有王者
+
+            //点击礼包进入
+            click(deviceWidth * 0.2, deviceHeight * 0.43);
+            //点击一键领取完事
+            sleep(5000);
+            click(deviceWidth * 0.865, deviceHeight * 0.28);
+            sleep(3000);
+            click(deviceWidth * 0.645, deviceHeight * 0.62);
+        }
+    }
+}
+
+function weiXinWangzhe() {
+    launch("com.tencent.mm");
+    sleep(5000);
+    swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 300);
+    click(188, 615);
+    sleep(3000);
+    click(176,1273);
+    sleep(3000);
+    click(940,340);
+}
+
 
 function getAllWangZheGift() {
-    startHandToolMarket();
-    startxyClub();
-    startqqDownLoader();
-    startQQNews();
-    startYingdi();
-    startCenterKeeper();
+    // startHandToolMarket();//OK
+    // startxyClub();
+    // startQQNews();//OK
+    // startYingdi();
+    // startCenterKeeper();//OK
+    // tencentLovePlay();
+    // startqqDownLoader();//最后续关闭游戏 ok
+    // weiXinWangzhe();
 }
 
 getAllWangZheGift();

@@ -6,6 +6,11 @@ let deviceHeight = device.height;
 
 console.log("开始")
 
+let wangzheT = text("通讯录").findOne(5000);
+console.log("---",wangzheT )
+if (wangzheT != null) {
+    click(wangzheT.parent().bounds().centerX(),wangzheT.parent().bounds().centerY())
+}
 console.log("结束")
 
 function getScreenImg() {
