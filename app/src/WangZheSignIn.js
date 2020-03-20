@@ -1,7 +1,8 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-// let EUtil = require('./EUtil.js');
-
+let EUtil = require('./EUtil.js');
+requestScreenCapture();
+sleep(2000);
 function startHandToolMarket() {
     launch("com.tencent.djcity");
     console.log("打开掌上道具商城");
@@ -81,7 +82,7 @@ function startxyClub() {
                     sleep(5000);
                     //固定点击
                     click(deviceWidth / 3, deviceHeight - 160);
-                    let webReturn = id("webview_return").findOnce(); wz_wxtg
+                    let webReturn = id("webview_return").findOnce();
                     if (webReturn != null) {
                         webReturn.click();
                         sleep(1000);
@@ -95,15 +96,18 @@ function startxyClub() {
                     for (let i = 0; i < 3; i++) {
                         //因为控件不包含任何信息  无法抓取  需要用到识图 
                         let lingBtn = EUtil.ImageSearchEngin('./res/wangzhe/wz_ling_yellow_btn.png', [deviceWidth / 3, 400, deviceWidth / 3, deviceHeight - 400], 3);
-                        lingBtn.forEach(element => {
-                            click(element.point.x + 20, element.point.y + 20);
-                            sleep(1000);
-                            let confirmGet = id("choice_role_action_confirm").findOne(2000);
-                            if (confirmGet != null) {
-                                confirmGet.click();
-                            }
-                        });
+                        if (lingBtn != -1) {
+                            lingBtn.forEach(element => {
+                                click(element.point.x + 20, element.point.y + 20);
+                                sleep(1000);
+                                let confirmGet = id("choice_role_action_confirm").findOne(2000);
+                                if (confirmGet != null) {
+                                    confirmGet.click();
+                                }
+                            });
+                        } 
                         swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 1000);
+
                     }
                 }
             }
@@ -365,21 +369,22 @@ function weiXinWangzhe() {
     swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 300);
     click(188, 615);
     sleep(3000);
-    click(176,1273);
+    click(176, 1273);
     sleep(3000);
-    click(940,340);
+    click(940, 340);
 }
 
 
 function getAllWangZheGift() {
     // startHandToolMarket();//OK
-    // startxyClub();
+    startxyClub();
     // startQQNews();//OK
     // startYingdi();
     // startCenterKeeper();//OK
     // tencentLovePlay();
     // startqqDownLoader();//最后续关闭游戏 ok
     // weiXinWangzhe();
+    // tencentVideo();
 }
 
 getAllWangZheGift();
