@@ -290,12 +290,12 @@ function getNeedGetAliScore(need) {
                 click(memeberAli.bounds().centerX(), memeberAli.bounds().centerY());
                 backCount++;
                 sleep(3000);
-                let getScoreV = className("android.view.View").text("领积分").findOnce();
+                let getScoreV = className("android.view.View").text("领积分").findOne(6000);
                 if (getScoreV != null) {
                     click(getScoreV.bounds().centerX(), getScoreV.bounds().centerY());
                     sleep(3000);
                     backCount++;
-                    let clickGetScore = className("android.view.View").text("点击领取").findOnce();
+                    let clickGetScore = className("android.view.View").text("点击领取").findOne(6000);
                     while (clickGetScore != null) {
                         click(clickGetScore.bounds().centerX(), clickGetScore.bounds().centerY());
                         sleep(300);

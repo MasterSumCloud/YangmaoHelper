@@ -5,7 +5,12 @@ let deviceHeight = device.height;
 // sleep(2000);
 
 console.log("开始")
-
+let collectSelf = className("android.widget.Button").textContains("收集能量").findOnce();
+if (collectSelf != null) {
+    click(collectSelf.bounds().centerX(), collectSelf.bounds().centerY());
+    sleep(300);
+}
+console.log("手机", shouji);
 
 console.log("结束")
 

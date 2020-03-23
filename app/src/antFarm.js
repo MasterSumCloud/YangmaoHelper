@@ -105,11 +105,11 @@ function juadgeSlefAtHome() {
     sleep(1000);
     let screenChickenO = getScreenImg();
     let chickenOut = images.read("./res/find_my_chicken.png");
-    let chickenOPoint = images.matchTemplate(screenChickenO, chickenOut, { threshold: 0.8, region: [deviceWidth / 2, deviceHeight * 0.4, deviceWidth / 2 - 100, deviceHeight * 0.27], max: 1 }).matches;
-    console.log("自己是否在家", chickenOPoint);
-    if (chickenOPoint != null && chickenOPoint.length > 0) {
-        let findPoint = chickenOPoint[0];
-        click(findPoint.point.x, findPoint.point.y);
+    // let chickenOPoint = images.matchTemplate(screenChickenO, chickenOut, { threshold: 0.8, region: [deviceWidth / 2, deviceHeight * 0.4, deviceWidth / 2 - 100, deviceHeight * 0.27], max: 1 }).matches;
+    let chickenAtHome = textAna();
+    console.log("自己是否在家", chickenAtHome);
+    if (chickenAtHome) {
+        click(deviceWidth * 0.69, deviceHeight * 0.61);
         sleep(5000);
         // 找自己的鸡
         click(deviceWidth * 0.37, deviceHeight * 0.74);
@@ -131,6 +131,13 @@ function juadgeSlefAtHome() {
     }
 }
 
+function textAna() {
+    let screen = getScreenImg();
+    let temple = images.clip(screen, deviceWidth / 2, deviceHeight * 0.584, 400, 140);
+    images.save(temple, "/sdcard/chicken_at_home_text.png");
+    let analysisText = EUtil.baiduAnasisText("/sdcard/chicken_at_home_text.png");
+    return analysisText == "找小鸡";
+}
 
 function juadgeHasZeiji() {
     toastLog("查看是否有贼鸡！");
