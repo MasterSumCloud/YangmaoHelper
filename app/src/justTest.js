@@ -1,3 +1,4 @@
+
 // let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
@@ -5,15 +6,26 @@ let deviceHeight = device.height;
 // sleep(2000);
 
 console.log("开始")
-let collectSelf = className("android.widget.Button").textContains("收集能量").findOnce();
-if (collectSelf != null) {
-    click(collectSelf.bounds().centerX(), collectSelf.bounds().centerY());
-    sleep(300);
+
+let btn2judou = id("rb_judou").findOne(3000);
+if (btn2judou != null) {
+    btn2judou.click();
 }
-console.log("手机", shouji);
+
 
 console.log("结束")
 
+
+function qqzan() {
+    let outcCount = 6;
+    let innercCount = 20;
+    for (let i = 0; i < outcCount; i++) {
+        for (let k = 0; k < innercCount; k++) {
+            click(1000, 400 + i * 210);
+            sleep(10)
+        }
+    }
+}
 function getScreenImg() {
     let screenPic = captureScreen();
     console.log(screenPic);

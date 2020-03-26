@@ -36,6 +36,9 @@ function startHandToolMarket() {
                         //     console.log("点击取消");
                         //     cancelSucess.click();
                         // }
+                        back();
+                        sleep(2000);
+                        back();
                     }
                 }
             }
@@ -43,6 +46,113 @@ function startHandToolMarket() {
     }
 }
 
+
+function getMoreDoudou() {
+    let btn2judou = id("rb_judou").findOne(3000);
+    if (btn2judou!=null) {
+        btn2judou.click();
+    }
+    positiveClick();
+    swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 500);
+    sleep(500);
+    let lingqu = desc("领取奖励").findOnce();
+    if (lingqu != null) {
+        lingqu.parent().click();
+        sleep(3000);
+        haodeClick();
+        let huodong = descStartsWith("绝不错亿").findOnce();
+        if (huodong != null) {
+            click(deviceWidth * 0.88, huodong.bounds().bottom);
+            sleep(2000);
+            haodeClick();
+        }
+        let setDream = desc("有理想").findOne(2000);
+        if (setDream != null) {
+            click(deviceWidth * 0.88, setDream.bounds().bottom);
+            sleep(5000);
+            click(deviceWidth / 2, deviceHeight * 0.6);
+            let gameBtn = id("game_item").findOne(5000);
+            if (gameBtn != null) {
+                gameBtn.click();
+                let select = id("iv_game_icon").findOne(5000);
+                if (select != null) {
+                    select.parent().click();
+                    let btnSubmit = id("btn_submit").findOne(3000);
+                    if (btnSubmit != null) {
+                        btnSubmit.click();
+                        sleep(3000);
+                        let tianjiaDaoju = desc("添加道具").findOne(3000);
+                        if (tianjiaDaoju != null) {
+                            click(tianjiaDaoju.bounds().centerX(), tianjiaDaoju.bounds().top - 100);
+                            sleep(2000);
+                            let rvList = className("android.support.v7.widget.RecyclerView").findOnce();
+                            if (rvList != null) {
+                                for (let i = 1; i < rvList.childCount(); i++) {
+                                    let childItem = rvList.child(i);
+                                    if (childItem.clickable && childItem.find(desc("已许愿")).length == 0) {
+                                        childItem.click();
+                                        break;
+                                    }
+                                }
+
+                                click(deviceWidth / 2, deviceHeight * 0.935);
+                                sleep(5000);
+                                positiveClick();
+                                sleep(5000);
+                                negativeClick();
+                                back();
+                                let setDream2 = desc("有理想").findOne(2000);
+                                if (setDream2 != null) {
+                                    click(deviceWidth * 0.88, setDream2.bounds().bottom);
+                                    sleep(2000);
+                                    let moreTask = desc("赚聚豆").findOnce();
+                                    if (moreTask != null) {
+                                        moreTask.parent().click();
+                                        let silverbox = id("my_task_silverbox_img").findOnce();
+                                        if (silverbox != null) {
+                                            silverbox.click();
+                                            sleep(3000);
+                                            click(deviceHeight / 2, deviceHeight / 2);
+                                        }
+
+                                        let goldbox = id("my_task_goldbox_img").findOnce();
+                                        if (goldbox != null) {
+                                            goldbox.click();
+                                            sleep(3000);
+                                            click(deviceHeight / 2, deviceHeight / 2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+function positiveClick() {
+    let positive = id("dialog_btn_positive").findOnce();
+    if (positive != null) {
+        positive.click();
+    }
+}
+function negativeClick() {
+    let negative = id("dialog_btn_negative").findOnce();
+    if (negative != null) {
+        negative.click();
+    }
+}
+
+function haodeClick() {
+    let okget = desc("好的").findOne(2000);
+    if (okget != null) {
+        click(okget.bounds().centerX(), okget.bounds().centerY());
+        sleep(2000);
+    }
+}
 
 function startxyClub() {
     launch("com.tencent.tgclub");
@@ -105,7 +215,7 @@ function startxyClub() {
                                     confirmGet.click();
                                 }
                             });
-                        } 
+                        }
                         swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 1000);
 
                     }
@@ -376,8 +486,8 @@ function weiXinWangzhe() {
 
 
 function getAllWangZheGift() {
-    // startHandToolMarket();//OK
-    startxyClub();
+    startHandToolMarket();//OK
+    // startxyClub();
     // startQQNews();//OK
     // startYingdi();
     // startCenterKeeper();//OK
