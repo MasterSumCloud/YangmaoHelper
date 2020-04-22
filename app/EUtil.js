@@ -77,13 +77,14 @@ function baiduAnasisText(anaImageUrl) {
     })
     if (res.statusCode == 200) {
         rel = res.body.string().toString();
-        print(rel);
+        console.log("识别结果", rel);
         let map = eval("(" + rel + ")");
         rel = map.words_result;
         let list = new Array();
         if (rel != null) {
             list.concat(rel);
         }
+
         let words = "";
         for (let i = 0; i < list.length; i++) {
             let ss = list[i];

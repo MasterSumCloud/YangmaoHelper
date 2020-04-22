@@ -164,7 +164,7 @@ function circleCode(circle, times) {
 
             sleep(1000);
             swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.1, 1000);
-            if (maxSearchTime < 27) {//前5次不判断是否到底部
+            if (maxSearchTime < 94) {//前5次不判断是否到底部
                 hasMore = textAna();
                 if (!hasMore) {
                     toastLog("已经没有更多了")
