@@ -60,32 +60,33 @@ function selectMaoxian() {
         click(wxtgImage[0].point.x + 100, wxtgImage[0].point.y + 100);
         sleep(2000);
         //选择冒险模式
-        let maoxianEntry = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
+        let maoxianEntry = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian.png', [0, 0, 400, deviceHeight], 1);
         if (maoxianEntry != -1) {
             toastLog("选择冒险模式")
             click(maoxianEntry[0].point.x + 100, maoxianEntry[0].point.y + 100);
             sleep(2000);
-            //找到开始按钮
-            let startMx = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_start.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
-            if (startMx != -1) {
-                toastLog("点击冒险开始")
-                click(startMx[0].point.x + 50, startMx[0].point.y + 50);
+            // //找到开始按钮
+            // let startMx = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_start.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
+            // if (startMx != -1) {
+            //     toastLog("点击冒险开始")
+            //     click(startMx[0].point.x + 50, startMx[0].point.y + 50);
+            //     sleep(2000);
+                
+            // }
+            //选中挑战
+            let startChallenge = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_select.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight / 2], 1);
+            if (startChallenge != -1) {
+                toastLog("点击挑战")
+                click(startChallenge[0].point.x + 50, startChallenge[0].point.y);
                 sleep(2000);
-                //选中挑战
-                let startChallenge = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_select.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight / 2], 1);
-                if (startChallenge != -1) {
-                    toastLog("点击挑战")
-                    click(startChallenge[0].point.x + 50, startChallenge[0].point.y);
+                //选择默认关卡
+                let startNext = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_next.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
+                if (startNext != -1) {
+                    toastLog("开始默认关卡")
+                    click(startNext[0].point.x + 50, startNext[0].point.y + 50);
                     sleep(2000);
-                    //选择默认关卡
-                    let startNext = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_next.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
-                    if (startNext != -1) {
-                        toastLog("开始默认关卡")
-                        click(startNext[0].point.x + 50, startNext[0].point.y + 50);
-                        sleep(2000);
-                        //开始闯关
-                        whileGameing();
-                    }
+                    //开始闯关
+                    whileGameing();
                 }
             }
         }

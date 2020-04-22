@@ -7,10 +7,8 @@ let deviceHeight = device.height;
 
 console.log("开始")
 
-let btn2judou = id("rb_judou").findOne(3000);
-if (btn2judou != null) {
-    btn2judou.click();
-}
+let btn2judou = id("tv_skucard_price").findOne(3000);
+console.log("====", btn2judou.text())
 
 
 console.log("结束")

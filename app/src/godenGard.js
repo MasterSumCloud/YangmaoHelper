@@ -106,8 +106,8 @@ function openGoldGarden() {
     goNuggetsAndBack();
     sleep(2000);
     //成就
-    chengjiu();
-    sleep(2000);
+    // chengjiu();
+    // sleep(2000);
     //领金币
     swipe(deviceWidth / 2, deviceHeight * 0.2, deviceWidth / 2, deviceHeight * 0.9, 1000);
     toast("开始店铺签到");

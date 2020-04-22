@@ -81,7 +81,9 @@ function baiduAnasisText(anaImageUrl) {
         let map = eval("(" + rel + ")");
         rel = map.words_result;
         let list = new Array();
-        list = rel;
+        if (rel != null) {
+            list.concat(rel);
+        }
         let words = "";
         for (let i = 0; i < list.length; i++) {
             let ss = list[i];

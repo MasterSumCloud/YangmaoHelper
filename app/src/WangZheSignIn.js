@@ -1,12 +1,13 @@
 let deviceWidth = device.width;
 let deviceHeight = device.height;
-let EUtil = require('./EUtil.js');
-requestScreenCapture();
-sleep(2000);
+// let EUtil = require('./EUtil.js');
+// requestScreenCapture();
+// sleep(2000);
 function startHandToolMarket() {
     launch("com.tencent.djcity");
     console.log("打开掌上道具商城");
     let libaoCenter = desc("礼包中心").findOne(5000);
+    sleep(3000);
     if (libaoCenter != null) {
         console.log("点击礼包中心");
         libaoCenter.parent().click();
@@ -39,6 +40,7 @@ function startHandToolMarket() {
                         back();
                         sleep(2000);
                         back();
+                        getMoreDoudou();
                     }
                 }
             }
@@ -481,12 +483,13 @@ function weiXinWangzhe() {
     sleep(3000);
     click(176, 1273);
     sleep(3000);
-    click(940, 340);
+    click(940, 340); 
 }
 
 
 function getAllWangZheGift() {
-    startHandToolMarket();//OK
+    getMoreDoudou();
+    // startHandToolMarket();//OK
     // startxyClub();
     // startQQNews();//OK
     // startYingdi();

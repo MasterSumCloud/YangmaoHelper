@@ -151,7 +151,7 @@ function circleCode(circle, times) {
         // let hasMore = images.matchTemplate(screen, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
         let hasMore = textAna();
         console.log("是否有更多", hasMore);
-        let maxSearchTime = 32;//最大限制次数
+        let maxSearchTime = 99;//最大限制次数
         let handImg = images.read("./res/ghand.png");
         while (hasMore && maxSearchTime > 0) {
             let finded = getCanStealfriend(handImg);
