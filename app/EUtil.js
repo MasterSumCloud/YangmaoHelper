@@ -82,7 +82,7 @@ function baiduAnasisText(anaImageUrl) {
         rel = map.words_result;
         let list = new Array();
         if (rel != null) {
-            list.concat(rel);
+            list = rel;
         }
 
         let words = "";
@@ -90,6 +90,7 @@ function baiduAnasisText(anaImageUrl) {
             let ss = list[i];
             words += ss.words;
         }
+        console.log("识别结果words", words);
         return words;//识别出来的结果
     }
 }

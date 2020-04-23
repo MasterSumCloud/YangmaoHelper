@@ -150,7 +150,7 @@ function circleCode(circle, times) {
         // let noMore = images.read("./res/no_more.png");
         // let hasMore = images.matchTemplate(screen, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
         let hasMore = textAna();
-        console.log("是否有更多", hasMore);
+        console.log("是否有更多", hasMore,circle);
         let maxSearchTime = 99;//最大限制次数
         let handImg = images.read("./res/ghand.png");
         while (hasMore && maxSearchTime > 0) {
@@ -166,6 +166,7 @@ function circleCode(circle, times) {
             swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.1, 1000);
             if (maxSearchTime < 94) {//前5次不判断是否到底部
                 hasMore = textAna();
+                console.log("是否有更多", hasMore);
                 if (!hasMore) {
                     toastLog("已经没有更多了")
                     break;
@@ -177,6 +178,7 @@ function circleCode(circle, times) {
         handImg.recycle();
 
         if (circle) {
+            console.log("返回再来");
             back();
             sleep(1000);
         }
@@ -231,11 +233,11 @@ function stealAndBack(item) {
 }
 
 function collectEnergy() {
-    let hasSelfPower = className("android.widget.Button").textContains("收集能量").findOnce() != null;
+    let hasSelfPower = className("android.widget.Button").textStartsWith("收集能量").findOnce() != null;
     let maxTimes = 9;
     while (hasSelfPower && maxTimes > 0) {
         toastLog("开始收集");
-        let collectSelf = className("android.widget.Button").textContains("收集能量").findOnce();
+        let collectSelf = className("android.widget.Button").textStartsWith("收集能量").findOnce();
         if (collectSelf != null) {
             click(collectSelf.bounds().centerX(), collectSelf.bounds().centerY());
             sleep(300);
