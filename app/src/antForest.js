@@ -233,20 +233,14 @@ function stealAndBack(item) {
 }
 
 function collectEnergy() {
-    let hasSelfPower = className("android.widget.Button").textStartsWith("收集能量").findOnce() != null;
-    let maxTimes = 9;
-    while (hasSelfPower && maxTimes > 0) {
+    // let hasSelfPower = className("android.widget.Button").textStartsWith("收集能量").findOnce() != null;
+    let coEnergy = EUtil.ImageSearchEngin('./res/white_hand.png', [0, deviceHeight * 0.22, deviceWidth, deviceHeight * 0.18], 9);
+    if (coEnergy!=-1) {
         toastLog("开始收集");
-        let collectSelf = className("android.widget.Button").textStartsWith("收集能量").findOnce();
-        if (collectSelf != null) {
-            click(collectSelf.bounds().centerX(), collectSelf.bounds().centerY());
+        for (let i = 0; i < coEnergy.length; i++) {
+            click(coEnergy[i].point.x - 40, coEnergy[i].point.y - 80);
             sleep(300);
-        } else {
-            toastLog("采集完毕");
-            hasSelfPower = false;
-            break;
         }
-        maxTimes--;
     }
 }
 

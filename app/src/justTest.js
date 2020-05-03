@@ -1,5 +1,5 @@
 
-// let EUtil = require('./EUtil.js');
+let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 // requestScreenCapture();
@@ -7,9 +7,19 @@ let deviceHeight = device.height;
 
 console.log("开始")
 
-let btn2judou = id("tv_skucard_price").findOne(3000);
-console.log("====", btn2judou.text())
+function collectEnergy() {
+    // let hasSelfPower = className("android.widget.Button").textStartsWith("收集能量").findOnce() != null;
+    let coEnergy = EUtil.ImageSearchEngin('./res/white_hand.png', [0, deviceHeight * 0.22, deviceWidth, deviceHeight * 0.18], 9);
+    if (coEnergy!=-1) {
+        toastLog("开始收集");
+        for (let i = 0; i < coEnergy.length; i++) {
+            click(coEnergy[i].point.x - 40, coEnergy[i].point.y - 80);
+            sleep(300);
+        }
+    }
+}
 
+collectEnergy();
 
 console.log("结束")
 
