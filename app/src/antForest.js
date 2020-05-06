@@ -127,7 +127,7 @@ function circleCode(circle, times) {
     //滑动半个屏幕
     if (times == 1) {
         toastLog("查询是否有能量可以收集");
-        collectEnergy();
+        collectEnergy(true);
         swipe(deviceWidth / 2, deviceHeight * 0.8, deviceWidth / 2, deviceHeight * 0.2, 1000);
         //寻找定位点
         let weekTop = className("android.view.View").textContains("周排行榜").findOnce();
@@ -150,7 +150,7 @@ function circleCode(circle, times) {
         // let noMore = images.read("./res/no_more.png");
         // let hasMore = images.matchTemplate(screen, noMore, { threshold: 0.8, region: [deviceWidth / 3, deviceHeight - 150], max: 1 }).matches.length == 0;
         let hasMore = textAna();
-        console.log("是否有更多", hasMore,circle);
+        console.log("是否有更多", hasMore, circle);
         let maxSearchTime = 99;//最大限制次数
         let handImg = images.read("./res/ghand.png");
         while (hasMore && maxSearchTime > 0) {
@@ -232,16 +232,33 @@ function stealAndBack(item) {
     }
 }
 
-function collectEnergy() {
+function collectEnergy(self) {
     // let hasSelfPower = className("android.widget.Button").textStartsWith("收集能量").findOnce() != null;
-    let coEnergy = EUtil.ImageSearchEngin('./res/white_hand.png', [0, deviceHeight * 0.22, deviceWidth, deviceHeight * 0.18], 9);
-    if (coEnergy!=-1) {
-        toastLog("开始收集");
-        for (let i = 0; i < coEnergy.length; i++) {
-            click(coEnergy[i].point.x - 40, coEnergy[i].point.y - 80);
-            sleep(300);
+    // let coEnergy = EUtil.ImageSearchEngin('./res/white_hand.png', [0, deviceHeight * 0.22, deviceWidth, deviceHeight * 0.18], 9);
+    // if (coEnergy!=-1) {
+    //     toastLog("开始收集");
+    //     for (let i = 0; i < coEnergy.length; i++) {
+    //         click(coEnergy[i].point.x - 40, coEnergy[i].point.y - 80);
+    //         sleep(300);
+    //     }
+    // }
+    if (self) {
+        for (let row = 640; row < 900; row += 100) {
+            for (let col = 140; col < 800; col += 100) {
+                click(col, row);
+                sleep(10);
+            }
+        }
+    } else {
+        for (let row = 560; row < 900; row += 100) {
+            for (let col = 170; col < 900; col += 100) {
+                click(col, row);
+                sleep(10);
+            }
         }
     }
+
+
 }
 
 /**

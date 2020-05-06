@@ -1,5 +1,5 @@
 
-let EUtil = require('./EUtil.js');
+// let EUtil = require('./EUtil.js');
 let deviceWidth = device.width;
 let deviceHeight = device.height;
 // requestScreenCapture();
@@ -8,15 +8,11 @@ let deviceHeight = device.height;
 console.log("开始")
 
 function collectEnergy() {
-    // let hasSelfPower = className("android.widget.Button").textStartsWith("收集能量").findOnce() != null;
-    let coEnergy = EUtil.ImageSearchEngin('./res/white_hand.png', [0, deviceHeight * 0.22, deviceWidth, deviceHeight * 0.18], 9);
-    if (coEnergy!=-1) {
-        toastLog("开始收集");
-        for (let i = 0; i < coEnergy.length; i++) {
-            click(coEnergy[i].point.x - 40, coEnergy[i].point.y - 80);
-            sleep(300);
+    for (var row = 560; row < 900; row += 100)
+        for (var col = 170; col < 900; col += 100) {
+            click(col, row);
+            sleep(10);
         }
-    }
 }
 
 collectEnergy();
