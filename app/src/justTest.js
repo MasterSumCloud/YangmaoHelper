@@ -1,22 +1,17 @@
 
-// let EUtil = require('./EUtil.js');
-let deviceWidth = device.width;
-let deviceHeight = device.height;
-// requestScreenCapture();
-// sleep(2000);
+let EUtil = require('./EUtil.js');
+// let deviceWidth = device.width;
+// let deviceHeight = device.height;
+
+let deviceWidth = device.height;
+let deviceHeight = device.width;
+requestScreenCapture();
+sleep(2000);
 
 console.log("开始")
 
-function collectEnergy() {
-    for (var row = 560; row < 900; row += 100)
-        for (var col = 170; col < 900; col += 100) {
-            click(col, row);
-            sleep(10);
-        }
-}
-
-collectEnergy();
-
+let coutinueGame = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_again.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
+console.log("coutinueGame=",coutinueGame)
 console.log("结束")
 
 

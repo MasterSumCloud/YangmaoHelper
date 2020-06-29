@@ -36,7 +36,7 @@ function goInGame(indeed) {
                         click(gdCoseBtn[0].point.x + 25, gdCoseBtn[0].point.y + 25);
                         sleep(1000);
                         hasMore = true;
-                    }else{
+                    } else {
                         hasMore = false;
                         break;
                     }
@@ -71,7 +71,7 @@ function selectMaoxian() {
             //     toastLog("点击冒险开始")
             //     click(startMx[0].point.x + 50, startMx[0].point.y + 50);
             //     sleep(2000);
-                
+
             // }
             //选中挑战
             let startChallenge = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_select.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight / 2], 1);
@@ -96,7 +96,7 @@ function selectMaoxian() {
 function whileGameing() {
     let currentFinish = false;
     let cycCount = 1;
-    while (!currentFinish && cycCount < 470) {
+    while (!currentFinish) {
         let startGame = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_cg.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
         if (startGame != -1) {
             toastLog("开始闯关")
@@ -106,6 +106,9 @@ function whileGameing() {
             toastLog("再次开始" + cycCount)
             cycCount++;
         }
+        sleep(1000);
+        click(deviceWidth / 2, 100);
+        sleep(1000);
     }
 }
 
@@ -134,21 +137,49 @@ function playingi() {
             sleep(1000);
             click(currentFinishState[0].point.x, currentFinishState[0].point.y);
             sleep(2000);
-            //点击再次
-            let coutinueGame = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_again.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
-            if (coutinueGame != -1) {
-                toastLog("点击再次挑战")
-                click(coutinueGame[0].point.x + 50, coutinueGame[0].point.y + 50);
-                sleep(2000);
+
+            let watchTime = 0;
+            if (watchTime < 20) {
+                //点击再次
+                let coutinueGame = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_again.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
+                if (coutinueGame != -1) {
+                    toastLog("点击再次挑战")
+                    click(coutinueGame[0].point.x + 50, coutinueGame[0].point.y + 50);
+                    sleep(2000);
+                    startFinded = true;
+                    whiteSeconds = 0;
+                    break;
+                } else {
+                    sleep(1000);
+                    click(deviceWidth / 2, 100);
+                    watchTime++;
+                }
+            }else{
+                toastLog("等待再次超时")
+                exit();
             }
-            startFinded = true;
-            break;
         } else {
-            sleep(1000);
+            sleep(3000);
             whiteSeconds++;
             console.log("进行时间", whiteSeconds);
         }
+
+
+    }
+
+    if (whiteSeconds >= 300) {
+        console.log("超时错误退出");
+        exit();
     }
 }
+
+function textAna() {
+    let screen = getScreenImg();
+    let temple = images.clip(screen, deviceWidth / 2, deviceHeight * 0.584, 400, 140);
+    images.save(temple, "/sdcard/chicken_at_home_text.png");
+    let analysisText = EUtil.baiduAnasisText("/sdcard/chicken_at_home_text.png");
+    return analysisText == "找小鸡";
+}
+
 
 goInGame(false);
