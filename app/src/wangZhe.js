@@ -62,22 +62,15 @@ function selectMaoxian() {
         //选择冒险模式
         let maoxianEntry = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian.png', [0, 0, 400, deviceHeight], 1);
         if (maoxianEntry != -1) {
-            toastLog("选择冒险模式")
+            console.log("选择冒险模式");
             click(maoxianEntry[0].point.x + 100, maoxianEntry[0].point.y + 100);
-            sleep(2000);
-            // //找到开始按钮
-            // let startMx = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_start.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
-            // if (startMx != -1) {
-            //     toastLog("点击冒险开始")
-            //     click(startMx[0].point.x + 50, startMx[0].point.y + 50);
-            //     sleep(2000);
-
-            // }
+            sleep(3000);
             //选中挑战
-            let startChallenge = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_select.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight / 2], 1);
-            if (startChallenge != -1) {
+            // let startChallenge = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_select.png', [deviceWidth / 3, deviceHeight / 2, deviceWidth / 3, deviceHeight / 2], 1);
+            let startChallengeText = textAna(deviceWidth / 2 - 150, deviceHeight - 320, 300, 100);
+            if (startChallengeText == "挑战") {
                 toastLog("点击挑战")
-                click(startChallenge[0].point.x + 50, startChallenge[0].point.y);
+                click(deviceWidth / 2, deviceHeight - 270);
                 sleep(2000);
                 //选择默认关卡
                 let startNext = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_next.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
@@ -109,6 +102,11 @@ function whileGameing() {
         sleep(1000);
         click(deviceWidth / 2, 100);
         sleep(1000);
+
+        if (cycCount > 300) {
+            currentFinish = true;
+            console.log("限制300次循环")
+        }
     }
 }
 
@@ -137,9 +135,10 @@ function playingi() {
             sleep(1000);
             click(currentFinishState[0].point.x, currentFinishState[0].point.y);
             sleep(2000);
-
+            console.log("进入结算页面")
             let watchTime = 0;
             if (watchTime < 20) {
+                console.log("循环找again按钮")
                 //点击再次
                 let coutinueGame = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_again.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
                 if (coutinueGame != -1) {
@@ -154,7 +153,7 @@ function playingi() {
                     click(deviceWidth / 2, 100);
                     watchTime++;
                 }
-            }else{
+            } else {
                 toastLog("等待再次超时")
                 exit();
             }
@@ -163,9 +162,20 @@ function playingi() {
             whiteSeconds++;
             console.log("进行时间", whiteSeconds);
         }
-
+        
+        //点击再次
+        let coutinueGame = EUtil.ImageSearchEngin('./res/wangzhe/wz_maoxian_again.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
+        if (coutinueGame != -1) {
+            toastLog("点击再次挑战")
+            click(coutinueGame[0].point.x + 50, coutinueGame[0].point.y + 50);
+            sleep(2000);
+            startFinded = true;
+            whiteSeconds = 0;
+            break;
+        }
 
     }
+
 
     if (whiteSeconds >= 300) {
         console.log("超时错误退出");
@@ -173,12 +183,24 @@ function playingi() {
     }
 }
 
-function textAna() {
+function textAna(x, y, w, h) {
     let screen = getScreenImg();
-    let temple = images.clip(screen, deviceWidth / 2, deviceHeight * 0.584, 400, 140);
-    images.save(temple, "/sdcard/chicken_at_home_text.png");
-    let analysisText = EUtil.baiduAnasisText("/sdcard/chicken_at_home_text.png");
-    return analysisText == "找小鸡";
+    let temple = images.clip(screen, x, y, w, h);
+    images.save(temple, "/sdcard/chicken_at_home_wangzhe.png");
+    let analysisText = EUtil.baiduAnasisText("/sdcard/chicken_at_home_wangzhe.png");
+    return analysisText;
+}
+
+function getScreenImg() {
+    let screenPic = captureScreen();
+    console.log(screenPic);
+    sleep(100);
+    if (screenPic == null || typeof (screenPic) == "undifined") {
+        toastLog("截图失败,退出脚本");
+        exit();
+    } else {
+        return screenPic;
+    }
 }
 
 
