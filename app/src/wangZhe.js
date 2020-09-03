@@ -174,6 +174,13 @@ function playingi() {
             break;
         }
 
+        //判断是否有超时  有超时点击确定
+        let timeTout3h = EUtil.ImageSearchEngin('./res/wangzhe/wz_time_out_3h.png', [deviceWidth / 2, deviceHeight / 2, deviceWidth / 2, deviceHeight / 2], 1);
+        if (timeTout3h != -1) {
+            toastLog("超时记录")
+            click(timeTout3h[0].point.x + 50, timeTout3h[0].point.y + 50);
+            sleep(5000);
+        }
     }
 
 
