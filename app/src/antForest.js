@@ -84,7 +84,7 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
 
 
         if (playFarm) {
-            let antFf = id("J_antfarm_container").text("蚂蚁庄园").findOnce();
+            let antFf = text("蚂蚁庄园").findOnce();
             if (antFf) {
                 antFf.click();
                 let antFramGame = require("./antFarm.js")
