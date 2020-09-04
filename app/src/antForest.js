@@ -49,48 +49,41 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
         }
         //是否有好友送的能量
         // getGoldEnergy();
-
-        //启用了巡航模式
+        let currentTimeIn = getCurrentTimeMins();
         if (forestCruiseMode) {
-            toastLog("开启巡航模式")
-            let minite = 29;
-            // let timeShow = setInterval(function () {
-            //     toast("剩余时间" + minite + "分");
-            // }, 60 * 1000);
-            //30分钟后取消
-            // setTimeout(function () {
-            //     doHalfHour = false;
-            //     clearInterval(timeShow);
-            // }, 1 * 60 * 1000);
-
-            let doHalfHour = true;
-            let circleTimes = 0;
-
-            while (doHalfHour) {
-                let dateT = new Date();
-                let h = dateT.getHours();
-                let m = dateT.getMinutes();
-                if (h == 7 && m > 40) {
+            //启用了巡航模式
+            while (forestCruiseMode) {
+                let currentTimeCyl = getCurrentTimeMins();
+                if (currentTimeCyl - currentTimeIn > 30) {
+                    forestCruiseMode = false;
+                    sleep(3000);
                     break;
                 }
-                // console.log("获取到的时间", date.getHours())
-                console.log("执行中", circleTimes);
-                circleTimes++;
-                circleCode(true, circleTimes);
+                sleep(1000);
+                startCircleTCenergy();
+                let back2main = text("startapp?appId=60000002&url=%2Fwww%2Fhome").findOnce();
+                if (back2main != null) {
+                    back2main.click();
+                    toastLog("60秒后再次循环检测")
+                    sleep(60000);
+                }
             }
-
-            console.log("执行中结束");
         } else {
-            circleCode(false, 1);
+            let onlyForOnce = true;
+            while (onlyForOnce) {
+                sleep(1000);
+                startCircleTCenergy();
+                let back2main = text("startapp?appId=60000002&url=%2Fwww%2Fhome").findOnce();
+                if (back2main != null) {
+                    back2main.click();
+                    sleep(3000);
+                    onlyForOnce = false;
+                }
+            }
         }
 
+
         if (playFarm) {
-            //返回一级
-            back();
-            sleep(1000);
-            //滑动到顶部
-            swipe(deviceWidth / 2, deviceHeight * 0.1, deviceWidth / 2, deviceHeight * 0.8, 1000);
-            swipe(deviceWidth / 2, deviceHeight * 0.1, deviceWidth / 2, deviceHeight * 0.8, 1000);
             let antFf = id("J_antfarm_container").text("蚂蚁庄园").findOnce();
             if (antFf) {
                 antFf.click();
@@ -112,6 +105,29 @@ function startAntForest(playFarm, getAliScore, forestCruiseMode, isOpenAntFarmSt
     }
 
 }
+
+
+function getCurrentTimeMins() {
+    let dateT = new Date();
+    let h = dateT.getHours();
+    let m = dateT.getMinutes();
+    return h * 60 + m;
+}
+function startCircleTCenergy() {
+    let kanLinQu = className("android.widget.Button").text("看林区").findOne(3000);
+    if (kanLinQu != null) {
+        console.log("执行中");
+        collectEnergy(kanLinQu.parent());
+        let beiBaoItem = className('android.widget.Button').text('背包').findOne(3000);
+        let jiaoShuiItem = className('android.widget.Button').text('浇水').findOne(3000);
+        if (beiBaoItem != null) {
+            click(deviceWidth * 0.95, beiBaoItem.bounds().centerY());
+        } else if (jiaoShuiItem != null) {
+            click(deviceWidth * 0.95, jiaoShuiItem.bounds().centerY());
+        }
+    }
+}
+
 
 function getGoldEnergy() {
     toastLog("判断是否有黄金能量");
@@ -232,16 +248,21 @@ function stealAndBack(item) {
     }
 }
 
-function collectEnergy(self) {
-    // let hasSelfPower = className("android.widget.Button").textStartsWith("收集能量").findOnce() != null;
-    // let coEnergy = EUtil.ImageSearchEngin('./res/white_hand.png', [0, deviceHeight * 0.22, deviceWidth, deviceHeight * 0.18], 9);
-    // if (coEnergy!=-1) {
-    //     toastLog("开始收集");
-    //     for (let i = 0; i < coEnergy.length; i++) {
-    //         click(coEnergy[i].point.x - 40, coEnergy[i].point.y - 80);
-    //         sleep(300);
-    //     }
+function collectEnergy(parent) {
+    parent.children().forEach(child => {
+        if (child.text() == ' ' || child.text().startsWith("收集能量")) {
+            click(child.bounds().centerX(), child.bounds().centerY());
+            sleep(150);
+        }
+    });
+    // let hasEnergy = className("android.widget.Button").textStartsWith("收集能量").findOnce();
+    // while (hasEnergy) {
+    //     click(hasEnergy.bounds().centerX(), hasEnergy.bounds().centerY());
+    //     console.log(hasEnergy.text());
+    //     sleep(300);
+    //     hasEnergy = className("android.widget.Button").textStartsWith("收集能量").findOnce();   
     // }
+    /*
     if (self) {
         for (let row = 640; row < 900; row += 100) {
             for (let col = 140; col < 800; col += 100) {
@@ -256,7 +277,7 @@ function collectEnergy(self) {
                 sleep(10);
             }
         }
-    }
+    }*/
 
 
 }
@@ -295,7 +316,7 @@ function getNeedGetAliScore(need) {
         click(inMine.bounds().centerX(), inMine.bounds().centerY());
         sleep(1500);
         //判断当前有没有积分可以领取
-        let hasScore = textContains("个积分待领取").findOnce();
+        let hasScore = textContains("个积分").findOnce();
         if (hasScore != null) {
             let backCount = 0;
             let memeberAli = id("item_left_text").text("支付宝会员").findOnce();

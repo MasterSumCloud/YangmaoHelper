@@ -21,9 +21,9 @@ let isOpenTaolife = true;//是否执行陶人生
 let isOpenTmFarm = true;//是否执行天猫农场
 //蚂蚁森林
 let isOpenAntForest = false;
-let isOpenAntFarmElse = true;//是否连带执行蚂蚁庄园
+let isOpenAntFarmElse = false;//是否连带执行蚂蚁庄园
 //支付宝积分
-let isNeedGoAlipayScore = true;
+let isNeedGoAlipayScore = false;
 //当前执行的脚本线程
 let currentExeTask = null;
 //当前屏幕截图权限
@@ -35,7 +35,7 @@ let isOpenCruiseMode = false;
 //淘人生 是否执行
 // let isOPenTaoLifeOnly = false;
 //是否执行星星球
-let isOpenAntFarmStartBall = true;
+let isOpenAntFarmStartBall = false;
 //默认的数量
 let defaultBarScore = configStorage.get("starsBallTargetScore", 210);
 // 是否开启早7点定时自动偷能量
@@ -97,13 +97,6 @@ ui.layout(
                     </horizontal>
                     <button id={"exeAntForest"} marginLeft="15dp" marginRight="15dp">单独执行 蚂蚁森林</button>
                 </vertical>
-
-                <vertical>
-                    <text textSize="18sp" textStyle="bold">功能3：王者荣耀薅羊毛</text>
-                    <text marginLeft="15dp" marginRight="15dp">使用方法：需要下载的APP有：掌上道聚城、心悦俱乐部、应用宝、QQ浏览器、王者人生、腾讯新闻、腾讯视频、王者营地、腾讯游戏管家</text>
-                    <text marginLeft="15dp" marginRight="15dp">这里只介绍方法 自己领吧</text>
-                </vertical>
-
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能4：王者荣耀自动刷金币</text>
                     <text marginLeft="15dp" marginRight="15dp">使用方法：只给无障碍和悬浮窗，打开悬浮窗放一边，进入游戏，关闭所有广告，打开悬浮窗，点击第三个提示开启成功！注意：某些手机例如华为有一个截图弹窗，点击确定。特别解释：在开始前，自己手动先去冒险关卡选择合适的阵容和地图，要求能全自动通关的，自己过一次</text>
@@ -111,7 +104,7 @@ ui.layout(
                 </vertical>
 
                 <vertical>
-                    <text textSize="18sp" textStyle="bold">功能5：定时执行蚂蚁森林</text>
+                    <text textSize="18sp" textStyle="bold">功能5：蚂蚁森林偷能量</text>
                     <text marginLeft="15dp" marginRight="15dp">说明：每天早上7点整进行开始(因为CPU休眠，可能纯在误差)，7点执行30分钟循环后结束</text>
                     <text marginLeft="15dp" marginRight="15dp">特别强调：按音量上键会关闭所有脚本，如果不想误关，建议关闭此功能，方法打开本APP，按下返回键，右上角3个点点击设置，对应关闭即可 </text>
                     <horizontal marginLeft="30dp">
@@ -121,7 +114,7 @@ ui.layout(
                     </horizontal>
                     <horizontal marginLeft="30dp">
                         <CheckBox id="openTimerForestTask" checked={isOpenTimerForestTask} />
-                        <text marginLeft="15dp" h="45dp">是否每日早7点定时偷能量，注意需要APP保活，对应开启方法自行百度</text>
+                        <text marginLeft="15dp" h="45dp">是否每日早7点定时偷能量，注意需要APP保活，对应开启方法自行百度，貌似不好用就给你看看</text>
                     </horizontal>
                     {/* <horizontal marginLeft="30dp">
                         <CheckBox id="open5HourTask" checked={isOpen5HourTask} />
@@ -129,7 +122,7 @@ ui.layout(
                     </horizontal> */}
                     <button id={"startTimerAntTask"} marginLeft="15dp" marginRight="15dp">保存配置并运行</button>
                 </vertical>
-                <button marginBottom="30dp" id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" />
+                {/* <button marginBottom="30dp" id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" /> */}
             </vertical>
         </ScrollView>
     </vertical>
@@ -341,7 +334,7 @@ ui.popService.on("check", function (checked) {
     console.log("popPermission=" + popPermission);
 });
 
-ui.doMutilTask.click(() => {
+/*ui.doMutilTask.click(() => {
     if (installService && currentCaptureScreenPermission && popPermission) {
         if (currentExeTask != null) {
             currentExeTask.interrupt();
@@ -365,7 +358,7 @@ ui.doMutilTask.click(() => {
         toastLog("请给全部权限");
         console.log("installService=" + installService, "currentCaptureScreenPermission=" + currentCaptureScreenPermission, "popPermission=" + popPermission)
     }
-});
+});*/
 
 function stopTask() {
     if (currentExeTask == null) {
