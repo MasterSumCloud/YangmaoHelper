@@ -45,6 +45,9 @@ let isOpen5HourTask = configStorage.get("isOpen5HourTask", false);;;
 //上次设置的密码
 let savePassowrd = configStorage.get("savePhonePassword");
 
+let saveHour = '7';
+let savemint = '0';
+
 ui.layout(
     <vertical>
         <text marginLeft="15dp" marginTop="10sp" textColor="#D65253">下面的无障碍、截图、悬浮窗权限必须给，否则无法正常运行</text>
@@ -105,8 +108,16 @@ ui.layout(
 
                 <vertical>
                     <text textSize="18sp" textStyle="bold">功能5：蚂蚁森林偷能量</text>
-                    <text marginLeft="15dp" marginRight="15dp">说明：每天早上7点整进行开始(因为CPU休眠，可能纯在误差)，7点执行30分钟循环后结束</text>
+                    <text marginLeft="15dp" marginRight="15dp">说明：</text>
                     <text marginLeft="15dp" marginRight="15dp">特别强调：按音量上键会关闭所有脚本，如果不想误关，建议关闭此功能，方法打开本APP，按下返回键，右上角3个点点击设置，对应关闭即可 </text>
+                    <horizontal marginLeft="30dp">
+                        <text marginLeft="15dp">时</text>
+                        <input id="timeHour" text={savePassowrd} inputType="number" />
+                        <text marginLeft="15dp">分</text>
+                        <input id="timeMinte" text={savePassowrd} inputType="number" />
+                        <button id="saveWeakUpTime" text="保存" />
+                    </horizontal>
+                    
                     <horizontal marginLeft="30dp">
                         <text marginLeft="15dp">当前手机密码</text>
                         <input id="phonePassword" text={savePassowrd} inputType="numberPassword" />
@@ -114,7 +125,7 @@ ui.layout(
                     </horizontal>
                     <horizontal marginLeft="30dp">
                         <CheckBox id="openTimerForestTask" checked={isOpenTimerForestTask} />
-                        <text marginLeft="15dp" h="45dp">是否每日早7点定时偷能量，注意需要APP保活，对应开启方法自行百度，貌似不好用就给你看看</text>
+                        <text marginLeft="15dp" h="45dp">设置定时偷能量后，屏幕不会息屏，另外注意需要APP保活，对应开启方法自行百度，貌似不好用就给你看看</text>
                     </horizontal>
                     {/* <horizontal marginLeft="30dp">
                         <CheckBox id="open5HourTask" checked={isOpen5HourTask} />

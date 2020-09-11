@@ -115,9 +115,11 @@ function getCurrentTimeMins() {
 }
 function startCircleTCenergy() {
     let kanLinQu = className("android.widget.Button").text("看林区").findOne(3000);
+    console.log("父布局",kanLinQu)
     if (kanLinQu != null) {
         console.log("执行中");
-        collectEnergy(kanLinQu.parent());
+        sleep(2000);
+        collectEnergy(kanLinQu);
         let beiBaoItem = className('android.widget.Button').text('背包').findOne(3000);
         let jiaoShuiItem = className('android.widget.Button').text('浇水').findOne(3000);
         if (beiBaoItem != null) {
@@ -248,11 +250,12 @@ function stealAndBack(item) {
     }
 }
 
-function collectEnergy(parent) {
-    parent.children().forEach(child => {
+function collectEnergy(klq) {
+    klq.parent().children().forEach(child => {
         if (child.text() == ' ' || child.text().startsWith("收集能量")) {
             click(child.bounds().centerX(), child.bounds().centerY());
             sleep(150);
+            console.log("点击收能量")
         }
     });
     // let hasEnergy = className("android.widget.Button").textStartsWith("收集能量").findOnce();

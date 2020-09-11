@@ -3,8 +3,13 @@
 // console.log(backApp);
 
 // let masen = text("蚂蚁森林").id("h5_tv_title").findOnce();
-// console.log(masen);
-let antFf = text("蚂蚁庄园").findOnce();
-if (antFf) {
-    antFf.click();
-}
+
+let kanLinQu = className("android.widget.Button").text("看林区").findOne(3000);
+console.log(kanLinQu);
+kanLinQu.parent().children().forEach(child => {
+    if (child.text() == ' ' || child.text().startsWith("收集能量")) {
+        click(child.bounds().centerX(), child.bounds().centerY());
+        sleep(150);
+        console.log("点击收能量")
+    }
+});
