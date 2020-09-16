@@ -295,34 +295,8 @@ ui.phonePasswordConfirm.click(function () {
 ui.startTimerAntTask.click(function () {
     //开启定时7点功能
     if (isOpenTimerForestTask) {
-        setInterval(function () {
-            let dateT = new Date();
-            let h = dateT.getHours();
-            let m = dateT.getMinutes();
-            if (h == 7 && m >= 0 && m < 10) {
-                let starting = configStorage.get("antForestCanDo", false);
-                if (!starting) {
-                    engines.execScriptFile("./src/AutoUnLockScreen.js");
-                }
-            }
-            console.log("当前检测时间", h + ":" + m);
-        }, 1 * 60 * 1000);
+        engines.execScriptFile("./src/AutoUnLockScreen.js");
     }
-
-    // if (isOpen5HourTask) {
-    //     setInterval(function () {
-    //         let dateT = new Date();
-    //         let h = dateT.getHours();
-    //         let m = dateT.getMinutes();
-    //         if (h == 7 && m >= 30 && m < 40) {
-    //             let starting = configStorage.get("antForestCanDo", false);
-    //             if (!starting) {
-    //                 engines.execScriptFile("./src/AutoUnLockScreen.js");
-    //             }
-    //         }
-    //         console.log("当前检测时间循环5的", h + ":" + m);
-    //     }, 1 * 60 * 1000);
-    // }
     toastLog("定时任务已开启动");
 });
 
