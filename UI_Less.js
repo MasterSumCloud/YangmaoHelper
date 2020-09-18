@@ -45,8 +45,9 @@ let isOpen5HourTask = configStorage.get("isOpen5HourTask", false);;;
 //上次设置的密码
 let savePassowrd = configStorage.get("savePhonePassword");
 
-let saveHour = '7';
-let savemint = '0';
+let showHour = new Date().getHours()
+let showMinte = new Date().getMinutes()
+
 
 ui.layout(
     <vertical>
@@ -63,22 +64,8 @@ ui.layout(
         </horizontal>
         <ScrollView>
             <vertical margin={"15dp"}>
-                
                 <vertical>
-                    <text textSize="18sp" textStyle="bold">功能1：淘宝-金币庄园</text>
-                    {/* <horizontal marginLeft="30sp">
-                        <CheckBox id="cbTaolife" checked={isOpenTaolife} />
-                        <text>淘金币庄园是否 执行淘人生</text>
-                    </horizontal>
-                    <horizontal marginLeft="30sp">
-                        <CheckBox id="cbTmFarm" checked={isOpenTmFarm} />
-                        <text>淘金币庄园是否 执行天猫农场</text>
-                    </horizontal> */}
-                    <button id={"exeGoldManor"} marginLeft="15dp" marginRight="15dp">单独执行 金币庄园</button>
-                </vertical>
-
-                <vertical>
-                    <text textSize="18sp" textStyle="bold">功能2：支付宝-蚂蚁森林-蚂蚁庄园</text>
+                    <text textSize="18sp" textStyle="bold">功能1：支付宝-蚂蚁森林-蚂蚁庄园</text>
                     <horizontal w="auto" h="auto" marginLeft="30dp">
                         <CheckBox id="sAliScore" w="auto" h="auto" checked={isNeedGoAlipayScore}></CheckBox>
                         <text marginLeft="15dp" marginRight="15dp">是否领取支付宝积分</text>
@@ -101,36 +88,29 @@ ui.layout(
                     <button id={"exeAntForest"} marginLeft="15dp" marginRight="15dp">单独执行 蚂蚁森林</button>
                 </vertical>
                 <vertical>
-                    <text textSize="18sp" textStyle="bold">功能4：王者荣耀自动刷金币</text>
+                    <text textSize="18sp" textStyle="bold">功能2：王者荣耀自动刷金币</text>
                     <text marginLeft="15dp" marginRight="15dp">使用方法：只给无障碍和悬浮窗，打开悬浮窗放一边，进入游戏，关闭所有广告，打开悬浮窗，点击第三个提示开启成功！注意：某些手机例如华为有一个截图弹窗，点击确定。特别解释：在开始前，自己手动先去冒险关卡选择合适的阵容和地图，要求能全自动通关的，自己过一次</text>
                     <button id={"goWangzhe"} marginLeft="15dp" marginRight="15dp">打开王者荣耀</button>
                 </vertical>
 
                 <vertical>
-                    <text textSize="18sp" textStyle="bold">功能5：蚂蚁森林偷能量</text>
+                    <text textSize="18sp" textStyle="bold">功能3：蚂蚁森林偷能量</text>
                     <text marginLeft="15dp" marginRight="15dp">说明：</text>
                     <text marginLeft="15dp" marginRight="15dp">特别强调：按音量上键会关闭所有脚本，如果不想误关，建议关闭此功能，方法打开本APP，按下返回键，右上角3个点点击设置，对应关闭即可 </text>
-                    <horizontal marginLeft="30dp">
-                        <text marginLeft="15dp">时</text>
-                        <input id="timeHour" text={savePassowrd} inputType="number" />
-                        <text marginLeft="15dp">分</text>
-                        <input id="timeMinte" text={savePassowrd} inputType="number" />
-                        <button id="saveWeakUpTime" text="保存" />
-                    </horizontal>
-                    
                     <horizontal marginLeft="30dp">
                         <text marginLeft="15dp">当前手机密码</text>
                         <input id="phonePassword" text={savePassowrd} inputType="numberPassword" />
                         <button id="phonePasswordConfirm" text="保存" />
                     </horizontal>
+                    <text marginLeft="15dp">当前待执行的定时任务</text>
+                    <horizontal marginLeft="30dp">
+                        
+                        <button id={"modifiedTask"} marginLeft="15dp" marginRight="15dp">新建</button>
+                    </horizontal>
                     <horizontal marginLeft="30dp">
                         <CheckBox id="openTimerForestTask" checked={isOpenTimerForestTask} />
                         <text marginLeft="15dp" h="45dp">设置定时偷能量后，屏幕不会息屏，另外注意需要APP保活，对应开启方法自行百度，貌似不好用就给你看看</text>
                     </horizontal>
-                    {/* <horizontal marginLeft="30dp">
-                        <CheckBox id="open5HourTask" checked={isOpen5HourTask} />
-                        <text marginLeft="15dp">是否启用5小时循环定时唤醒</text>
-                    </horizontal> */}
                     <button id={"startTimerAntTask"} marginLeft="15dp" marginRight="15dp">保存配置并运行</button>
                 </vertical>
                 {/* <button marginBottom="30dp" id={"doMutilTask"} text={"全部执行"} textColor="#FFFFFF" bg="#01a9f3" marginLeft="30dp" marginRight="30dp" /> */}
@@ -173,28 +153,6 @@ ui.captureScreenService.on("check", function () {
     }
 });
 
-function oncrete() {
-    console.log("生命周期onCreate");
-    installService = auto.service != null;
-    try {
-        screenPermission = requestScreenCapture();
-    } catch (error) {
-        screenPermission = true;
-    }
-    let engins = engines.all();
-    if (engins != null) {
-        engins.forEach(engin => {
-            let soureces = engin.getSource();
-            if (soureces.toString().endsWith("pop_animi.js")) {
-                popPermission = true;
-            }
-        });
-    }
-    //重新设置UI
-    ui.popService.checked = true;
-
-}
-
 ui.exeAntForest.click(() => {
     currentExeTask = threads.start(function () {
         // engines.execScriptFile("./src/antForest.js");
@@ -213,12 +171,6 @@ ui.exeAntForest.click(() => {
     });
 });
 
-ui.exeGoldManor.click(() => {
-    // engines.execScriptFile("./src/godenGard.js");
-    currentExeTask = threads.start(function () {
-        goldGame(isOpenTaolife, isOpenTmFarm);
-    });
-});
 // ui.goTaobao.click(() => {
 //     launch("com.taobao.taobao");
 // });
@@ -355,5 +307,96 @@ function stopTask() {
         } else {
             toastLog("没有进行中的脚本");
         }
+    }
+}
+
+function initPop() {
+    global.blankImg = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAICRAEAOw=="
+    let popView = ui.inflate(
+        <frame>
+            <img src="{{blankImg}}" tint="#ffffff" scaleType="centerCrop" radiusBottomLeft="20dp" radiusBottomRight="20dp" />
+            <vertical>
+                <linear gravity="center">
+                    <NumberPicker w="60" marginRight="30" id="npHour" />
+                    <NumberPicker w="60" id="npMinte" />
+                </linear>
+                <linear>
+                    <button id="backtoday" text="回到今天" textColor="#468bee" layout_gravity="start" style="Widget.AppCompat.Button.Borderless.Colored" />
+                    <View h="0" layout_weight="1" />
+                    <button id="sure" text="确定" textColor="#468bee" layout_gravity="start" style="Widget.AppCompat.Button.Borderless.Colored" />
+                </linear>
+            </vertical>
+        </frame>, ui.inflate(<linear />))
+    //设置不可循环
+    //popView.npHour.setWrapSelectorWheel(false);
+    //popView.npMinte.setWrapSelectorWheel(false);
+    //设置不可编辑
+    popView.npHour.setDescendantFocusability(android.widget.NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+    popView.npMinte.setDescendantFocusability(android.widget.NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+    popView.npHour.setMinValue(1);
+    popView.npHour.setMaxValue(24);
+    popView.npMinte.setMinValue(1)
+    popView.npMinte.setMaxValue(60)
+    setShowValue()
+    let popWin = new android.widget.PopupWindow(popView, -1, -2)
+    let is = new android.transition.Slide(android.view.Gravity.TOP)
+    is.setDuration(250)
+    popWin.setEnterTransition(is)
+
+    let os = new android.transition.Slide(android.view.Gravity.TOP)
+    os.setDuration(250)
+    os.setMode(android.transition.Visibility.MODE_OUT)
+    popWin.setExitTransition(os)
+
+    ui.selectTime.click(() => {
+        setShowValue()
+        if (!popWin.isShowing()) {
+            popWin.showAsDropDown(ui.toolbar)
+            setMaskShow(true)
+        } else {
+            setMaskShow(false)
+            popWin.dismiss()
+        }
+    })
+    ui.mask.click(() => {
+        if (popWin.isShowing()) {
+            setMaskShow(false)
+            popWin.dismiss()
+        }
+    })
+    popView.backtoday.click(() => {
+        backToToday()
+        RM.refresh()
+        setMaskShow(false)
+        popWin.dismiss()
+    })
+    popView.sure.click(() => {
+        showHour = popView.npHour.getValue()
+        showMinte = popView.npMinte.getValue()
+        RM.refresh()
+        setMaskShow(false)
+        popWin.dismiss()
+    })
+    popView.npHour.setOnValueChangedListener(function (np, oldI, newI) {
+        popView.npMinte.setMaxValue(getCountDays(newI))
+    })
+    function backToToday() {
+        showHour = new Date().getMonth() + 1
+        showMinte = new Date().getDate()
+        setShowValue()
+    }
+    function setMaskShow(isShow) {
+        ui.mask.attr("visibility", isShow ? "visible" : "gone")
+    }
+    function setShowValue() {
+        popView.npHour.setValue(showHour)
+        popView.npMinte.setValue(showMinte)
+    }
+    function getCountDays(month) {
+        var curDate = new Date();
+        curDate.setMonth(month);
+        if (month == 1) curDate.setMonth(0)
+        curDate.setDate(0)
+        return curDate.getDate();
     }
 }

@@ -1,9 +1,9 @@
 {
   "assets": [],
   "build": {
-    "build_id": "D3A53EC0-1",
-    "build_number": 1,
-    "build_time": 1578972098611,
+    "build_id": "AC8F3A00-2",
+    "build_number": 2,
+    "build_time": 1600408113187,
     "release": false
   },
   "encryptLevel": 0,
@@ -26,10 +26,9 @@
   "scripts": {},
   "signingConfig": {
     "alias": "ohsheet",
-    "keystore": "res/薅羊毛.jks",
-    "uuid": "47a613ef-121b-42c1-aeff-82798fe47067",
-    "password": "haosheet."
+    "keystore": "/storage/emulated/0/脚本/YangmaoHelper/app/res/薅羊毛.jks",
+    "uuid": "6af45600-1c98-4ba6-b11a-3f503f75e9f1"
   },
   "versionCode": 48,
-  "versionName": "1.9.8"
+  "versioName": "1.9.8"
 }
