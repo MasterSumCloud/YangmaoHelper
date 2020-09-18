@@ -14,3 +14,7 @@
 //     }
 // });
 
+let deviceWidth = device.width;
+let deviceHeight = device.height;
+gesture(300, [deviceWidth / 2, deviceHeight * 0.9], [deviceWidth / 2, deviceHeight * 0.2])
+// gesture(1000, [0, 0], [500, 500], [500, 1000])

@@ -1,34 +1,10 @@
 {
-  "assets": [],
-  "build": {
-    "build_id": "AC8F3A00-2",
-    "build_number": 2,
-    "build_time": 1600408113187,
-    "release": false
-  },
-  "encryptLevel": 0,
-  "useFeatures": [],
-  "icon": "res/icon.png",
-  "launchConfig": {
-    "displaySplash": true,
-    "hideLogs": false,
-    "splashIcon": "res/splashIcon.png",
-    "splashText": "Designed by Eagle",
-    "stableMode": false
-  },
-  "main": "main.js",
-  "name": "薅羊毛",
-  "optimization": {
-    "removeOpenCv": false,
-    "unusedResources": false
-  },
-  "packageName": "com.haoyangmao.egale",
-  "scripts": {},
-  "signingConfig": {
-    "alias": "ohsheet",
-    "keystore": "/storage/emulated/0/脚本/YangmaoHelper/app/res/薅羊毛.jks",
-    "uuid": "6af45600-1c98-4ba6-b11a-3f503f75e9f1"
-  },
-  "versionCode": 48,
-  "versioName": "1.9.8"
+    "name": "薅羊毛",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.haoyangmao.egale",
+    "versionName": "2.0.0",
+    "versionCode": 200
 }
