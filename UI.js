@@ -49,6 +49,8 @@ let currentHasTaskForet = false;
 
 let showHour = new Date().getHours()
 let showMinte = new Date().getMinutes()
+let lastTimeId = configStorage.get("lastTimeTaskId", -1);
+
 queryForestTask();
 
 ui.layout(
@@ -318,9 +320,9 @@ function initPop() {
     //设置不可编辑
     popView.npHour.setDescendantFocusability(android.widget.NumberPicker.FOCUS_BLOCK_DESCENDANTS);
     popView.npMinte.setDescendantFocusability(android.widget.NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-    popView.npHour.setMinValue(1);
-    popView.npHour.setMaxValue(24);
-    popView.npMinte.setMinValue(1)
+    popView.npHour.setMinValue(0);
+    popView.npHour.setMaxValue(23);
+    popView.npMinte.setMinValue(0)
     popView.npMinte.setMaxValue(60)
     setShowValue()
     let popWin = new android.widget.PopupWindow(popView, -1, -2)
@@ -360,7 +362,7 @@ function initPop() {
         addDalyStealTask();
     })
     popView.npHour.setOnValueChangedListener(function (np, oldI, newI) {
-        popView.npMinte.setMaxValue(getCountDays(newI))
+        // popView.npMinte.setMaxValue()
     })
     function backToToday() {
         showHour = new Date().getHours()
@@ -401,21 +403,24 @@ function addDalyStealTask() {
     //重新建立任务
     timers.addDailyTask({ path: './src/antForestTimeTask.js', time: showHour + ":" + showMinte }, task => {
         toastLog("设置定时任务成功：", task)
-    });
+        lastTimeId = task.id;
+        configStorage.put("lastTimeTaskId", lastTimeId);
 
+    });
     ui.currentTaskShow.setText('定时偷能量任务：' + showHour + ":" + showMinte);
+    configStorage.put("nextTaskHour", showHour);
+    configStorage.put("nextTaskMinite", showMinte);
 }
 
 
 function queryForestTask() {
-    let allTimeTasks = timers.queryTimedTasks({})
-    console.log(allTimeTasks)
-    if (allTimeTasks != null && allTimeTasks.length > 0) {
-        allTimeTasks.forEach(task => {
-            //删除之前的任务
-            if (task.scriptPath.indexOf('antForestTimeTask') != -1) {
-                currentHasTaskForet = true
-            }
-        });
+    let allTimeTasks = timers.queryTimedTasks(lastTimeId)
+    console.log(allTimeTasks);
+
+    if (allTimeTasks != null) {
+        currentHasTaskForet = true
+        // let timelong = new Date().getTime() + task.millis;
+        showHour = configStorage.get("nextTaskHour", -1);
+        showMinte = configStorage.get("nextTaskMinite", -1);
     }
 }

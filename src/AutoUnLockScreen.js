@@ -5,3 +5,4 @@ let encrypt = pwmap.encrypt;
 let passWorld = configStorage.get("savePhonePassword");
 encrypt(passWorld);
 require("./modules/MODULE_UNLOCK").unlock();
+toastLog("解锁测试成功")

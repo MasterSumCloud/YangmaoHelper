@@ -71,7 +71,22 @@ function startAntForest() {
         back();
         sleep(500);
         toastLog("完成了");
-        
+
+        let h = new Date().getHours();
+        if (h < 9) {
+            // let nextTaskTime = getCurrentTimeMins();
+            // let task = timers.addDisposableTask({
+            //     path: './src/antForestTimeTask.js',
+            //     date: nextTaskTime
+            // });
+            let afmillis = new Date().getTime() + 5 * 60 * 1000;
+            timers.addDisposableTask({
+                path: '../src/antForestTimeTask.js',
+                date: afmillis
+            })
+
+            toastLog("下一个定时任务预定成功: " + task);
+        }
     } else {
         toastLog("没有在首页检测到蚂蚁森林，请去更多里添加");
         exit();
@@ -82,9 +97,12 @@ function startAntForest() {
 
 function getCurrentTimeMins() {
     let dateT = new Date();
-    let h = dateT.getHours();
-    let m = dateT.getMinutes();
-    return h * 60 + m;
+    let hour = dateT.getHours();
+    let month = dateT.getUTCMonth() + 1;
+    let year = dateT.getFullYear();
+    let day = dateT.getUTCDate();
+    let minte = dateT.getMinutes() + 5;
+    return year + '-' + month + '-' + day + 'T' + hour + ':' + minte + ':00'
 }
 
 function startCircleTCenergy() {
