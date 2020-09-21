@@ -114,10 +114,9 @@ ui.layout(
                             <button id="modifiedTask" marginLeft="10dp" marginRight="5dp" >{currentHasTaskForet ? '修改' : '新增'}</button>
                         </horizontal>
                         <horizontal marginLeft="30dp">
-                            <CheckBox id="openTimerForestTask" checked={isOpenTimerForestTask} />
-                            <text marginLeft="15dp" h="45dp">设置定时偷能量后，屏幕不会息屏，另外注意需要APP保活，对应开启方法自行百度，貌似不好用就给你看看</text>
+                            <text marginLeft="15dp" h="45dp">设置定时偷能量后，屏幕不会息屏，另外注意需要APP保活，对应开启方法自行百度</text>
                         </horizontal>
-                        <button id={"testTask"} marginLeft="15dp" marginRight="15dp" marginBottom="30dp">测试定时任务</button>
+                        <button id={"testTask"} marginLeft="15dp" marginRight="15dp" marginBottom="30dp">测试解锁任务</button>
                     </vertical>
                 </vertical>
             </ScrollView>
@@ -213,11 +212,6 @@ ui.cbAntFarm.on("check", function (checked) {
 ui.cbAntFarmStartsBall.on("check", function (checked) {
     isOpenAntFarmStartBall = checked;
     console.log("isOpenAntFarmStartBall=" + isOpenAntFarmStartBall);
-});
-ui.openTimerForestTask.on("check", function (checked) {
-    isOpenTimerForestTask = checked;
-    configStorage.put("isOpenTimerForestTask", checked);
-    console.log("isOpenTimerForestTask=" + isOpenTimerForestTask);
 });
 // ui.open5HourTask.on("check", function (checked) {
 //     isOpen5HourTask = checked;

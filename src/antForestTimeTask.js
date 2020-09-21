@@ -12,6 +12,8 @@ encrypt(passWorld);
 require("../modules/MODULE_UNLOCK").unlock();
 //偷能量开始了
 function startAntForest() {
+    sleep(5000);
+    console.log("进入开始打开支付宝")
     //进入支付宝
     launch("com.eg.android.AlipayGphone");
     sleep(1000);

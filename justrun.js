@@ -14,9 +14,6 @@
 //     }
 // });
 
-let afmillis = new Date().getTime() + 5 * 60 * 1000;
-let task = timers.addDisposableTask({
-    path: './src/antForestTimeTask.js',
-    date: afmillis
-})
-console.log(task)
+sleep(5000);
+//进入支付宝
+launch("com.eg.android.AlipayGphone");
