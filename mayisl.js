@@ -167,55 +167,41 @@ function main() {
         // console.log(jizhun);
     }
     for (let i = 0; i < arrList.length; i++) {
-        let newItem = arrList[i];
-        for (let k = 0; k < dierqiJy.length; k++) {
-            let oldItem = dierqiJy[k];
-            if (newItem.name == oldItem.name && newItem.head64 == oldItem.head64) {
-                let newNum = parseInt(newItem.water);
-                let oldNum = parseInt(oldItem.water);
-                if (newNum - oldNum < sanqiJJ) {
-                    console.log("名字：" + newItem.name + "   差额：" + (sanqiJJ - (newNum - oldNum)))
-                } else {
-                    console.log("名字：" + newItem.name + "   已交：" + (newNum - oldNum))
+        if (i < arrList.length) {
+            let newItem = arrList[i];
+            for (let k = 0; k < dierqiJy.length; k++) {
+                let oldItem = dierqiJy[k];
+                if (newItem.name == oldItem.name && newItem.head64 == oldItem.head64) {
+                    let newNum = parseInt(newItem.water);
+                    let oldNum = parseInt(oldItem.water);
+                    if (newNum - oldNum < sanqiJJ) {
+                        console.log("名字：" + newItem.name + "   差额：" + (sanqiJJ - (newNum - oldNum)))
+                    } else {
+                        console.log("名字：" + newItem.name + "   已交：" + (newNum - oldNum))
+                    }
+                    arrList.splice(i, 1);
+                    i = 0;
                 }
-                oldItem.head64 = newItem.head64
             }
-
         }
-        let newMember = parseInt(newItem.water);
+
+    }
+
+    for (let i = 0; i < arrList.length; i++) {
+        let newJoinPerson = arrList[i];
+        let newMember = parseInt(newJoinPerson.water);
         if (newMember < sanqiJJ) {
-            console.log("新人名字：" + newItem.name + "   差额：" + (sanqiJJ - newMember))
+            console.log("新人名字：" + newJoinPerson.name + "   差额：" + (sanqiJJ - newMember))
         }
     }
 
-    console.log(dierqiJy)
+    // console.log(dierqiJy)
 }
 
 //对名字进行修正
 
 
 main();
-
-function getddd(arrList) {
-    let removeList = [];
-    for (let i = 0; i < arrList.length; i++) {
-        let newItem = arrList[i];
-        if (parseInt(newItem.water) < 12000) {
-            removeList.push(newItem);
-            continue;
-        }
-        for (let k = 0; k < dierqiJy.length; k++) {
-            let oldItem = dierqiJy[k];
-            if (newItem.name == oldItem.name) {
-                removeList.push(oldItem);
-            }
-        }
-    }
-
-    console.log("新",arrList)
-    console.log("删除",removeList)
-
-}
 
 
 
