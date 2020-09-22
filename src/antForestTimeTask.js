@@ -12,10 +12,11 @@ encrypt(passWorld);
 require("../modules/MODULE_UNLOCK").unlock();
 //偷能量开始了
 function startAntForest() {
-    sleep(5000);
+    sleep(3000);
     console.log("进入开始打开支付宝")
     //进入支付宝
-    launch("com.eg.android.AlipayGphone");
+    // launch("com.eg.android.AlipayGphone");
+    launchApp("支付宝")
     sleep(1000);
     let witeInHome = 5;
     while (witeInHome > 0) {
