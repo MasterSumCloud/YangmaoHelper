@@ -14,6 +14,7 @@
 //     }
 // });
 
-sleep(5000);
-//进入支付宝
-launch("com.eg.android.AlipayGphone");
+app.startActivity({
+    action: "VIEW",
+    data: "alipays://platformapi/startapp?appId=60000002",
+});

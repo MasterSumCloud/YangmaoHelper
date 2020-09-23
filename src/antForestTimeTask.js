@@ -13,87 +13,48 @@ require("../modules/MODULE_UNLOCK").unlock();
 //偷能量开始了
 function startAntForest() {
     sleep(3000);
-    console.log("进入开始打开支付宝")
-    //进入支付宝
-    // launch("com.eg.android.AlipayGphone");
-    launchApp("支付宝")
-    sleep(1000);
-    let witeInHome = 5;
-    while (witeInHome > 0) {
-        let inHome = id("tab_description").text("首页").findOnce();
-        if (inHome == null) {
-            sleep(1000);
-            witeInHome--;
-        } else {
-            witeInHome = -10;
-        }
-    }
-    //判断是否已经在游戏界面
-    let gamePartHome = id("J_af_home").findOnce();
+    console.log("直接进入蚂蚁森林页面")
+    app.startActivity({
+        action: "VIEW",
+        data: "alipays://platformapi/startapp?appId=60000002",
+    });
 
-    if (witeInHome != -10 && gamePartHome == null) {
-        toastLog("不在支付宝首页,也不在游戏界面！退出");
-        exit();
+    //过年增加 有个弹窗
+    let closeMc = className("android.widget.Button").text("关闭蒙层").findOnce();
+    if (closeMc != null) {
+        closeMc.click();
+        sleep(1000);
     }
-    //在首页寻找 蚂蚁深林和蚂蚁庄园的入口
-    let antForest = id("app_text").textContains("蚂蚁森林").findOnce();
-    if (antForest == null) {
-        antForest = id("app_text_multi_line").textContains("蚂蚁森林").findOnce();
+    //是否有好友送的能量
+    // getGoldEnergy();
+    let onlyForOnce = true;
+    while (onlyForOnce) {
+        sleep(1000);
+        startCircleTCenergy();
+        let back2main = text("startapp?appId=60000002&url=%2Fwww%2Fhome").findOnce();
+        if (back2main != null) {
+            back2main.click();
+            sleep(2000);
+            onlyForOnce = false;
+        }
     }
-    if (antForest != null || gamePartHome != null) {
-        //在蚂蚁森林
-        if (gamePartHome == null) {
-            //进入蚂蚁深林
-            toastLog("进入蚂蚁深林");
-            click(antForest.bounds().centerX(), antForest.bounds().centerY());
-            sleep(5000);
-        }
-        //过年增加 有个弹窗
-        let closeMc = className("android.widget.Button").text("关闭蒙层").findOnce();
-        if (closeMc != null) {
-            closeMc.click();
-            sleep(1000);
-        }
-        //是否有好友送的能量
-        // getGoldEnergy();
-        let onlyForOnce = true;
-        while (onlyForOnce) {
-            sleep(1000);
-            startCircleTCenergy();
-            let back2main = text("startapp?appId=60000002&url=%2Fwww%2Fhome").findOnce();
-            if (back2main != null) {
-                back2main.click();
-                sleep(3000);
-                onlyForOnce = false;
-            }
-        }
-        back();
-        sleep(500);
-        back();
-        sleep(500);
-        back();
-        sleep(500);
-        toastLog("完成了");
+    back();
+    sleep(500);
+    back();
+    sleep(500);
+    back();
+    sleep(500);
+    toastLog("完成了");
 
-        let h = new Date().getHours();
-        if (h < 9) {
-            // let nextTaskTime = getCurrentTimeMins();
-            // let task = timers.addDisposableTask({
-            //     path: './src/antForestTimeTask.js',
-            //     date: nextTaskTime
-            // });
-            let afmillis = new Date().getTime() + 5 * 60 * 1000;
-            timers.addDisposableTask({
-                path: '../src/antForestTimeTask.js',
-                date: afmillis
-            })
-
-            toastLog("下一个定时任务预定成功: " + task);
-        }
-    } else {
-        toastLog("没有在首页检测到蚂蚁森林，请去更多里添加");
-        exit();
-    }
+    let h = new Date().getHours();
+    // if (h < 9) {
+        let afmillis = new Date().getTime() + 5 * 60 * 1000;
+        timers.addDisposableTask({
+            path: '../src/antForestTimeTask.js',
+            date: afmillis
+        })
+        toastLog("下一个定时任务预定成功: " + task);
+    // }
 
 }
 
