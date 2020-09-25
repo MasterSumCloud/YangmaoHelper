@@ -169,29 +169,49 @@ function main() {
     for (let i = 0; i < arrList.length; i++) {
         if (i < arrList.length) {
             let newItem = arrList[i];
+
+            // console.log("打印名字" + i, newItem.name)
+
             for (let k = 0; k < dierqiJy.length; k++) {
                 let oldItem = dierqiJy[k];
+
+                // if (i == 0) {
+                //     console.log("打印名字"+k, oldItem.name)
+                // }
+
                 if (newItem.name == oldItem.name && newItem.head64 == oldItem.head64) {
                     let newNum = parseInt(newItem.water);
                     let oldNum = parseInt(oldItem.water);
                     if (newNum - oldNum < sanqiJJ) {
-                        console.log("名字：" + newItem.name + "   差额：" + (sanqiJJ - (newNum - oldNum)))
+                        console.log("在总排中种序号：" + (i + 1) + "  名字：" + newItem.name + "   差额：" + (sanqiJJ - (newNum - oldNum)))
                     } else {
-                        console.log("名字：" + newItem.name + "   已交：" + (newNum - oldNum))
+                        console.log("在总排名种序号：" + (i + 1) + "  名字：" + newItem.name + "   已交：" + (newNum - oldNum))
                     }
-                    arrList.splice(i, 1);
-                    i = 0;
                 }
             }
         }
-
     }
 
     for (let i = 0; i < arrList.length; i++) {
         let newJoinPerson = arrList[i];
         let newMember = parseInt(newJoinPerson.water);
-        if (newMember < sanqiJJ) {
-            console.log("新人名字：" + newJoinPerson.name + "   差额：" + (sanqiJJ - newMember))
+
+        let isOldPerson = false;
+        let histryYlWwater = 0;
+        var hasInOldList = dierqiJy.filter((person) => {
+            if (newJoinPerson.name == person.name && newJoinPerson.head64 == person.head64) {
+                histryYlWwater = parseInt(person.water);
+                return true;
+            }
+        });
+        if (hasInOldList.length > 0) {
+            isOldPerson = true;
+        }
+
+        if (newMember < sanqiJJ && !isOldPerson) {
+            console.log("在总排名种序号：" + (i + 1) + "  新人名字：" + newJoinPerson.name + "   差额：" + (sanqiJJ - newMember))
+        } else if (!isOldPerson) {
+            console.log("在总排名种序号：" + (i + 1) + "  新人名字：" + newJoinPerson.name + "   已交：" + newMember)
         }
     }
 
