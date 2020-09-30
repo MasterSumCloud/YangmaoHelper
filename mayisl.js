@@ -25,7 +25,7 @@ let dierqiJy = [{
     head64: 'TB1ZZt1bARDDuNkUvLzXXaPTpXa_160X160'
 },
 {
-    name: '加油',
+    name: '小黄加油',
     water: '13000',
     head64: 'T1lKRqXdxaXXXXXXXX_160X160'
 },
@@ -183,9 +183,9 @@ function main() {
                     let newNum = parseInt(newItem.water);
                     let oldNum = parseInt(oldItem.water);
                     if (newNum - oldNum < sanqiJJ) {
-                        console.log("在总排中种序号：" + (i + 1) + "  名字：" + newItem.name + "   差额：" + (sanqiJJ - (newNum - oldNum)))
+                        console.log("在总排名中序号：" + (i + 1) + "  名字：" + newItem.name + "   差额：" + (sanqiJJ - (newNum - oldNum)))
                     } else {
-                        console.log("在总排名种序号：" + (i + 1) + "  名字：" + newItem.name + "   已交：" + (newNum - oldNum))
+                        // console.log("在总排名中序号：" + (i + 1) + "  名字：" + newItem.name + "   已交：" + (newNum - oldNum))
                     }
                 }
             }
@@ -209,9 +209,9 @@ function main() {
         }
 
         if (newMember < sanqiJJ && !isOldPerson) {
-            console.log("在总排名种序号：" + (i + 1) + "  新人名字：" + newJoinPerson.name + "   差额：" + (sanqiJJ - newMember))
+            console.log("在总排名中序号：" + (i + 1) + "  新人名字：" + newJoinPerson.name + "   差额：" + (sanqiJJ - newMember))
         } else if (!isOldPerson) {
-            console.log("在总排名种序号：" + (i + 1) + "  新人名字：" + newJoinPerson.name + "   已交：" + newMember)
+            // console.log("在总排名中序号：" + (i + 1) + "  新人名字：" + newJoinPerson.name + "   已交：" + newMember)
         }
     }
 

@@ -14,7 +14,5 @@
 //     }
 // });
 
-app.startActivity({
-    action: "VIEW",
-    data: "alipays://platformapi/startapp?appId=60000002",
-});
+new shell('am force-stop ' + getPackageName("微信"), true);
+console.log(getPackageName("微信"))
